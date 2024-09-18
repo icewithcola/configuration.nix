@@ -116,11 +116,10 @@
     zsh
     git
     coreutils
-    
-    
-    google-chrome
-    
-      clash-verge-rev
+
+    clash-verge-rev # Latest version GUI crash
+
+    # Develop packages  
     jdk
     perl
     libgcc
