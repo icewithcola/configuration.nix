@@ -103,7 +103,7 @@
   users.users.kagura = {
     isNormalUser = true;
     home = "/home/kagura";
-    extraGroups = [ "wheel" "kvm" "incus-admin" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "kvm" "incus-admin" "docker" ];
     shell = pkgs.zsh;
    };
   
@@ -154,6 +154,15 @@
     opengl = {
       enable = true;
       driSupport = true;
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
     };
   };
 
