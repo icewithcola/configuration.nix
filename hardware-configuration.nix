@@ -31,12 +31,6 @@
       options = [ "subvol=@home" ];
     };
 
-  fileSystems."/var/cache/pacman/pkg" =
-    { device = "/dev/disk/by-uuid/addaefc6-5952-462f-a5fc-8f4305738147";
-      fsType = "btrfs";
-      options = [ "subvol=@pkg" ];
-    };
-
   fileSystems."/var/log" =
     { device = "/dev/disk/by-uuid/addaefc6-5952-462f-a5fc-8f4305738147";
       fsType = "btrfs";
