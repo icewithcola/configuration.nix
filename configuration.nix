@@ -131,11 +131,7 @@
   
   ]);
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "google-chrome"
-    "vscode"
-    "jetbrains-toolbox"
-  ];
+  nixpkgs.config.allowUnfree = true;
 
   # Desktop Environment
   services = {
