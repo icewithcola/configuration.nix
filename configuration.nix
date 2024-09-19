@@ -128,7 +128,7 @@
     clang_18
     gnumake
   ]) ++ (with pkgs-unstable; [
-  
+    docker
   ]);
 
   nixpkgs.config.allowUnfree = true;
@@ -156,9 +156,6 @@
       driSupport = true;
     };
   };
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
