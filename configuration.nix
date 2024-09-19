@@ -128,7 +128,6 @@
     clang_18
     gnumake
   ]) ++ (with pkgs-unstable; [
-    docker
   ]);
 
   nixpkgs.config.allowUnfree = true;
@@ -159,6 +158,7 @@
 
   virtualisation.docker = {
     enable = true;
+    package = pkgs-unstable.docker;
     storageDriver = "btrfs";
     rootless = {
       enable = true;
