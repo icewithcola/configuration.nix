@@ -71,6 +71,7 @@
       
       sansSerif = [
         "Noto Sans"
+        "HarmonyOS Sans SC"
         "Noto Sans CJK SC"
         "Noto Color Emoji"
       ];
