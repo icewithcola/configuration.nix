@@ -60,6 +60,7 @@
       dina-font
       proggyfonts
       meslo-lgs-nf
+      kaguraRepo.HarmonyOS-Sans-fonts
     ];
     fontconfig.defaultFonts = {
       serif = [

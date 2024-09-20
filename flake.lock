@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "kaguraRepo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1726797410,
+        "narHash": "sha256-zDSqPD9igul+qjF8JPst6YnO+SeakyvfnPyqINhJDYI=",
+        "owner": "icewithcola",
+        "repo": "nix-packages",
+        "rev": "39e4091355065cee78fdbbfba11d7007d08d9bc0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "icewithcola",
+        "repo": "nix-packages",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1726447378,
@@ -34,6 +54,7 @@
     },
     "root": {
       "inputs": {
+        "kaguraRepo": "kaguraRepo",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }

@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    kaguraRepo = {
+      url = "github:icewithcola/nix-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{
@@ -23,6 +27,13 @@
       };
       
       modules = [
+        ({
+          nixpkgs.overlays = [
+            (final: prev: {
+              kaguraRepo = inputs.kaguraRepo.packages."${prev.system}";
+            })
+          ];
+        })
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
