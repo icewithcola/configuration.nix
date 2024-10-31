@@ -38,7 +38,15 @@
 
   networking = {
     hostName = "kagura-notebook";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      settings = {
+        connectivity = {
+          enabled  = true;
+          uri = "http://www.qualcomm.cn/generate_204";
+        };
+      };
+    };
     firewall.enable = false;
   };
 
