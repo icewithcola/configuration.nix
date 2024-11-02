@@ -113,7 +113,7 @@
   users.users.kagura = {
     isNormalUser = true;
     home = "/home/kagura";
-    extraGroups = [ "wheel" "kvm" "incus-admin" "docker" ];
+    extraGroups = [ "wheel" "kvm" "incus-admin" "docker" "libvirtd" ];
     shell = pkgs.zsh;
    };
   
