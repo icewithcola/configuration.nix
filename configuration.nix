@@ -44,6 +44,7 @@
         connectivity = {
           enabled  = true;
           uri = "http://www.qualcomm.cn/generate_204";
+          response = "";
         };
       };
     };
