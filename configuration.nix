@@ -10,7 +10,7 @@
       ./hardware-configuration.nix
       # Programs
       ./programs/clash-verge-rev.nix
-      ./programs/jetbrains.nix
+      ./programs/nix-ld.nix
       ./programs/fcitx5.nix
       ./programs/incus.nix
     ];
@@ -18,7 +18,6 @@
   boot = {
     # Latest kernel
     kernelPackages = pkgs.linuxPackages_latest;
-    # Grub boot
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -80,7 +79,6 @@
       
       sansSerif = [
         "Noto Sans"        
-        "HarmonyOS Sans SC"
         "Noto Sans CJK SC"
         "Noto Color Emoji"
       ];
@@ -139,6 +137,7 @@
     clang_18
     gnumake
   ]) ++ (with pkgs-unstable; [
+    busybox
   ]);
 
   nixpkgs.config.allowUnfree = true;
@@ -155,7 +154,6 @@
 
   programs = {
     zsh.enable = true;
-    nix-ld.enable = true;
   };
 
   zramSwap.enable = true;
