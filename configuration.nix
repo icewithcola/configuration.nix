@@ -138,6 +138,7 @@
     gnumake
   ]) ++ (with pkgs-unstable; [
     busybox
+    python3Full
   ]);
 
   nixpkgs.config.allowUnfree = true;
