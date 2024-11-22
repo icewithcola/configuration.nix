@@ -55,7 +55,6 @@
   fonts = { 
     packages = with pkgs; [
       noto-fonts
-      noto-fonts-cjk    
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif  
       noto-fonts-emoji  
@@ -88,12 +87,15 @@
       ];
     };  
   };
-  
 
   # Sound
-  hardware.pulseaudio = {
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    package = pkgs.pulseaudioFull;   
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
   };
 
   # Bluetooth
@@ -158,13 +160,6 @@
   };
 
   zramSwap.enable = true;
-
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-    };
-  };
 
   virtualisation.docker = {
     enable = true;
