@@ -6,13 +6,9 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # Programs
-      ./programs/clash-verge-rev.nix
-      ./programs/nix-ld.nix
-      ./programs/fcitx5.nix
-      ./programs/incus.nix
     ];
 
   boot = {
@@ -126,6 +122,8 @@
     zsh
     git
     coreutils
+
+    pinentry-all # Used by gnupg
 
     clash-verge-rev # Latest version GUI crash
 

@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     kaguraRepo = {
       url = "github:icewithcola/nix-packages";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +38,8 @@
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
+
+        ./programs
       ];
     };
   };
