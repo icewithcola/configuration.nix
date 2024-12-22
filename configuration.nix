@@ -122,6 +122,8 @@
     zsh
     git
     coreutils
+    usbutils
+    pciutils
 
     pinentry-all # Used by gnupg
 
@@ -137,7 +139,6 @@
     clang_18
     gnumake
   ]) ++ (with pkgs-unstable; [
-    busybox
     python3Full
   ]);
 
