@@ -64,6 +64,7 @@
       proggyfonts
       meslo-lgs-nf
       kaguraRepo.HarmonyOS-Sans-fonts
+      kaguraRepo.noto-fonts-cjk-sans-static
     ];
     fontconfig.defaultFonts = {
       serif = [
