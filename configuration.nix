@@ -106,7 +106,13 @@
     };
   };
   services.blueman.enable = true;
-  
+
+  # Btrfs scrub
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = [ "/" ];
+  };
 
   users.users.kagura = {
     isNormalUser = true;
