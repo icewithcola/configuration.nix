@@ -134,8 +134,6 @@
 
     pinentry-all # Used by gnupg
 
-    clash-verge-rev # Latest version GUI crash
-
     # Develop packages  
     jdk
     perl
@@ -147,6 +145,7 @@
     gnumake
   ]) ++ (with pkgs-unstable; [
     python3Full
+    clash-verge-rev # Latest version GUI crash
   ]);
 
   nixpkgs.config.allowUnfree = true;
