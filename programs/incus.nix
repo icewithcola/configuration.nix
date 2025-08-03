@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   virtualisation.incus = {
@@ -7,11 +12,11 @@
       networks = [
         {
           config = {
-          "ipv4.address" = "192.168.100.1/24";
-          "ipv4.nat" = "true";
-        };
-        name = "incusbr0";
-        type = "bridge";
+            "ipv4.address" = "192.168.100.1/24";
+            "ipv4.nat" = "true";
+          };
+          name = "incusbr0";
+          type = "bridge";
         }
       ];
       profiles = [
@@ -44,4 +49,3 @@
     };
   };
 }
-

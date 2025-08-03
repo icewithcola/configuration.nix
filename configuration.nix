@@ -1,15 +1,16 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-stable,
+  ...
+}:
 
 {
-  imports =
-    [ 
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   boot = {
     # Latest kernel
@@ -21,8 +22,11 @@
   };
 
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
-        
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+
     # Nix GC Configuration
     gc = {
       automatic = true;
@@ -37,7 +41,7 @@
       enable = true;
       settings = {
         connectivity = {
-          enabled  = true;
+          enabled = true;
           uri = "http://www.qualcomm.cn/generate_204";
           response = "";
         };
@@ -48,12 +52,12 @@
 
   time.timeZone = "Asia/Shanghai";
 
-  fonts = { 
+  fonts = {
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-cjk-serif  
-      noto-fonts-emoji  
+      noto-fonts-cjk-serif
+      noto-fonts-emoji
       noto-fonts-color-emoji
       noto-fonts-extra
       liberation_ttf
@@ -72,9 +76,9 @@
         "Noto Serif CJK SC"
         "Noto Color Emoji"
       ];
-      
+
       sansSerif = [
-        "Noto Sans"        
+        "Noto Sans"
         "Noto Sans CJK SC"
         "Noto Color Emoji"
       ];
@@ -82,7 +86,7 @@
       emoji = [
         "Noto Color Emoji"
       ];
-    };  
+    };
   };
 
   # Sound
@@ -117,62 +121,69 @@
   users.users.kagura = {
     isNormalUser = true;
     home = "/home/kagura";
-    extraGroups = [ "wheel" "kvm" "incus-admin" "docker" "libvirtd" ];
+    extraGroups = [
+      "wheel"
+      "kvm"
+      "incus-admin"
+      "docker"
+      "libvirtd"
+    ];
     shell = pkgs.zsh;
-   };
-  
-  environment.systemPackages = (with pkgs; [
-    # Basic system utility
-    helix
-    wget
-    curl
-    zsh
-    git
-    coreutils
-    usbutils
-    pciutils
+  };
 
-    pinentry-all # Used by gnupg
+  environment.systemPackages =
+    (with pkgs; [
+      # Basic system utility
+      helix
+      wget
+      curl
+      zsh
+      git
+      coreutils
+      usbutils
+      pciutils
 
-    # GUI Applications (EGL problem)
-    telegram-desktop
+      pinentry-all # Used by gnupg
 
-    libreoffice-qt6-fresh
-    remmina
-    
+      # Desktop environment
+      libreoffice-qt6-fresh
+      remmina
+      kitty
+      clash-verge-rev
+      vscode
 
-    # Dev tools
-    rustup
-    clang-tools
-    pkg-config
-    openssl
-    zlib
-    cargo-binutils
-    yarn
+      # Dev tools
+      rustup
+      clang-tools
+      pkg-config
+      openssl
+      zlib
+      cargo-binutils
+      yarn
 
-    # LateX
-    texlive.combined.scheme-full
+      # LateX
+      texlive.combined.scheme-full
 
-    # Develop packages  
-    jdk
-    perl
-    libgcc
-    gcc14
-    llvm_18
-    lldb_18
-    clang_18
-    gnumake
-  ]) ++ (with pkgs-unstable; [
-    python3Full
-    kitty
-    
-    vscode
-    google-chrome
-    jetbrains-toolbox
-    
-    android-studio
-    clash-verge-rev # Latest version GUI crash
-  ]);
+      # Develop packages
+      jdk
+      perl
+      libgcc
+      gcc14
+      llvm_18
+      lldb_18
+      clang_18
+      gnumake
+
+      python3Full
+
+    ])
+    ++ (with pkgs-stable; [
+      # 这下面放些不想更新的
+      telegram-desktop
+      google-chrome
+      jetbrains-toolbox
+      android-studio
+    ]);
 
   nixpkgs.config.allowUnfree = true;
 
@@ -181,7 +192,7 @@
     xserver.enable = true;
     displayManager.sddm = {
       enable = true;
-      wayland.enable = true;  
+      wayland.enable = true;
     };
     desktopManager.plasma6.enable = true;
   };
@@ -206,8 +217,8 @@
   programs.virt-manager.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
-                "clash-verge-rev-1.7.7"
-              ];
+    "clash-verge-rev-1.7.7"
+  ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
@@ -229,4 +240,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

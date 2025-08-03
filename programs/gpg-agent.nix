@@ -6,4 +6,3 @@
   };
   services.pcscd.enable = true;
 }
-
