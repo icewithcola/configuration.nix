@@ -134,6 +134,25 @@
 
     pinentry-all # Used by gnupg
 
+    # GUI Applications (EGL problem)
+    telegram-desktop
+
+    libreoffice-qt6-fresh
+    remmina
+    
+
+    # Dev tools
+    rustup
+    clang-tools
+    pkg-config
+    openssl
+    zlib
+    cargo-binutils
+    yarn
+
+    # LateX
+    texlive.combined.scheme-full
+
     # Develop packages  
     jdk
     perl
@@ -145,6 +164,13 @@
     gnumake
   ]) ++ (with pkgs-unstable; [
     python3Full
+    kitty
+    
+    vscode
+    google-chrome
+    jetbrains-toolbox
+    
+    android-studio
     clash-verge-rev # Latest version GUI crash
   ]);
 
@@ -178,6 +204,10 @@
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+                "clash-verge-rev-1.7.7"
+              ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
