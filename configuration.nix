@@ -154,11 +154,11 @@
 
       python3Full
 
+      kaguraRepo.google-chrome-138
     ])
     ++ (with pkgs-stable; [
       # 这下面放些不想更新的
       telegram-desktop
-      google-chrome
       jetbrains-toolbox
       android-studio
     ]);
