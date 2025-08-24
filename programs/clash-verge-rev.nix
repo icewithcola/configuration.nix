@@ -4,9 +4,7 @@
   pkgs,
   ...
 }:
-
 {
-
   security.wrappers = builtins.listToAttrs (
     map (exe: {
       name = exe;

@@ -1,0 +1,19 @@
+theme = "base16_transparent"
+
+[editor]
+line-number = "absolute" # relative for distance 
+
+[editor.statusline]
+left   = ["mode","spinner","diagnostics","total-line-numbers"]
+center = ["file-name"]
+right  = ["file-encoding","file-line-ending","selections","position"]
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.soft-wrap]
+enable   = true
+max-wrap = 25
+

@@ -1,55 +1,78 @@
 {
-  description = "Kagura's notebook's nix config";
+  description = "Kagura's NixOS config, for x86_64-linux";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    kaguraRepo = {
+    home-manager-nixos = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri.url = "github:sodiboo/niri-flake";
+
+    kagura-pkgs = {
       url = "github:icewithcola/nix-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
       nixpkgs-stable,
+      home-manager-nixos,
       ...
-    }:
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      lib = pkgs.lib;
+
+      allHosts = builtins.attrNames (lib.filterAttrs (n: v: v == "directory") (builtins.readDir ./hosts));
     in
     {
-      nixosConfigurations.kagura-notebook = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations = lib.genAttrs allHosts (
+        host:
+        nixpkgs.lib.nixosSystem {
+          system = system;
 
-        specialArgs = {
-          pkgs-stable = import nixpkgs-stable {
-            inherit system;
-            config.allowUnfree = true;
+          specialArgs = {
+            inherit system inputs;
+            pkgs-stable = import nixpkgs-stable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+            host = "${host}";
           };
-        };
 
-        modules = [
-          ({
-            nixpkgs.overlays = [
-              (final: prev: {
-                kaguraRepo = inputs.kaguraRepo.packages."${prev.system}";
-              })
-            ];
-          })
-          # 这里导入之前我们使用的 configuration.nix，
-          # 这样旧的配置文件仍然能生效
-          ./configuration.nix
+          modules = [
+            ({
+              nixpkgs.overlays = [
+                (final: prev: {
+                  kagura-pkgs = inputs.kagura-pkgs.packages.${prev.system};
+                })
+              ];
+            })
 
-          ./programs
-          ./services
-        ];
+            home-manager-nixos.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.kagura = import ./home {
+                inherit system pkgs host;
+              };
+            }
 
-      };
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+            ./programs
+            ./services
+            ./hosts/${host}
+          ];
+        }
+      );
 
+      formatter.${system} = pkgs.nixfmt-tree;
     };
 }

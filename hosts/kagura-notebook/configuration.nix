@@ -67,8 +67,8 @@
       dina-font
       proggyfonts
       meslo-lgs-nf
-      kaguraRepo.HarmonyOS-Sans-fonts
-      kaguraRepo.noto-fonts-cjk-sans-static
+      kagura-pkgs.HarmonyOS-Sans-fonts
+      kagura-pkgs.noto-fonts-cjk-sans-static
     ];
     fontconfig.defaultFonts = {
       serif = [
@@ -154,7 +154,7 @@
 
       python3Full
 
-      kaguraRepo.google-chrome-138
+      kagura-pkgs.google-chrome-138
     ])
     ++ (with pkgs-stable; [
       # 这下面放些不想更新的
@@ -177,6 +177,7 @@
 
   programs = {
     zsh.enable = true;
+    niri.enable = true;
   };
 
   zramSwap.enable = true;
