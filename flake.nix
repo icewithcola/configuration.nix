@@ -10,8 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri.url = "github:sodiboo/niri-flake";
-
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     kagura-pkgs = {
       url = "github:icewithcola/nix-packages";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,6 +26,7 @@
       nixpkgs,
       nixpkgs-stable,
       home-manager-nixos,
+      niri,
       ...
     }@inputs:
     let
@@ -61,9 +64,15 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.kagura = import ./home {
-                inherit system pkgs host;
+              home-manager.users.kagura = import ./hosts/${host}/home.nix {
+                inherit
+                  system
+                  pkgs
+                  host
+                  lib
+                  ;
               };
+              home-manager.backupFileExtension = "backup";
             }
 
             ./programs

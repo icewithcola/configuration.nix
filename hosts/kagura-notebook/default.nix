@@ -4,13 +4,14 @@
   ...
 }:
 let
-  enableModules = 
-    [
-      # "niri"
-    ];
+  enableNixOSModule = (x: lib.map (s: ../../nixosModules/${s}) x);
+
 in
 {
   imports = ([
     ./configuration.nix
-  ]) ++ (lib.map (x: ../../modules/${x} ) enableModules);
+  ])
+  ++ (enableNixOSModule [
+    "niri"
+  ]);
 }
