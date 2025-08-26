@@ -1,5 +1,9 @@
 # https://github.com/Alexays/Waybar
+# https://tangled.sh/@pluie.me/flake/tree/main/users/leah/presets/niri/waybar
 { pkgs, ... }:
+let 
+  interval = 10;
+in 
 {
   programs.waybar = {
     enable = true;
@@ -11,26 +15,26 @@
         mod = "dock";
         margin-left = 15;
         margin-right = 15;
-        margin-top = 4;
-        margin-bottom = 4;
+        margin-top = 2;
+        margin-bottom = 0;
         reload_style_on_change = true;
         spacing = 0;
         modules-left = [
           "image"
           "wlr/taskbar"
-          "niri/window"
           "mpris"
-        ];
-        modules-center = [
           "niri/workspaces"
         ];
+        modules-center = [
+          "niri/window"
+        ];
         modules-right = [
-          "clock"
           "memory"
           "cpu"
           "battery"
           "network"
           "tray"
+          "clock"
         ];
 
         # Module configuration: Left
@@ -74,9 +78,9 @@
           format = "{app_id}";
           separate-outputs = true;
           rewrite = {
-            "" = "<span foreground='#89b4fa'> Niri</span>";
-            " " = "<span foreground='#89b4fa'> Niri</span>";
-            "(.*)" = "<span foreground='#89b4fa'>$1</span>";
+            "" = "<span foreground='#f5c2e7'>Niri</span>";
+            " " = "<span foreground='#f5c2e7'>Niri</span>";
+            "(.*)" = "<span foreground='#f5c2e7'>$1</span>";
           };
         };
 
@@ -96,11 +100,11 @@
           format-alt = "{ifname}: {ipaddr}/{cidr}";
         };
         memory = {
-          interval = 30;
+          inherit interval;
           format = "MEM: {percentage}%";
         };
         cpu = {
-          interval = 30;
+          inherit interval;
           format = "CPU: {usage}%";
         };
         battery = {

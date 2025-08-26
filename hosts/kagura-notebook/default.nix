@@ -14,13 +14,15 @@ in
   ])
   ++ (enableNixOSModule [
     "niri"
-  ]) ++ (enablePrograms [
+  ])
+  ++ (enablePrograms [
     "clash-verge-rev"
     "fcitx5"
     "nix-ld"
     "steam"
     "wine"
-  ]) ++ (enableServices [
+  ])
+  ++ (enableServices [
     "bluetooth"
     "sound"
     "virt"

@@ -5,7 +5,7 @@
   ...
 }:
 {
-  environment.systemPackages = [pkgs.clash-verge-rev];
+  environment.systemPackages = [ pkgs.clash-verge-rev ];
 
   security.wrappers = builtins.listToAttrs (
     map (exe: {

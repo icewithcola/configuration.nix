@@ -47,7 +47,7 @@ let
       matches = [
         { title = "Picture in picture"; }
         { title = "Bitwarden"; }
-
+        { app-id = "org.kde.polkit-kde-authentication-agent-1"; }
       ];
       open-floating = true;
       default-floating-position = {

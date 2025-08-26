@@ -32,12 +32,14 @@
         always-center-single-column = true;
         focus-ring = {
           enable = true;
-          width = 2;
+          width = 1;
           active.color = "#5BCEFA";
-          urgent.color = "#F5A9B8";
         };
         border = {
-          enable = false;
+          enable = true;
+          width = 2;
+          inactive.color = "#F5A9B8";
+          active.color = "#5BCEFA";
         };
       };
 

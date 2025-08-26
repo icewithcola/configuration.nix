@@ -121,16 +121,16 @@ window.eDP-1 #custom-toggl {
 
 #window {
   background: @crust;
-  font-family: "Monaspace Radon Frozen", "CaskaydiaCove Nerd Font";
-  border-radius: 0;
+  font-family: "Noto Sans CJK SC";
+  border-radius: 5px 5px 5px 5px;
   padding: 0rem 0.7rem;
-  border: 2px solid @blue;
+  border: 2px solid @pink;
 }
 
 #taskbar {
   background: @crust;
-  border-radius: 5px 0 0 5px;
-  padding: 0rem 0rem;
+  border-radius: 5px 5px 5px 5px;
+  padding: 0rem 2rem;
   border: 2px solid @blue;
 }
 
@@ -141,12 +141,19 @@ window#waybar.swallowing {
 
 #network,
 #cpu,
-#memory,
 #tray {
   background: @crust;
   padding: 0 5px;
   border-top: 2px solid @text;
   border-bottom: 2px solid @text;
+}
+
+#memory {
+  background: @crust;
+  padding: 0 5px;
+  border-top: 2px solid @text;
+  border-bottom: 2px solid @text;
+  border-left: 2px solid @text;
 }
 
 #battery {
@@ -169,7 +176,7 @@ window#waybar.swallowing {
 #clock {
   background: @crust;
   color: @pink;
-  border-radius: 0 5px 5px 0;
+  border-radius: 5px 5px 5px 5px;
   border: 2px solid @pink;
   padding: 0rem 0.7rem;
 }

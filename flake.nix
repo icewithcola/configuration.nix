@@ -9,7 +9,7 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    agenix.url = "github:ryantm/agenix";
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,6 +27,7 @@
       nixpkgs-stable,
       home-manager-nixos,
       niri,
+      agenix,
       ...
     }@inputs:
     let
@@ -41,7 +42,6 @@
         host:
         nixpkgs.lib.nixosSystem {
           system = system;
-
           specialArgs = {
             inherit system inputs;
             pkgs-stable = import nixpkgs-stable {
@@ -74,6 +74,12 @@
               };
               home-manager.backupFileExtension = "backup";
             }
+
+            agenix.nixosModules.default
+
+            ./common.nix
+            ./secrets
+
             ./hosts/${host}
           ];
         }

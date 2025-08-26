@@ -21,20 +21,6 @@
     };
   };
 
-  nix = {
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-
-    # Nix GC Configuration
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "-d";
-    };
-  };
-
   networking = {
     hostName = "kagura-notebook";
     networkmanager = {
@@ -111,16 +97,6 @@
 
   environment.systemPackages =
     (with pkgs; [
-      # Basic system utility
-      helix
-      wget
-      curl
-      zsh
-      git
-      coreutils
-      usbutils
-      pciutils
-
       pinentry-all # Used by gnupg
 
       # Desktop environment
