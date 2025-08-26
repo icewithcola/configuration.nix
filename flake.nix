@@ -74,9 +74,6 @@
               };
               home-manager.backupFileExtension = "backup";
             }
-
-            ./programs
-            ./services
             ./hosts/${host}
           ];
         }

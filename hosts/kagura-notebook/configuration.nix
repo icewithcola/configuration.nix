@@ -127,7 +127,6 @@
       libreoffice-qt6-fresh
       remmina
       kitty
-      clash-verge-rev
       vscode
 
       # Dev tools
