@@ -15,9 +15,13 @@
         "eDP-1".scale = 1;
       };
 
+      spawn-at-startup = [
+        { command = [ "${lib.getExe pkgs.xwayland-satellite}" ]; }
+      ];
+
       environment = {
         CLUTTER_BACKEND = "wayland";
-        DISPLAY = null;
+        DISPLAY = ":0";
         GDK_BACKEND = "wayland,x11";
         MOZ_ENABLE_WAYLAND = "1";
         NIXOS_OZONE_WL = "1";
@@ -72,6 +76,7 @@
     wl-clipboard
     brillo
     swaybg
+    xwayland-satellite
     wl-clip-persist
     nautilus
     nautilus-open-any-terminal
