@@ -39,7 +39,7 @@ in
 
         # Module configuration: Left
         "image" = {
-          path = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
+          path = ../../home/assets/nix-snowflake-transgender.png;
           on-click = "niri msg action toggle-overview";
           size = 22;
           tooltip = false;
