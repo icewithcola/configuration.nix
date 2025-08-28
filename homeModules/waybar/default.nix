@@ -1,9 +1,9 @@
 # https://github.com/Alexays/Waybar
 # https://tangled.sh/@pluie.me/flake/tree/main/users/leah/presets/niri/waybar
 { pkgs, ... }:
-let 
+let
   interval = 10;
-in 
+in
 {
   programs.waybar = {
     enable = true;
@@ -32,6 +32,7 @@ in
           "memory"
           "cpu"
           "battery"
+          "pulseaudio"
           "network"
           "tray"
           "clock"
@@ -114,9 +115,12 @@ in
           };
           format = "{capacity}%";
           format-charging = "{capacity}%+";
-          format-plugged = "plugged";
+          format-plugged = "{capacity}%~";
           tooltip-format = "{time}";
           tooltip = true;
+        };
+        pulseaudio = {
+          "format"= "vol: {volume}%";
         };
         tray = {
           icon-size = 18;

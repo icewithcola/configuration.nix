@@ -11,15 +11,15 @@
       sh = spawn "sh" "-c";
       set-volume = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@";
       brillo = spawn "${pkgs.brillo}/bin/brillo" "-q" "-u" "300000";
-
     in
     {
       "Mod+R".action = spawn "fuzzel";
       "Mod+Q".action = spawn "kitty";
       "Mod+W".action = spawn "google-chrome-stable";
       "Mod+F".action = toggle-window-floating;
+      "Mod+L".action = sh "swaylock -f";
       "Mod+Minus".action = set-column-width "-10%";
-      "Mod+Plus".action = set-column-width "+10%";
+      "Mod+Equal".action = set-column-width "+10%";
       "Mod+Left".action = focus-column-left;
       "Mod+Right".action = focus-column-right;
       "Mod+Down".action = focus-workspace-down;
@@ -29,11 +29,7 @@
       "Mod+Shift+E".action = quit;
       "Mod+Shift+C".action = close-window;
       "Mod+Shift+F".action = expand-column-to-available-width;
-      "Mod+Shift+Left".action = focus-column-left;
-      "Mod+Shift+Right".action = focus-column-right;
-      "Mod+Shift+Down".action = focus-workspace-down;
-      "Mod+Shift+Up".action = focus-workspace-up;
-
+      
       "Mod+1".action = set-column-width "25%";
       "Mod+2".action = set-column-width "50%";
       "Mod+3".action = set-column-width "75%";

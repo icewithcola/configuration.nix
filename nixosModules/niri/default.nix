@@ -10,6 +10,8 @@
     inputs.niri.nixosModules.niri
   ];
 
+  security.pam.services.swaylock = { };
+
   environment.systemPackages = with pkgs; [
     xdg-user-dirs
     brightnessctl
