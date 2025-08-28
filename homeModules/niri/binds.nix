@@ -18,6 +18,7 @@
       "Mod+W".action = spawn "google-chrome-stable";
       "Mod+F".action = toggle-window-floating;
       "Mod+L".action = sh "swaylock -f";
+      "Mod+Comma".action = sh "plasma-emojier";
       "Mod+Minus".action = set-column-width "-10%";
       "Mod+Equal".action = set-column-width "+10%";
       "Mod+Left".action = focus-column-left;
@@ -29,7 +30,7 @@
       "Mod+Shift+E".action = quit;
       "Mod+Shift+C".action = close-window;
       "Mod+Shift+F".action = expand-column-to-available-width;
-      
+
       "Mod+1".action = set-column-width "25%";
       "Mod+2".action = set-column-width "50%";
       "Mod+3".action = set-column-width "75%";

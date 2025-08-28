@@ -120,7 +120,7 @@ in
           tooltip = true;
         };
         pulseaudio = {
-          "format"= "vol: {volume}%";
+          "format" = "vol: {volume}%";
         };
         tray = {
           icon-size = 18;
