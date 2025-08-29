@@ -11,13 +11,15 @@
       sh = spawn "sh" "-c";
       set-volume = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@";
       brillo = spawn "${pkgs.brillo}/bin/brillo" "-q" "-u" "300000";
+      swaylock = "${lib.getExe pkgs.swaylock-effects} -f --clock --indicator";
+      suspend = "${pkgs.systemd}/bin/systemctl suspend";
     in
     {
       "Mod+R".action = spawn "fuzzel";
       "Mod+Q".action = spawn "kitty";
       "Mod+W".action = spawn "google-chrome-stable";
       "Mod+F".action = toggle-window-floating;
-      "Mod+L".action = sh "swaylock -f";
+      "Mod+L".action = sh swaylock;
       "Mod+Comma".action = sh "plasma-emojier";
       "Mod+Minus".action = set-column-width "-10%";
       "Mod+Equal".action = set-column-width "+10%";
@@ -30,6 +32,10 @@
       "Mod+Shift+E".action = quit;
       "Mod+Shift+C".action = close-window;
       "Mod+Shift+F".action = expand-column-to-available-width;
+      "Mod+Shift+L".action = sh suspend;
+      "Mod+Shift+Minus".action = set-window-height "-10%";
+      "Mod+Shift+Equal".action = set-window-height "+10%";
+
 
       "Mod+1".action = set-column-width "25%";
       "Mod+2".action = set-column-width "50%";

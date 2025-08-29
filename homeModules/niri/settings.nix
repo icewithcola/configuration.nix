@@ -17,6 +17,7 @@
 
       spawn-at-startup = [
         { command = [ "${lib.getExe pkgs.xwayland-satellite}" ]; }
+        { command = [ "${lib.getExe pkgs.mako}" ]; }
       ];
 
       environment = {
@@ -73,6 +74,7 @@
 
   programs.swaylock = {
     enable = true;
+    package = pkgs.swaylock-effects;
     settings = {
       indicator-radius = 365;
       font-size = 120;
@@ -112,6 +114,36 @@
     };
   };
 
+  services.swayidle =
+    let
+      swaylock = "${lib.getExe pkgs.swaylock-effects} -f --clock --indicator";
+      suspend = "${pkgs.systemd}/bin/systemctl suspend";
+    in
+    {
+      enable = true;
+      events = [
+        {
+          event = "before-sleep";
+          command = swaylock;
+        }
+        {
+          event = "lock";
+          command = swaylock;
+        }
+      ];
+      timeouts = [
+        {
+          timeout = 200;
+          command = swaylock;
+        }
+        {
+          timeout = 300;
+          command = suspend;
+        }
+      ];
+    };
+
+
   home.packages = with pkgs; [
     libnotify
     wl-clipboard
@@ -119,6 +151,7 @@
     swaybg
     xwayland-satellite
     wl-clip-persist
+    mako
     nautilus
     nautilus-open-any-terminal
   ];
