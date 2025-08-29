@@ -42,8 +42,8 @@
       "Mod+4".action = set-column-width "100%";
 
       # Fn
-      "XF86MonBrightnessUp".action = sh "brightnessctl" "s" "+5%";
-      "XF86MonBrightnessDown".action = sh "brightnessctl" "s" "5%-";
+      "XF86MonBrightnessUp".action = sh "brightnessctl s +5%";
+      "XF86MonBrightnessDown".action = sh "brightnessctl s 5%-";
 
       "XF86AudioMute".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
       "XF86AudioRaiseVolume".action = set-volume "5%+";
