@@ -147,7 +147,7 @@
   home.packages = with pkgs; [
     libnotify
     wl-clipboard
-    brillo
+    brightnessctl
     swaybg
     xwayland-satellite
     wl-clip-persist

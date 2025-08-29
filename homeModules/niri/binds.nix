@@ -10,7 +10,6 @@
     let
       sh = spawn "sh" "-c";
       set-volume = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@";
-      brillo = spawn "${pkgs.brillo}/bin/brillo" "-q" "-u" "300000";
       swaylock = "${lib.getExe pkgs.swaylock-effects} -f --clock --indicator";
       suspend = "${pkgs.systemd}/bin/systemctl suspend";
     in
@@ -43,8 +42,8 @@
       "Mod+4".action = set-column-width "100%";
 
       # Fn
-      "XF86MonBrightnessDown".action = brillo "-U" "5";
-      "XF86MonBrightnessUp".action = brillo "-A" "5";
+      "XF86MonBrightnessUp".action = sh "brightnessctl" "s" "+5%";
+      "XF86MonBrightnessDown".action = sh "brightnessctl" "s" "5%-";
 
       "XF86AudioMute".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
       "XF86AudioRaiseVolume".action = set-volume "5%+";

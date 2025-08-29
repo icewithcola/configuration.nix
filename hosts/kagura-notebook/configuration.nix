@@ -91,7 +91,6 @@
       "incus-admin"
       "docker"
       "libvirtd"
-      "video"
     ];
     shell = pkgs.zsh;
   };
