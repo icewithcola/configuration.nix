@@ -37,18 +37,5 @@
           };
         Install.WantedBy = [ "graphical-session.target" ];
       };
-      waybar = {
-        Unit = {
-          Description = "waybar - show the bar";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-          Requisite = [ "graphical-session.target" ];
-        };
-        Service = {
-          ExecStart = lib.getExe pkgs.waybar;
-          Restart = "on-failure";
-        };
-        Install.WantedBy = [ "graphical-session.target" ];
-      };
     };
 }
