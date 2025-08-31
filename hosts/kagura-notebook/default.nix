@@ -14,7 +14,6 @@ in
   ])
   ++ (enableNixOSModule [
     "niri"
-    "activate-linux"
   ])
   ++ (enablePrograms [
     "clash-verge-rev"

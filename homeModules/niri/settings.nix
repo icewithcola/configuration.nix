@@ -19,6 +19,11 @@
         { command = [ "${lib.getExe pkgs.xwayland-satellite}" ]; }
         { command = [ "${lib.getExe pkgs.waybar}" ]; }
         { command = [ "${lib.getExe pkgs.mako}" ]; }
+        {
+          command = [
+            "${lib.getExe pkgs.activate-linux} -x 400 -y 80 -t '         NixOS Insider Preview' -m \"Evaluation Copy. Build ${lib.version}\" -f 'Noto Sans CJK SC'"
+          ];
+        }
       ];
 
       environment = {
@@ -178,6 +183,7 @@
     xwayland-satellite
     wl-clip-persist
     mako
+    activate-linux
     nautilus
     nautilus-open-any-terminal
   ];
