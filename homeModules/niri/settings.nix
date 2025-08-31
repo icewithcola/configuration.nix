@@ -21,7 +21,7 @@
         { command = [ "${lib.getExe pkgs.mako}" ]; }
         {
           command = [
-            "${lib.getExe pkgs.activate-linux} -x 400 -y 80 -t '         NixOS Insider Preview' -m \"Evaluation Copy. Build ${lib.version}\" -f 'Noto Sans CJK SC'"
+            "sh" "-c" "${lib.getExe pkgs.activate-linux} -x 400 -y 80 -t '         NixOS Insider Preview' -m \"Evaluation Copy. Build ${lib.version}\" -f 'Noto Sans CJK SC'"
           ];
         }
       ];
