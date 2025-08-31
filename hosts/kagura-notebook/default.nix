@@ -21,6 +21,7 @@ in
     "nix-ld"
     "steam"
     "wine"
+    "incus"
   ])
   ++ (enableServices [
     "bluetooth"

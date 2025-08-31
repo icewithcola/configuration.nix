@@ -32,9 +32,9 @@
       "Mod+Shift+C".action = close-window;
       "Mod+Shift+F".action = expand-column-to-available-width;
       "Mod+Shift+L".action = sh suspend;
+      "Mod+Shift+V".action = sh "kitty --class='clipse' ${lib.getExe pkgs.clipse}";
       "Mod+Shift+Minus".action = set-window-height "-10%";
       "Mod+Shift+Equal".action = set-window-height "+10%";
-
 
       "Mod+1".action = set-column-width "25%";
       "Mod+2".action = set-column-width "50%";

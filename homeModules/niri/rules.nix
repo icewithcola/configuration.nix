@@ -57,6 +57,12 @@ let
         relative-to = "bottom-right";
       };
     }
+    {
+      matches = [
+        { app-id = "clipse"; }
+      ];
+      open-floating = true;
+    }
   ];
 in
 {
