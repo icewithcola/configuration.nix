@@ -9,5 +9,6 @@ in
   ++ (enableHomeModule [
     "niri"
     "waybar"
+    "fuzzel"
   ]);
 }
