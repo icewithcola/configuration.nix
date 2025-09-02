@@ -11,4 +11,5 @@ in
 {
   "frp-token.age".publicKeys = users;
   "github-token.age".publicKeys = users;
+  "wireguard-dn42.age".publicKeys = users;
 }
