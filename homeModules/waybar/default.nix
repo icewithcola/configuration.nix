@@ -2,7 +2,7 @@
 # https://tangled.sh/@pluie.me/flake/tree/main/users/leah/presets/niri/waybar
 { pkgs, ... }:
 let
-  interval = 10;
+  interval = 2;
 in
 {
   programs.waybar = {
