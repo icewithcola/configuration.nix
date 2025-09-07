@@ -51,7 +51,7 @@
             host = "${host}";
           };
 
-          modules = [
+          modules = ([
             ({
               nixpkgs.overlays = [
                 (final: prev: {
@@ -60,28 +60,37 @@
               ];
             })
 
-            home-manager-nixos.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.kagura = import ./hosts/${host}/home.nix {
-                inherit
-                  system
-                  pkgs
-                  host
-                  lib
-                  ;
-              };
-              home-manager.backupFileExtension = "backup";
-            }
-
             agenix.nixosModules.default
 
             ./common.nix
             ./secrets
 
             ./hosts/${host}
-          ];
+          ])
+          ++ (
+            let
+              homeConfig = ./hosts/${host}/home.nix;
+            in
+            if nixpkgs.lib.pathExists homeConfig then
+              [
+                home-manager-nixos.nixosModules.home-manager
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.users.kagura = import homeConfig {
+                    inherit
+                      system
+                      pkgs
+                      host
+                      lib
+                      ;
+                  };
+                  home-manager.backupFileExtension = "backup";
+                }
+              ]
+            else
+              [ ]
+          );
         }
       );
 
