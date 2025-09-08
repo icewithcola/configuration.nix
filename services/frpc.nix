@@ -7,7 +7,11 @@
       serverAddr = "ssh.git.kagurach.uk";
       serverPort = 30071;
 
-      auth.token = builtins.readFile config.age.secrets.frp-token.file;
+      auth.tokenSource = {
+        type = "file";
+        file = config.age.secrets.frp-token.file;
+      };
+      
       proxies = [
         {
           name = "web";
