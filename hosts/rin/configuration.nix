@@ -15,7 +15,10 @@
   boot = {
     kernelPackages = pkgs.linuxPackages;
     loader = {
-      grub.enable = true;
+      grub = {
+        enable = true;
+        devices = [ "/dev/disk/by-label/NIX-EFI" ];
+      };
       efi.canTouchEfiVariables = true;
     };
   };
