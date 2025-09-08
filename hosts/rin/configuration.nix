@@ -22,7 +22,7 @@
         memtest86.enable = true;
       };
       efi = {
-        efiSysMountPoint = "/boot/efi";
+        efiSysMountPoint = "/boot";
         canTouchEfiVariables = true;
       };
       
