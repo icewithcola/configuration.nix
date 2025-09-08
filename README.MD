@@ -1,5 +1,10 @@
 # Kagura's NixOS Config
 
+## Targets
+- gui 就是有用户界面的
+- gui + dev 就是可以开发的
+- tui 就是服务器
+
 # Modules
 ## niri
 niri = home + nixos

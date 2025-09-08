@@ -4,9 +4,11 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
+      PrintMotd = true;
       PasswordAuthentication = false;
     };
   };
+  users.motd = "NixOS Build ${lib.version}.";
 
   users.users.kagura.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPt9ckkZVYhl21qSJlGoi7i9EyAD+VwL0Fq4rdRO8k6k kagura@KaguraPC"
