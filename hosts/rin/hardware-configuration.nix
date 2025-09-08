@@ -31,7 +31,7 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/NIX-EFI";
+    device = "/dev/disk/by-uuid/1674-4CE3";
     fsType = "vfat";
     options = [
       "fmask=0022"
