@@ -1,15 +1,17 @@
 {
+  lib,
   pkgs,
   host,
+  config,
   ...
 }:
 {
   imports = [
+    ./options.nix
     ./home-file.nix
     ./packages.nix
-
-    ./terminal
     ./kitty
+    ./terminal
   ];
 
   programs.home-manager.enable = true;

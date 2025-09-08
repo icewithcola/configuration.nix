@@ -13,8 +13,7 @@
   ];
 
   boot = {
-    # Latest kernel
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages;
     loader = {
       grub.enable = true;
       efi.canTouchEfiVariables = true;

@@ -7,13 +7,11 @@ in
     ../../home
   ])
   ++ (enableHomeModule [
-    "niri"
-    "waybar"
-    "fuzzel"
+
   ]);
 
   kagura.home = {
-    type = "gui";
-    dev = true;
+    type = "tui";
+    dev = false;
   };
 }
