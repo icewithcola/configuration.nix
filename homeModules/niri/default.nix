@@ -1,7 +1,12 @@
 # 感谢
 # https://github.com/linuxmobile/kaku/blob/niri/home/software/wayland/niri/
 # https://github.com/AsterisMono/flake/blob/main/homeModules/niri/package.nix
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   imports = [
     ./binds.nix

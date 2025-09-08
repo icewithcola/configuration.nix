@@ -11,7 +11,7 @@
         type = "file";
         file = config.age.secrets.frp-token.file;
       };
-      
+
       proxies = [
         {
           name = "web";
