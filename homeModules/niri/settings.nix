@@ -176,17 +176,4 @@
       yankFilter = "ctrl+s";
     };
   };
-
-  home.packages = with pkgs; [
-    libnotify
-    wl-clipboard
-    brightnessctl
-    swaybg
-    xwayland-satellite
-    wl-clip-persist
-    mako
-    activate-linux
-    nautilus
-    nautilus-open-any-terminal
-  ];
 }

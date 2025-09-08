@@ -12,12 +12,6 @@
 
   security.pam.services.swaylock = { };
 
-  environment.systemPackages = with pkgs; [
-    xdg-user-dirs
-    brightnessctl
-    wl-clipboard
-  ];
-
   programs = {
     niri = {
       enable = true;

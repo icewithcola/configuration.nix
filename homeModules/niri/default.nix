@@ -1,12 +1,26 @@
 # 感谢
 # https://github.com/linuxmobile/kaku/blob/niri/home/software/wayland/niri/
 # https://github.com/AsterisMono/flake/blob/main/homeModules/niri/package.nix
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   imports = [
     ./binds.nix
     ./settings.nix
     ./rules.nix
+  ];
+
+  home.packages = with pkgs; [
+    libnotify
+    wl-clipboard
+    brightnessctl
+    swaybg
+    xwayland-satellite
+    wl-clip-persist
+    mako
+    activate-linux
+    nautilus
+    nautilus-open-any-terminal
+    xdg-user-dirs
   ];
 
   systemd.user.services =
