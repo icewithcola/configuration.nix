@@ -17,9 +17,15 @@
     loader = {
       grub = {
         enable = true;
-        devices = [ "/dev/disk/by-uuid/1674-4CE3" ];
+        efiSupport = true;
+        device = "nodev";
+        memtest86.enable = true;
       };
-      efi.canTouchEfiVariables = true;
+      efi = {
+        efiSysMountPoint = "/boot/efi";
+        canTouchEfiVariables = true;
+      };
+      
     };
   };
 
