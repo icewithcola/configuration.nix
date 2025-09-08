@@ -1,16 +1,33 @@
 {
   pkgs,
   host,
+  config,
   ...
 }:
+let 
+    inherit (lib) mkOption types;
+in 
 {
-  imports = [
+  options.kagura.home = {
+    targets = mkOption {
+      type = types.enum ["headless", "gui"];
+      default = ["gui"];
+      description = "List of home targets to install. Values = ['headless', 'gui']";
+    };
+
+    targets.gui.dev = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Usage of this computer, if true, enable some development packages";
+    };
+  };
+
+  imports = ([
     ./home-file.nix
     ./packages.nix
-
-    ./terminal
     ./kitty
-  ];
+    ./terminal
+  ]) ++ (lib.mkIf config.kagura.home.targets == "gui" [  ]);
 
   programs.home-manager.enable = true;
 

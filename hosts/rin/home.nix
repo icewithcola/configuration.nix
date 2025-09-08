@@ -7,11 +7,9 @@ in
     ../../home
   ])
   ++ (enableHomeModule [
-    "niri"
-    "waybar"
-    "fuzzel"
+
   ]);
 
-  config.config.kagura.home.targets = "gui";
-  config.kagura.home.targets.gui.dev = true;
+  config.config.kagura.home.targets = "tui";
+  config.kagura.home.targets.gui.dev = false;
 }

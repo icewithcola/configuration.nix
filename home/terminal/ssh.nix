@@ -29,7 +29,7 @@
       };
       "nas.dorm.lan" = {
         host = "nas.dorm.lan";
-        hostname = "192.168.10.149";
+        hostname = "192.168.10.150";
         port = 22;
         user = "root";
       };
