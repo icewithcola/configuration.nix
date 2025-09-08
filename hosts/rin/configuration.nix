@@ -17,7 +17,7 @@
     loader = {
       grub = {
         enable = true;
-        devices = [ "/dev/disk/by-label/NIX-EFI" ];
+        devices = [ "/dev/disk/by-uuid/1674-4CE3" ];
       };
       efi.canTouchEfiVariables = true;
     };
