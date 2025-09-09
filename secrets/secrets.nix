@@ -11,4 +11,5 @@ in
 {
   "frp-token.age".publicKeys = users;
   "github-token.age".publicKeys = users;
+  "ddns-token.age".publicKeys = users;
 }
