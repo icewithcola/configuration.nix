@@ -49,21 +49,21 @@ in
         script = ''
           set -eu
           
-          ZONE=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .ZONE)
-          RECORD_ID=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .RECORD_ID)
-          API_KEY=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .API_KEY)
+          ZONE=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .ZONE)
+          RECORD_ID=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .RECORD_ID)
+          API_KEY=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .API_KEY)
 
-          myip=$(${lib.getExe' pkgs.iproute2 "ip"} addr show ${cfg.interface} | grep "inet6 2" | cut -f 6 -d ' ' | cut -f 1 -d '/')
+          myip=$(${lib.getExe' pkgs.iproute2 "ip"} -6 -j addr show dev ${cfg.interface} scope global primary -tentative up | ${lib.getExe pkgs.jq} -r '(.[0] // empty).addr_info | sort_by(.prefixlen) | map(.local // empty)[0] // empty')
           ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/''${ZONE}/dns_records/''${RECORD_ID} \
             -X PUT \
             -H "Authorization: Bearer ''${API_KEY}" \
-            -H "Content-Type: application/json" 
+            -H "Content-Type: application/json" \
             -d "{
               \"type\": \"AAAA\",
               \"ttl\": 120,
               \"name\": \"${domain}\",
               \"content\": \"''${myip}\",
-              \"proxied\": false,
+              \"proxied\": false
             }"
         '';
         serviceConfig = {

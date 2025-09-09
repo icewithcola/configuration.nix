@@ -27,6 +27,6 @@ in
     enable = true;
     host = "rin";
     secretFile = config.age.secrets.ddns-token.path;
-    interface = "enp7s0f1";
+    interface = "enp7s0f0";
   };
 }
