@@ -20,7 +20,6 @@ in
   ])
   ++ (enableServices [
     "sshd"
-    "virt"
     "ddns"
   ]);
 
