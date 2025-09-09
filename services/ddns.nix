@@ -48,7 +48,11 @@ in
       services."kagura-ddns" = {
         script = ''
           set -eu
-          source ${secretFile}
+          
+          ZONE=$(cat ${secretFile} | ${pkgs.jq} .ZONE)
+          RECORD_ID=$(cat ${secretFile} | ${pkgs.jq} .RECORD_ID)
+          API_KEY=$(cat ${secretFile} | ${pkgs.jq} .API_KEY)
+
           myip=$(${lib.getExe' pkgs.iproute2 "ip"} addr show ${interface} | grep "inet6 2" | cut -f 6 -d ' ' | cut -f 1 -d '/')
           ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/$\{ZONE\}/dns_records/$\{RECORD_ID\} \
             -X PUT \
