@@ -19,6 +19,7 @@
         enable = true;
         efiSupport = true;
         device = "nodev";
+        useOSProber = true;
         memtest86.enable = true;
       };
       efi = {
