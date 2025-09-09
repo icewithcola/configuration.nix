@@ -39,39 +39,40 @@ in
     };
   };
 
-  systemd =
+  config.systemd =
     let
-      domain = host + config.kagura.ddns.suffix;
-      interface = config.kagura.ddns.interface;
+      cfg = config.kagura.ddns;
+      domain = cfg.host + cfg.suffix;
     in
-    lib.mkIf config.kagura.ddns.enable {
+    lib.mkIf cfg.enable {
       services."kagura-ddns" = {
         script = ''
           set -eu
           
-          ZONE=$(cat ${secretFile} | ${pkgs.jq} .ZONE)
-          RECORD_ID=$(cat ${secretFile} | ${pkgs.jq} .RECORD_ID)
-          API_KEY=$(cat ${secretFile} | ${pkgs.jq} .API_KEY)
+          ZONE=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .ZONE)
+          RECORD_ID=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .RECORD_ID)
+          API_KEY=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} .API_KEY)
 
-          myip=$(${lib.getExe' pkgs.iproute2 "ip"} addr show ${interface} | grep "inet6 2" | cut -f 6 -d ' ' | cut -f 1 -d '/')
-          ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/$\{ZONE\}/dns_records/$\{RECORD_ID\} \
+          myip=$(${lib.getExe' pkgs.iproute2 "ip"} addr show ${cfg.interface} | grep "inet6 2" | cut -f 6 -d ' ' | cut -f 1 -d '/')
+          ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/''${ZONE}/dns_records/''${RECORD_ID} \
             -X PUT \
-            -H "Authorization: Bearer $\{API_KEY\}" \
+            -H "Authorization: Bearer ''${API_KEY}" \
             -H "Content-Type: application/json" 
             -d "{
               \"type\": \"AAAA\",
               \"ttl\": 120,
-              \"name\": \"$\{domain\}\",
-              \"content\": \"$\{myip\}\",
+              \"name\": \"${domain}\",
+              \"content\": \"''${myip}\",
               \"proxied\": false,
             }"
         '';
         serviceConfig = {
           Type = "oneshot";
+          User = "root";
         };
       };
 
-      systemd.timers."kagura-ddns" = {
+      timers."kagura-ddns" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
           OnBootSec = "5min";
