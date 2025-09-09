@@ -1,6 +1,7 @@
 {
   lib,
   inputs,
+  config,
   ...
 }:
 let
@@ -20,5 +21,13 @@ in
   ++ (enableServices [
     "sshd"
     "virt"
+    "ddns"
   ]);
+
+  kagura.ddns = {
+    enable = true;
+    host = "rin";
+    secretFile = config.age.secrets.ddns-token.path;
+    interface = "enp7s0f1";
+  };
 }
