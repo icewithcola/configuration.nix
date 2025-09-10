@@ -48,7 +48,7 @@ in
       services."kagura-ddns" = {
         script = ''
           set -eu
-          
+
           ZONE=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .ZONE)
           RECORD_ID=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .RECORD_ID)
           API_KEY=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .API_KEY)

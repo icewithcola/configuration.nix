@@ -21,6 +21,7 @@ in
   ++ (enableServices [
     "sshd"
     "ddns"
+    "dn42"
   ]);
 
   kagura.ddns = {
