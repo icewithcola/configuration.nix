@@ -110,7 +110,7 @@ in
           #               Variable header                #
           ################################################
 
-          define OWNAS = ${cfg.asn};
+          define OWNAS = ${builtins.toString cfg.asn};
           define OWNIP = ${cfg.routerIp};
           define OWNNET = ${cfg.subnet};
           define OWNNETSET = [${cfg.subnet}+];
