@@ -7,11 +7,6 @@ let
 in
 {
   options = {
-    ip6range = mkOption {
-      type = types.str;
-      description = "IPv6 range";
-    };
-
     wireguard = {
       PublicKey = mkOption {
         type = types.str;
