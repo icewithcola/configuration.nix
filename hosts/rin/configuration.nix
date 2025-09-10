@@ -14,6 +14,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
+    kernelParams = [ "nomodeset" ];
     loader = {
       grub = {
         enable = true;
