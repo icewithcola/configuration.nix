@@ -64,6 +64,7 @@
 
             ./common.nix
             ./secrets
+            ./nixosOptions
 
             ./hosts/${host}
           ])
@@ -95,5 +96,8 @@
       );
 
       formatter.${system} = pkgs.nixfmt-tree;
+
+      # For MacOS for work
+      formatter."aarch64-darwin" = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
     };
 }
