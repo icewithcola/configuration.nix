@@ -2,6 +2,7 @@
 {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "github.com" = {
         host = "github.com";
@@ -33,11 +34,17 @@
         port = 22;
         user = "root";
       };
-      "v6.home.lan" = {
-        host = "v6.home.lan";
+      "home.kagura.lolicon.cyou" = {
+        host = "home.kagura.lolicon.cyou";
         hostname = "home.kagura.lolicon.cyou";
         port = 22;
         user = "root";
+      };
+      "rin.home.lolicon.cyou" = {
+        host = "rin.home.lolicon.cyou";
+        hostname = "rin.home.lolicon.cyou";
+        port = 22;
+        user = "kagura";
       };
     };
   };
