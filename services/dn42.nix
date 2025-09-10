@@ -74,9 +74,10 @@ in
     systemd.network =
       let
         dummy = "dn42-dummy";
+        merge = lib.foldl (a: b: lib.recursiveUpdate a b) { };
       in
       lib.recursiveUpdate
-        (lib.zipAttrsWith (_: lib.merge) (lib.mapAttrsToList generateNetworkdConfig cfg.peers))
+        (lib.zipAttrsWith (_: merge) (lib.mapAttrsToList generateNetworkdConfig cfg.peers))
         {
           enable = true;
           wait-online.enable = !config.networking.networkmanager.enable;
