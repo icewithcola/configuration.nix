@@ -16,10 +16,12 @@ in
       EndPoint = {
         HostName = mkOption {
           type = types.str;
+          example = "some.ddns.net";
           description = "WireGuard endpoint host name";
         };
         Port = mkOption {
-          type = types.int;
+          type = types.str;
+          example = "22323";
           description = "WireGuard endpoint port";
         };
         MyIP = mkOption {

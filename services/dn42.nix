@@ -27,19 +27,19 @@ let
           ListenPort = getPort asn;
           PrivateKeyFile = cfg.wireguard.PrivateKey;
         };
-        wireguardPeers = lib.lists.forEach peers (peer: [
+        wireguardPeers = [
           {
-            PublicKey = peer.wireguard.PublicKey;
-            Endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
+            PublicKey = peers.wireguard.PublicKey;
+            Endpoint = "${peers.wireguard.EndPoint.HostName}:${peers.wireguard.EndPoint.Port}";
             AllowedIPs = [
               "fd00::/8"
               "fe80::/64"
-              "${peer.wireguard.EndPoint.MyIP}"
-              "${peer.wireguard.EndPoint.PeerIP}"
+              "${peers.wireguard.EndPoint.MyIP}"
+              "${peers.wireguard.EndPoint.PeerIP}"
             ];
             RouteTable = "off";
           }
-        ]);
+        ];
       };
       networks."${lib.toLower networkdEntry}" = {
         matchConfig = {
@@ -55,8 +55,7 @@ let
           RequiredForOnline = "no";
         };
         address = [
-          getLocalAddr
-          asn
+          "${getLocalAddr asn}"
         ];
       };
     };
@@ -74,10 +73,9 @@ in
     systemd.network =
       let
         dummy = "dn42-dummy";
-        merge = lib.foldl (a: b: lib.recursiveUpdate a b) { };
       in
       lib.recursiveUpdate
-        (lib.zipAttrsWith (_: merge) (lib.mapAttrsToList generateNetworkdConfig cfg.peers))
+        (lib.foldr lib.recursiveUpdate { } (lib.mapAttrsToList generateNetworkdConfig cfg.peers))
         {
           enable = true;
           wait-online.enable = !config.networking.networkmanager.enable;
@@ -203,10 +201,7 @@ in
             lib.mapAttrsToList (asn: values: ''
               protocol bgp dn42_${lib.toLower asn} from dnpeers {
                   neighbor ${lib.head (lib.splitString "/" values.wireguard.EndPoint.PeerIP)} as ${asn};
-                  ${lib.optionalString (
-                    (lib.hasPrefix "fe80::" values.wireguard.EndPoint.PeerIP)
-                    && (lib.hasSuffix "/64" values.wireguard.EndPoint.PeerIP)
-                  ) "interface \"${getIfName asn}\";"}
+                  interface "${getIfName asn}";
               }
             '') cfg.peers
           )}

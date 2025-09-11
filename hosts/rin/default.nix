@@ -33,7 +33,7 @@ in
   kagura.dn42 = {
     enable = true;
     asn = 4242422323;
-    routerIp = fdcb:dded:cbcc::2;
+    routerIp = "fdcb:dded:cbcc::2";
     routerId = "192.168.10.166";
     subnet = "fdcb:dded:cbcc::/48";
 
