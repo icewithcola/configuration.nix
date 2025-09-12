@@ -226,5 +226,9 @@ in
       enable = true;
       useNetworkd = true;
     };
+
+    environment.systemPackages = [
+      pkgs.wireguard-tools
+    ];
   };
 }
