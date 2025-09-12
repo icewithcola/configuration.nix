@@ -25,13 +25,11 @@ let
         ips = [
           "${getLocalAddr asn}"
         ];
-        preSetup = [
-          "ip addr add ${peer.wireguard.MyIP} peer ${peer.wireguard.PeerIP} dev ${ifname}"
-          "sysctl -w net.ipv6.conf.${ifname}.autoconf=0"
+        postSetup = [
+          "ip addr add ${peer.wireguard.EndPoint.MyIP} peer ${peer.wireguard.EndPoint.PeerIP} dev ${ifname}"
         ];
-        table = "off";
-
-        pees."${name}" = {
+        
+        peers = [{
           name = "${name}";
           publicKey = peer.wireguard.PublicKey;
           endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
@@ -41,7 +39,7 @@ let
             "${peer.wireguard.EndPoint.MyIP}"
             "${peer.wireguard.EndPoint.PeerIP}"
           ];
-        };
+        }];
       };
     };
   roaUrl = "https://dn42.burble.com/roa/dn42_roa_bird2_6.conf";
