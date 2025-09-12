@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.kagura.dn42;
-  getIfName = asn: "dn42-${asn}";
+  getIfName = name: "dn42-${name}";
   getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
   getLocalAddr = # Wireguard local loopback
     asn: "fe80:4514:${lib.removePrefix "424242" (builtins.toString asn)}::1/64";
@@ -16,7 +16,7 @@ let
     let
       asn = builtins.toString peer.asn;
       networkdEntry = "peer-${name}";
-      ifname = getIfName asn;
+      ifname = getIfName name;
     in
     {
       netdevs."${networkdEntry}" = {
@@ -200,12 +200,12 @@ in
           }
 
           ${lib.concatLines (
-            lib.mapAttrsToList (peer: ''
-              protocol bgp dn42_${builtins.toString peer.asn} from dnpeers {
+            lib.mapAttrsToList (name: peer: ''
+              protocol bgp dn42_${name} from dnpeers {
                   neighbor ${lib.head (lib.splitString "/" peer.wireguard.EndPoint.PeerIP)} as ${builtins.toString peer.asn};
-                  interface "${getIfName (builtins.toString peer.asn)}";
+                  interface "${getIfName name}";
               }
-            '') builtins.attrValues cfg.peers
+            '') cfg.peers
           )}
         '';
       };
