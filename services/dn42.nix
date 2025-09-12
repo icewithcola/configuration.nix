@@ -11,53 +11,37 @@ let
   getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
   getLocalAddr = # Wireguard local loopback
     asn: "fe80:4514:${lib.removePrefix "424242" (builtins.toString asn)}::1/64";
-  generateNetworkdConfig =
+  generateWireguardConfig =
     name: peer:
     let
       asn = builtins.toString peer.asn;
-      networkdEntry = "peer-${name}";
       ifname = getIfName name;
     in
     {
-      netdevs."${networkdEntry}" = {
-        netdevConfig = {
-          Name = ifname;
-          Kind = "wireguard";
-        };
-        wireguardConfig = {
-          ListenPort = getPort asn;
-          PrivateKeyFile = cfg.wireguard.PrivateKey;
-        };
-        wireguardPeers = [
-          {
-            PublicKey = peer.wireguard.PublicKey;
-            Endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
-            AllowedIPs = [
-              "fd00::/8"
-              "fe80::/10"
-              "${peer.wireguard.EndPoint.MyIP}"
-              "${peer.wireguard.EndPoint.PeerIP}"
-            ];
-            RouteTable = "off";
-          }
-        ];
-      };
-      networks."${networkdEntry}" = {
-        matchConfig = {
-          Name = ifname;
-        };
-        networkConfig = {
-          Description = "Wireguard tunnel to DN42 peer AS${asn}";
-          DHCP = "no";
-          IPv6AcceptRA = false;
-          KeepConfiguration = "yes";
-        };
-        linkConfig = {
-          RequiredForOnline = "no";
-        };
-        address = [
+      interfaces."${ifname}" = {
+        type = "wireguard";
+        privateKeyFile = cfg.wireguard.PrivateKey;
+        listenPort = getPort cfg.asn;
+        ips = [
           "${getLocalAddr asn}"
         ];
+        preSetup = [
+          "ip addr add ${peer.wireguard.MyIP} peer ${peer.wireguard.PeerIP} dev ${ifname}"
+          "sysctl -w net.ipv6.conf.${ifname}.autoconf=0"
+        ];
+        table = "off";
+
+        pees."${name}" = {
+          name = "${name}";
+          publicKey = peer.wireguard.PublicKey;
+          endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
+          allowedIPs = [
+            "fd00::/8"
+            "fe80::/10"
+            "${peer.wireguard.EndPoint.MyIP}"
+            "${peer.wireguard.EndPoint.PeerIP}"
+          ];
+        };
       };
     };
   roaUrl = "https://dn42.burble.com/roa/dn42_roa_bird2_6.conf";
@@ -71,32 +55,32 @@ in
       "net.ipv4.conf.default.rp_filter" = 0;
       "net.ipv4.conf.all.rp_filter" = 0;
     };
-    systemd.network =
+    networking.wireguard =
       let
-        dummy = "dn42-dummy";
-        peersConfigList = lib.attrsets.mapAttrsToList generateNetworkdConfig cfg.peers;
-        peersConfig = builtins.foldl' lib.recursiveUpdate {} peersConfigList;
+        peersConfigList = lib.attrsets.mapAttrsToList generateWireguardConfig cfg.peers;
+        peersConfig = builtins.foldl' lib.recursiveUpdate { } peersConfigList;
       in
-        lib.recursiveUpdate peersConfig
-        {
-          enable = true;
-          wait-online.enable = !config.networking.networkmanager.enable;
+      lib.recursiveUpdate peersConfig {
+        enable = true;
+      };
 
-          netdevs."${dummy}" = {
-            netdevConfig = {
-              Name = dummy;
-              Kind = "dummy";
-            };
-          };
-          networks."dn42" = {
-            matchConfig = {
-              Name = dummy;
-            };
-            networkConfig = {
-              Address = [ cfg.routerIp ];
-            };
-          };
-        };
+    networking.networkmanager.ensureProfiles.profiles."dn42-dummy" = {
+      connection = {
+        autoconnect = "true";
+        id = "dn42-dummy";
+        interface-name = "dn42-dummy";
+        type = "dummy";
+      };
+      dummy = { };
+      ipv4 = {
+        method = "disabled";
+      };
+      ipv6 = {
+        addr-gen-mode = "default";
+        address1 = cfg.subnet;
+        method = "manual";
+      };
+    };
 
     services.bird =
       let
@@ -220,11 +204,6 @@ in
           };
         };
       };
-    };
-
-    networking.wireguard = {
-      enable = true;
-      useNetworkd = true;
     };
 
     environment.systemPackages = [
