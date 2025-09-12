@@ -10,7 +10,7 @@ let
   getIfName = name: "dn42-${name}";
   getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
   getLocalAddr = # Wireguard local loopback
-    asn: "fe80:4514:${lib.removePrefix "424242" (builtins.toString asn)}::1/64";
+    asn: "fe80::${lib.removePrefix "424242" (builtins.toString asn)}/64"; # fe80::833/64
   generateWireguardConfig =
     name: peer:
     let
@@ -21,7 +21,7 @@ let
       interfaces."${ifname}" = {
         type = "wireguard";
         privateKeyFile = cfg.wireguard.PrivateKey;
-        listenPort = getPort cfg.asn;
+        listenPort = getPort peer.asn;
         ips = [
           "${getLocalAddr asn}"
         ];
