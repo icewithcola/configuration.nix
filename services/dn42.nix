@@ -8,9 +8,9 @@
 let
   cfg = config.kagura.dn42;
   getIfName = asn: "dn42-${asn}";
-  getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn));
-  getLocalAddr =
-    asn: "fd11:4514:1919:810:${lib.removePrefix "424242" (builtins.toString asn)}::1/128";
+  getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
+  getLocalAddr = # Wireguard local loopback
+    asn: "fe80:4514:${lib.removePrefix "424242" (builtins.toString asn)}::1/64";
   generateNetworkdConfig =
     asn: peers:
     let
@@ -33,7 +33,7 @@ let
             Endpoint = "${peers.wireguard.EndPoint.HostName}:${peers.wireguard.EndPoint.Port}";
             AllowedIPs = [
               "fd00::/8"
-              "fe80::/64"
+              "fe80::/10"
               "${peers.wireguard.EndPoint.MyIP}"
               "${peers.wireguard.EndPoint.PeerIP}"
             ];
