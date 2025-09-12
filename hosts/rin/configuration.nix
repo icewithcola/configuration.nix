@@ -16,18 +16,11 @@
     kernelPackages = pkgs.linuxPackages;
     kernelParams = [ "nomodeset" ];
     loader = {
-      grub = {
-        enable = true;
-        efiSupport = true;
-        device = "nodev";
-        useOSProber = true;
-        memtest86.enable = true;
-      };
+      systemd-boot.enable = true;
       efi = {
         efiSysMountPoint = "/boot";
         canTouchEfiVariables = true;
       };
-
     };
   };
 
