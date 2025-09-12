@@ -33,7 +33,7 @@ in
   kagura.dn42 = {
     enable = true;
     asn = 4242422323;
-    routerIp = "fdcb:dded:cbcc::2";
+    routerIp = "fdcb:dded:cbcc::1";
     routerId = "192.168.10.166";
     subnet = "fdcb:dded:cbcc::/48";
 
@@ -47,8 +47,8 @@ in
           EndPoint = {
             HostName = "ivy.requiem.garden";
             Port = "22323";
-            MyIP = "fe80:759:2323::1/64";
-            PeerIP = "fe80:759:0833::1/64";
+            MyIP = "fdec:a476:db6e:ffff::2323:1/127";
+            PeerIP = "fdec:a476:db6e:ffff::2323:0/127";
           };
         };
       };

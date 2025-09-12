@@ -9,12 +9,9 @@ let
   cfg = config.kagura.dn42;
   getIfName = name: "dn42-${name}";
   getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
-  getLocalAddr = # Wireguard local loopback
-    asn: "fe80::${lib.removePrefix "424242" (builtins.toString asn)}/64"; # fe80::833/64
   generateWireguardConfig =
     name: peer:
     let
-      asn = builtins.toString peer.asn;
       ifname = getIfName name;
     in
     {
@@ -23,10 +20,7 @@ let
         privateKeyFile = cfg.wireguard.PrivateKey;
         listenPort = getPort peer.asn;
         ips = [
-          "${getLocalAddr asn}"
-        ];
-        postSetup = [
-          "ip addr add ${peer.wireguard.EndPoint.MyIP} peer ${peer.wireguard.EndPoint.PeerIP} dev ${ifname}"
+          "${peer.wireguard.EndPoint.MyIP}"
         ];
         
         peers = [{
@@ -62,20 +56,23 @@ in
         enable = true;
       };
 
-    networking.networkmanager.ensureProfiles.profiles."dn42-dummy" = {
+    networking.networkmanager.ensureProfiles.profiles."dn42-dummy" =
+    let
+      subnet = lib.last (lib.splitString "/" cfg.subnet);
+    in
+    {
       connection = {
         autoconnect = "true";
         id = "dn42-dummy";
         interface-name = "dn42-dummy";
         type = "dummy";
       };
-      dummy = { };
       ipv4 = {
         method = "disabled";
       };
       ipv6 = {
         addr-gen-mode = "default";
-        address1 = cfg.subnet;
+        address1 = "${cfg.routerIp}/${subnet}";
         method = "manual";
       };
     };
