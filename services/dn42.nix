@@ -12,13 +12,14 @@ let
   getLocalAddr = # Wireguard local loopback
     asn: "fe80:4514:${lib.removePrefix "424242" (builtins.toString asn)}::1/64";
   generateNetworkdConfig =
-    asn: peers:
+    name: peer:
     let
-      networkdEntry = "peer-${asn}";
+      asn = builtins.toString peer.asn;
+      networkdEntry = "peer-${name}";
       ifname = getIfName asn;
     in
     {
-      netdevs."${lib.toLower networkdEntry}" = {
+      netdevs."${networkdEntry}" = {
         netdevConfig = {
           Name = ifname;
           Kind = "wireguard";
@@ -29,19 +30,19 @@ let
         };
         wireguardPeers = [
           {
-            PublicKey = peers.wireguard.PublicKey;
-            Endpoint = "${peers.wireguard.EndPoint.HostName}:${peers.wireguard.EndPoint.Port}";
+            PublicKey = peer.wireguard.PublicKey;
+            Endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
             AllowedIPs = [
               "fd00::/8"
               "fe80::/10"
-              "${peers.wireguard.EndPoint.MyIP}"
-              "${peers.wireguard.EndPoint.PeerIP}"
+              "${peer.wireguard.EndPoint.MyIP}"
+              "${peer.wireguard.EndPoint.PeerIP}"
             ];
             RouteTable = "off";
           }
         ];
       };
-      networks."${lib.toLower networkdEntry}" = {
+      networks."${networkdEntry}" = {
         matchConfig = {
           Name = ifname;
         };
@@ -73,9 +74,10 @@ in
     systemd.network =
       let
         dummy = "dn42-dummy";
+        peersConfigList = lib.attrsets.mapAttrsToList generateNetworkdConfig cfg.peers;
+        peersConfig = builtins.foldl' lib.recursiveUpdate {} peersConfigList;
       in
-      lib.recursiveUpdate
-        (lib.foldr lib.recursiveUpdate { } (lib.mapAttrsToList generateNetworkdConfig cfg.peers))
+        lib.recursiveUpdate peersConfig
         {
           enable = true;
           wait-online.enable = !config.networking.networkmanager.enable;
@@ -198,12 +200,12 @@ in
           }
 
           ${lib.concatLines (
-            lib.mapAttrsToList (asn: values: ''
-              protocol bgp dn42_${lib.toLower asn} from dnpeers {
-                  neighbor ${lib.head (lib.splitString "/" values.wireguard.EndPoint.PeerIP)} as ${asn};
-                  interface "${getIfName asn}";
+            lib.mapAttrsToList (peer: ''
+              protocol bgp dn42_${builtins.toString peer.asn} from dnpeers {
+                  neighbor ${lib.head (lib.splitString "/" peer.wireguard.EndPoint.PeerIP)} as ${builtins.toString peer.asn};
+                  interface "${getIfName (builtins.toString peer.asn)}";
               }
-            '') cfg.peers
+            '') builtins.attrValues cfg.peers
           )}
         '';
       };

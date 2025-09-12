@@ -40,7 +40,8 @@ in
     wireguard.PrivateKey = config.age.secrets.wireguard-dn42.path;
 
     peers = {
-      "4242420833" = {
+      "noa" = {
+        asn = 4242420833;
         wireguard = {
           PublicKey = "k1bNDu2fBFKCmG+YSAYuv4GGx8OM/xZycv8xaqD7uwY=";
           EndPoint = {
@@ -52,7 +53,8 @@ in
         };
       };
 
-      "4242420994" = {
+      "cryolitia" = {
+        asn = 4242420994;
         wireguard = {
           PublicKey = "IGgMsGR/mzAMYj6VNivzDyk+x4iJf5HcXMACmX846XU=";
           EndPoint = {

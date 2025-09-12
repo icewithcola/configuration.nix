@@ -7,10 +7,16 @@ let
 in
 {
   options = {
+    asn = mkOption {
+      type = types.int;
+      example = 4242420833;
+      description = "ASN number for this peer";
+    };
+
     wireguard = {
       PublicKey = mkOption {
         type = types.str;
-        description = "WireGuard public key";
+        description = "WireGuard public key for this peer";
       };
 
       EndPoint = {
