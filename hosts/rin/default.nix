@@ -30,8 +30,9 @@ in
     secretFile = config.age.secrets.ddns-token.path;
     interface = "enp7s0f0";
   };
+  
   kagura.dn42 = {
-    enable = true;
+    enable = false;
     asn = 4242422323;
     routerIp = "fdcb:dded:cbcc::1";
     routerId = "192.168.10.166";
