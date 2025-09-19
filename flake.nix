@@ -14,8 +14,13 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     kagura-pkgs = {
-      url = "github:icewithcola/nix-packages";
+      url = "github:icewithcola/nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -28,6 +33,7 @@
       home-manager-nixos,
       niri,
       agenix,
+      vscode-server,
       ...
     }@inputs:
     let
@@ -61,6 +67,7 @@
             })
 
             agenix.nixosModules.default
+            vscode-server.nixosModules.default
 
             ./common.nix
             ./secrets
