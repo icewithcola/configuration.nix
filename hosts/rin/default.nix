@@ -21,8 +21,12 @@ in
   ++ (enableServices [
     "sshd"
     "ddns"
-    "dn42"
+    "docker"
   ]);
+
+  kagura = {
+    rootFileSystem = "ext4";
+  };
 
   kagura.ddns = {
     enable = true;

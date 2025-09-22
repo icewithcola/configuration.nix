@@ -1,6 +1,7 @@
 {
   lib,
   inputs,
+  config,
   ...
 }:
 let
@@ -26,6 +27,11 @@ in
   ++ (enableServices [
     "bluetooth"
     "sound"
-    "virt"
+    "docker"
+    "virtManager"
   ]);
+
+  kagura = {
+    rootFileSystem = "btrfs";
+  };
 }

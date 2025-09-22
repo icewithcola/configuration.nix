@@ -1,16 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
-
   virtualisation.docker = {
     enable = true;
     package = pkgs.docker;
-    storageDriver = "btrfs";
+    storageDriver = config.kagura.rootFileSystem;
     rootless = {
       enable = true;
       setSocketVariable = true;
     };
   };
-
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
 }
