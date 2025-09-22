@@ -28,80 +28,104 @@
       "net.ipv6.conf.all.accept_ra" = 0;
       "net.ipv6.conf.all.autoconf" = 0;
       "net.ipv6.conf.all.use_tempaddr" = 0;
+
+      "net.ipv6.conf.enp1s0.accept_ra" = 2;
+      "net.ipv6.conf.enp1s0.autoconf" = 1;
     };
   };
 
-  # https://github.com/ghostbuster91/blogposts/blob/a2374f0039f8cdf4faddeaaa0347661ffc2ec7cf/router2023-part2/main.md
-  systemd.network = {
-    wait-online.anyInterface = true;
-    netdevs = {
-      "20-br-lan" = {
-        netdevConfig = {
-          Kind = "bridge";
-          Name = "br-lan";
-        };
-      };
-    };
-
-    networks = {
-      "10-enp1s0" = {
-        matchConfig.Name = "enp1s0";
-        networkConfig = {
-          DHCP = "yes";
-          DNSOverTLS = false;
-          DNSSEC = false;
-          IPv6PrivacyExtensions = false;
-          IPForward = true;
-        };
-        linkConfig.RequiredForOnline = "routable";
-      };
-      "30-lan" = {
-        matchConfig.Name = "enp2s0";
-        linkConfig.RequiredForOnline = "enslaved";
-        networkConfig = {
-          ConfigureWithoutCarrier = true;
-        };
-      };
-      "40-br-lan" = {
-        matchConfig.Name = "br-lan";
-        bridgeConfig = { };
-        address = [
-          "192.168.114.1/24"
-        ];
-        networkConfig = {
-          ConfigureWithoutCarrier = true;
-        };
-      };
-    };
-  };
   networking = {
     hostName = "solar";
     useDHCP = false;
+    nameserver = [
+      "233.5.5.5"
+      "1.1.1.1"
+    ];
+
+    vlans = {
+      wan = {
+        id = 10;
+        interface = "enp1s0";
+      };
+      lan = {
+        id = 20;
+        interface = "enp2s0";
+      };
+    };
+
+    interfaces = {
+      enp1s0.useDHCP = true;
+      enp2s0.useDHCP = false;
+
+      # Handle the VLANs
+      wan.useDHCP = false;
+      lan = {
+        ipv4.addresses = [
+          {
+            address = "192.168.114.1";
+            prefixLength = 24;
+          }
+        ];
+      };
+    };
 
     nftables = {
       enable = true;
       ruleset = ''
         table inet filter {
-          chain input {
-            type filter hook input priority 0; policy drop;
-
-            iifname { "br-lan" } accept comment "Allow local network to access the router"
-            iifname "enp1s0" ct state { established, related } accept comment "Allow established traffic"
-            iifname "enp1s0" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "Allow select ICMP"
-            iifname "enp1s0" counter drop comment "Drop all other unsolicited traffic from enp1s0"
-            iifname "lo" accept comment "Accept everything from loopback interface"
+          # enable flow offloading for better throughput
+          flowtable f {
+            hook ingress priority 0;
+            devices = { enp1s0, lan };
           }
+
+          chain output {
+            type filter hook output priority 100; policy accept;
+          }
+
+          chain input {
+            type filter hook input priority filter; policy drop;
+
+            # Allow trusted networks to access the router
+            iifname {
+              "lan",
+            } counter accept
+
+            # Allow returning traffic from enp1s0 and drop everthing else
+            iifname "enp1s0" ct state { established, related } counter accept
+            iifname "enp1s0" drop
+          }
+
           chain forward {
             type filter hook forward priority filter; policy drop;
 
-            iifname { "br-lan" } oifname { "enp1s0" } accept comment "Allow trusted LAN to enp1s0"
-            iifname { "enp1s0" } oifname { "br-lan" } ct state { established, related } accept comment "Allow established back to LANs"
+            # enable flow offloading for better throughput
+            ip protocol { tcp, udp } flow offload @f
+
+            # Allow trusted network WAN access
+            iifname {
+                    "lan",
+            } oifname {
+                    "enp1s0",
+            } counter accept comment "Allow trusted LAN to WAN"
+
+            # Allow established WAN to return
+            iifname {
+                    "enp1s0",
+            } oifname {
+                    "lan",
+            } ct state established,related counter accept comment "Allow established back to LANs"
           }
         }
 
         table ip nat {
+          chain prerouting {
+            type nat hook prerouting priority filter; policy accept;
+          }
+
+          # Setup NAT masquerading on the enp1s0 interface
           chain postrouting {
-            type nat hook postrouting priority 100; policy accept;
+            type nat hook postrouting priority filter; policy accept;
             oifname "enp1s0" masquerade
           }
         }
