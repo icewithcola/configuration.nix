@@ -68,6 +68,12 @@ in
             prefixLength = 24;
           }
         ];
+        ipv6.addresses = [
+          {
+            address = "fc12:1145::";
+            prefixLength = 64;
+          }
+        ];
       };
     };
 
@@ -139,6 +145,7 @@ in
       externalInterface = "enp1s0";
       internalInterfaces = [ "br0" ];
       internalIPs = [ "192.168.1.114/24" ];
+      internalIPv6s = [ "fc12:1145::/64"];
     };
 
     firewall.enable = false;
