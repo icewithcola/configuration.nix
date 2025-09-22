@@ -5,6 +5,10 @@
   pkgs-stable,
   ...
 }:
+let
+  thisIP = "192.168.114.1";
+  predictableMac = "1A:2B:3C:4D:14:51";
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -42,14 +46,11 @@
       "1.1.1.1"
     ];
 
-    vlans = {
-      wan = {
-        id = 10;
-        interface = "enp1s0";
-      };
-      lan = {
-        id = 20;
-        interface = "enp2s0";
+    bridges = {
+      br0 = {
+        interfaces = [
+          "enp2s0"
+        ];
       };
     };
 
@@ -58,11 +59,12 @@
       enp2s0.useDHCP = false;
 
       # Handle the VLANs
-      wan.useDHCP = false;
-      lan = {
+      br0 = {
+        useDHCP = false;
+        macAddress = predictableMac;
         ipv4.addresses = [
           {
-            address = "192.168.114.1";
+            address = thisIP;
             prefixLength = 24;
           }
         ];
@@ -70,7 +72,7 @@
     };
 
     nftables = {
-      enable = true;
+      enable = false;
       ruleset = ''
         table inet filter {
           # enable flow offloading for better throughput
@@ -132,19 +134,20 @@
       '';
     };
 
-    nat.enable = false;
+    nat = {
+      enable = true;
+      externalInterface = "enp1s0";
+      internalInterfaces = [ "br0" ];
+      internalIPs = [ "192.168.1.114/24" ];
+    };
+
     firewall.enable = false;
   };
 
   services.dnsmasq = {
     enable = true;
+    alwaysKeepRunning = true;
     settings = {
-      # upstream DNS servers
-      server = [
-        "223.5.5.5"
-        "8.8.8.8"
-        "1.1.1.1"
-      ];
 
       domain-needed = true;
       bogus-priv = true;
@@ -152,16 +155,23 @@
 
       cache-size = 1000;
 
-      dhcp-range = [ "lan,192.168.114.25,192.168.114.254,24h" ];
-      interface = "lan";
-      dhcp-host = "192.168.114.1";
+      dhcp-range = [ "192.168.114.25,192.168.114.254,24h" ];
+      interface = "br0";
+      dhcp-host = "${predictableMac},${thisIP}";
 
       local = "/lan/";
       domain = "lan";
-      expand-hosts = true;
 
+      # DNS
       no-hosts = true;
-      address = "/solar.lan/192.168.114.1";
+      expand-hosts = true;
+      server = [
+        # upstream DNS servers
+        "223.5.5.5"
+        "8.8.8.8"
+        "1.1.1.1"
+      ];
+      address = "/solar.lan/${thisIP}"; # Static dns entry
     };
   };
 
