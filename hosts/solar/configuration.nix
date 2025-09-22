@@ -76,7 +76,7 @@
           # enable flow offloading for better throughput
           flowtable f {
             hook ingress priority 0;
-            devices = { enp1s0, lan };
+            devices = { enp1s0, enp2s0 };
           }
 
           chain output {
@@ -88,7 +88,7 @@
 
             # Allow trusted networks to access the router
             iifname {
-              "lan",
+              "enp2s0",
             } counter accept
 
             # Allow returning traffic from enp1s0 and drop everthing else
@@ -104,7 +104,7 @@
 
             # Allow trusted network WAN access
             iifname {
-                    "lan",
+                    "enp2s0",
             } oifname {
                     "enp1s0",
             } counter accept comment "Allow trusted LAN to WAN"
@@ -113,7 +113,7 @@
             iifname {
                     "enp1s0",
             } oifname {
-                    "lan",
+                    "enp2s0",
             } ct state established,related counter accept comment "Allow established back to LANs"
           }
         }
