@@ -169,6 +169,9 @@ in
       interface = "br0";
       dhcp-host = "${predictableMac},${thisIP}";
 
+      #IPV6
+      enable-ra = true;
+
       local = "/lan/";
       domain = "lan";
 
