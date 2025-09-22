@@ -37,7 +37,7 @@
   networking = {
     hostName = "solar";
     useDHCP = false;
-    nameserver = [
+    nameservers = [
       "233.5.5.5"
       "1.1.1.1"
     ];
@@ -152,8 +152,8 @@
 
       cache-size = 1000;
 
-      dhcp-range = [ "br-lan,192.168.114.25,192.168.114.254,24h" ];
-      interface = "br-lan";
+      dhcp-range = [ "lan,192.168.114.25,192.168.114.254,24h" ];
+      interface = "lan";
       dhcp-host = "192.168.114.1";
 
       local = "/lan/";
