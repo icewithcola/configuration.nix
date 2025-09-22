@@ -44,12 +44,12 @@
     };
 
     networks = {
-      "10-wan" = {
+      "10-enp1s0" = {
         matchConfig.Name = "enp1s0";
         networkConfig = {
-          DHCP = "ipv4";
-          DNSOverTLS = true;
-          DNSSEC = true;
+          DHCP = "yes";
+          DNSOverTLS = false;
+          DNSSEC = false;
           IPv6PrivacyExtensions = false;
           IPForward = true;
         };
@@ -78,29 +78,6 @@
     hostName = "solar";
     useDHCP = false;
 
-    vlans = {
-      wan = {
-        id = 10;
-        interface = "enp1s0";
-      };
-      lan = {
-        id = 20;
-        interface = "enp2s0";
-      };
-    };
-
-    interfaces = {
-      wan.useDHCP = true;
-      lan = {
-        ipv4.addresses = [
-          {
-            address = "192.168.114.1";
-            prefixLength = 24;
-          }
-        ];
-      };
-    };
-
     nftables = {
       enable = true;
       ruleset = ''
@@ -109,23 +86,23 @@
             type filter hook input priority 0; policy drop;
 
             iifname { "br-lan" } accept comment "Allow local network to access the router"
-            iifname "wan" ct state { established, related } accept comment "Allow established traffic"
-            iifname "wan" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "Allow select ICMP"
-            iifname "wan" counter drop comment "Drop all other unsolicited traffic from wan"
+            iifname "enp1s0" ct state { established, related } accept comment "Allow established traffic"
+            iifname "enp1s0" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "Allow select ICMP"
+            iifname "enp1s0" counter drop comment "Drop all other unsolicited traffic from enp1s0"
             iifname "lo" accept comment "Accept everything from loopback interface"
           }
           chain forward {
             type filter hook forward priority filter; policy drop;
 
-            iifname { "br-lan" } oifname { "wan" } accept comment "Allow trusted LAN to WAN"
-            iifname { "wan" } oifname { "br-lan" } ct state { established, related } accept comment "Allow established back to LANs"
+            iifname { "br-lan" } oifname { "enp1s0" } accept comment "Allow trusted LAN to enp1s0"
+            iifname { "enp1s0" } oifname { "br-lan" } ct state { established, related } accept comment "Allow established back to LANs"
           }
         }
 
         table ip nat {
           chain postrouting {
             type nat hook postrouting priority 100; policy accept;
-            oifname "wan" masquerade
+            oifname "enp1s0" masquerade
           }
         }
       '';
