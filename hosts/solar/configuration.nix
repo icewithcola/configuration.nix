@@ -7,6 +7,7 @@
 }:
 let
   thisIP = "192.168.114.1";
+  thisIPv6 = "fc12:1145::1";
   predictableMac = "1A:2B:3C:4D:14:51";
 in
 {
@@ -70,7 +71,7 @@ in
         ];
         ipv6.addresses = [
           {
-            address = "fc12:1145::";
+            address = thisIPv6;
             prefixLength = 64;
           }
         ];
@@ -78,13 +79,15 @@ in
     };
 
     nftables = {
-      enable = false;
+      enable = true;
+      flattenRulesetFile = true;
+      preCheckRuleset = "sed 's/.*devices.*/devices = { lo }/g' -i ruleset.conf";
       ruleset = ''
         table inet filter {
           # enable flow offloading for better throughput
           flowtable f {
             hook ingress priority 0;
-            devices = { enp1s0, enp2s0 };
+            devices = { enp1s0, br0 };
           }
 
           chain output {
@@ -96,7 +99,7 @@ in
 
             # Allow trusted networks to access the router
             iifname {
-              "enp2s0",
+              "br0",
             } counter accept
 
             # Allow returning traffic from enp1s0 and drop everthing else
@@ -112,7 +115,7 @@ in
 
             # Allow trusted network WAN access
             iifname {
-                    "enp2s0",
+                    "br0",
             } oifname {
                     "enp1s0",
             } counter accept comment "Allow trusted LAN to WAN"
@@ -121,7 +124,7 @@ in
             iifname {
                     "enp1s0",
             } oifname {
-                    "enp2s0",
+                    "br0",
             } ct state established,related counter accept comment "Allow established back to LANs"
           }
         }
@@ -144,8 +147,8 @@ in
       enable = true;
       externalInterface = "enp1s0";
       internalInterfaces = [ "br0" ];
-      internalIPs = [ "192.168.1.114/24" ];
-      internalIPv6s = [ "fc12:1145::/64"];
+      internalIPs = [ "${thisIP}/24" ];
+      internalIPv6s = [ "${thisIPv6}/64" ];
     };
 
     firewall.enable = false;
