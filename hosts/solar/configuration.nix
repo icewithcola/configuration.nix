@@ -42,7 +42,7 @@ in
     hostName = "solar";
     useDHCP = false;
     nameservers = [
-      "233.5.5.5"
+      "223.5.5.5"
       "1.1.1.1"
     ];
 
