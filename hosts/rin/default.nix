@@ -21,7 +21,6 @@ in
   ++ (enableServices [
     "sshd"
     "ddns"
-    "docker"
   ]);
 
   kagura = {
