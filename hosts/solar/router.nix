@@ -16,7 +16,6 @@ in
     "net.ipv6.conf.all.forwarding" = true;
 
     "net.ipv6.conf.all.accept_ra" = 2;
-    "net.ipv6.conf.all.autoconf" = 0;
     "net.ipv6.conf.all.use_tempaddr" = 0;
   };
 
@@ -50,57 +49,62 @@ in
       enable = true;
       preCheckRuleset = "sed 's/.*devices.*/devices = { lo }/g' -i ruleset.conf";
       ruleset = ''
-                table inet filter {
-                  # flow offloading
-                  flowtable f {
-                    hook ingress priority 0;
-                    devices = { ${upstream}, ${downstream} };
-                  }
+        table inet filter {
+          # flow offloading
+          flowtable f {
+            hook ingress priority 0;
+            devices = { ${upstream}, ${downstream} };
+          }
 
-                  chain output {
-                    type filter hook output priority 100; policy accept;
-                  }
+          chain output {
+            type filter hook output priority 100; policy accept;
+          }
 
-                  chain input {
-                    type filter hook input priority filter; policy accept;
+          chain input {
+            type filter hook input priority filter; policy accept;
 
-                    # Allow trusted networks to access the router
-                    iifname { "${downstream}", } counter accept
+            # Allow lo
+            iifname lo accept
 
-                    # Allow returning traffic from WAN and drop everthing else
-                    iifname "${upstream}" ct state { established, related } counter accept
+            # Allow trusted networks to access the router
+            iifname "${downstream}" counter accept
 
-                    # Allow icmpv6
-        		        iifname "${upstream}" ip6 nexthdr icmpv6 icmpv6 type { echo-request, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } counter accept
+            # Allow returning traffic from WAN and drop everthing else
+            iifname "${upstream}" ct state { established, related } counter accept
 
-                    iifname "${upstream}" drop
-                  }
+            # Allow any ICMP
+            ip protocol icmp accept
+            ip6 nexthdr icmpv6 accept
 
-                  chain forward {
-                    type filter hook forward priority filter; policy drop;
+            # Drop any other traffic
+            iifname "${upstream}" drop
+          }
 
-                    # enable flow offloading for better throughput
-                    ip protocol { tcp, udp } flow offload @f
+          chain forward {
+            type filter hook forward priority filter; policy drop;
 
-                    # Allow trusted network WAN access
-                    iifname "${downstream}" oifname "${upstream}" counter accept comment "Allow trusted LAN to WAN"
+            # enable flow offloading for better throughput
+            ip protocol { tcp, udp } flow offload @f
 
-                    # Allow established WAN to return
-                    iifname "${upstream}" oifname "${downstream}" ct state established,related counter accept comment "Allow established back to LANs"
-                  }
-                }
+            # Allow trusted network WAN access
+            iifname "${downstream}" oifname "${upstream}" counter accept
 
-                table ip nat {
-                  chain prerouting {
-                    type nat hook prerouting priority filter; policy accept;
-                  }
+            # Allow established WAN to return
+            iifname "${upstream}" oifname "${downstream}" ct state { established, related } accept
+          }
+        }
 
-                  # Setup NAT masquerading on the WAN interface
-                  chain postrouting {
-                    type nat hook postrouting priority filter; policy accept;
-                    oifname "${upstream}" masquerade
-                  }
-                }
+        table ip nat {
+          chain prerouting {
+            type nat hook prerouting priority filter; policy accept;
+          }
+
+          # Setup NAT masquerading on the WAN interface
+          chain postrouting {
+            type nat hook postrouting priority filter; policy accept;
+            oifname "${upstream}" masquerade
+          }
+        }
       '';
     };
 
@@ -130,7 +134,7 @@ in
       dhcp-option = "option:router,192.168.0.1";
       dhcp-range = [
         "192.168.114.25,192.168.114.254,24h"
-        "::1,constructor:${upstream},ra-names,ra-stateless"
+        "tag:${upstream},ra-names,ra-stateless"
         "::1,constructor:${downstream},ra-names,ra-stateless"
       ];
 
