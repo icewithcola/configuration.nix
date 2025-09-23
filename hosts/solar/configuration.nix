@@ -30,22 +30,15 @@ in
       "net.ipv4.conf.all.forwarding" = true;
       "net.ipv6.conf.all.forwarding" = true;
 
-      "net.ipv6.conf.all.accept_ra" = 0;
+      "net.ipv6.conf.all.accept_ra" = 2;
       "net.ipv6.conf.all.autoconf" = 0;
       "net.ipv6.conf.all.use_tempaddr" = 0;
-
-      "net.ipv6.conf.enp1s0.accept_ra" = 2;
-      "net.ipv6.conf.enp1s0.autoconf" = 1;
     };
   };
 
   networking = {
     hostName = "solar";
     useDHCP = false;
-    nameservers = [
-      "223.5.5.5"
-      "1.1.1.1"
-    ];
 
     bridges = {
       br0 = {
@@ -165,7 +158,10 @@ in
 
       cache-size = 1000;
 
-      dhcp-range = [ "192.168.114.25,192.168.114.254,24h" ];
+      dhcp-range = [
+        "192.168.114.25,192.168.114.254,24h"
+        "::,constructor:br0,ra-names,ra-stateless"
+      ];
       interface = "br0";
       dhcp-host = "${predictableMac},${thisIP}";
 
