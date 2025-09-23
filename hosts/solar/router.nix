@@ -22,7 +22,7 @@ in
 
   networking = {
     hostName = "solar";
-    useDHCP = false;
+    useDHCP = true;
     defaultGateway.interface = upstream;
 
     interfaces = {
@@ -127,6 +127,7 @@ in
 
       interface = downstream;
       dhcp-host = "${predictableMac},${thisIP}";
+      dhcp-option = "option:router,192.168.0.1";
       dhcp-range = [
         "192.168.114.25,192.168.114.254,24h"
         "::1,constructor:${upstream},ra-names,ra-stateless"
