@@ -12,6 +12,7 @@ in
 {
   imports = ([
     ./configuration.nix
+    ./router.nix
   ])
   ++ (enableNixOSModule [
   ])
@@ -24,8 +25,8 @@ in
 
   kagura.ddns = {
     enable = false;
-    host = "rin";
+    host = "solar";
     secretFile = config.age.secrets.ddns-token.path;
-    interface = "enp2s0";
+    interface = "enp1s0";
   };
 }
