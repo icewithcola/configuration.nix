@@ -6,7 +6,6 @@
 let
   upstream = "enp1s0";
   downstream = "enp2s0";
-  bridge = "br0";
   thisIP = "192.168.114.1";
   thisIPv6 = "fc12:1145::1";
   predictableMac = "1A:2B:3C:4D:14:51";
@@ -25,19 +24,11 @@ in
     hostName = "solar";
     useDHCP = false;
     defaultGateway.interface = upstream;
-    bridges = {
-      ${bridge} = {
-        interfaces = [
-          downstream
-        ];
-      };
-    };
 
     interfaces = {
       ${upstream}.useDHCP = true;
-      ${downstream}.useDHCP = false;
 
-      ${bridge} = {
+      ${downstream} = {
         useDHCP = false;
         macAddress = predictableMac;
         ipv4.addresses = [
@@ -63,7 +54,7 @@ in
                   # flow offloading
                   flowtable f {
                     hook ingress priority 0;
-                    devices = { ${upstream}, ${bridge} };
+                    devices = { ${upstream}, ${downstream} };
                   }
 
                   chain output {
@@ -74,7 +65,7 @@ in
                     type filter hook input priority filter; policy accept;
 
                     # Allow trusted networks to access the router
-                    iifname { "${bridge}", } counter accept
+                    iifname { "${downstream}", } counter accept
 
                     # Allow returning traffic from WAN and drop everthing else
                     iifname "${upstream}" ct state { established, related } counter accept
@@ -92,10 +83,10 @@ in
                     ip protocol { tcp, udp } flow offload @f
 
                     # Allow trusted network WAN access
-                    iifname "${bridge}" oifname "${upstream}" counter accept comment "Allow trusted LAN to WAN"
+                    iifname "${downstream}" oifname "${upstream}" counter accept comment "Allow trusted LAN to WAN"
 
                     # Allow established WAN to return
-                    iifname "${upstream}" oifname "${bridge}" ct state established,related counter accept comment "Allow established back to LANs"
+                    iifname "${upstream}" oifname "${downstream}" ct state established,related counter accept comment "Allow established back to LANs"
                   }
                 }
 
@@ -116,7 +107,7 @@ in
     nat = {
       enable = true;
       externalInterface = upstream;
-      internalInterfaces = [ bridge ];
+      internalInterfaces = [ downstream ];
       internalIPs = [ "${thisIP}/24" ];
       internalIPv6s = [ "${thisIPv6}/64" ];
     };
@@ -134,11 +125,12 @@ in
 
       cache-size = 1000;
 
-      interface = bridge;
+      interface = downstream;
       dhcp-host = "${predictableMac},${thisIP}";
       dhcp-range = [
         "192.168.114.25,192.168.114.254,24h"
-        "::1,constructor:${bridge},ra-names,ra-stateless"
+        "::1,constructor:${upstream},ra-names,ra-stateless"
+        "::1,constructor:${downstream},ra-names,ra-stateless"
       ];
 
       #IPV6
