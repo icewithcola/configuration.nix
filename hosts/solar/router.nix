@@ -6,6 +6,7 @@
 let
   upstream = "enp1s0";
   downstream = "enp2s0";
+  bridge = "br0";
   thisIP = "192.168.114.1";
   thisIPv6 = "fc12:1145::1";
   predictableMac = "1A:2B:3C:4D:14:51";
@@ -22,12 +23,24 @@ in
   networking = {
     hostName = "solar";
     useDHCP = true;
-    defaultGateway.interface = upstream;
+    defaultGateway = {
+      interface = upstream;
+      address = "192.168.1.1";
+    };
+
+    bridges = {
+      br0 = {
+        interfaces = [
+          downstream
+        ];
+      };
+    };
 
     interfaces = {
       ${upstream}.useDHCP = true;
+      ${downstream}.useDHCP = false;
 
-      ${downstream} = {
+      ${bridge} = {
         useDHCP = false;
         macAddress = predictableMac;
         ipv4.addresses = [
@@ -53,7 +66,7 @@ in
           # flow offloading
           flowtable f {
             hook ingress priority 0;
-            devices = { ${upstream}, ${downstream} };
+            devices = { ${upstream}, ${bridge} };
           }
 
           chain output {
@@ -67,7 +80,7 @@ in
             iifname lo accept
 
             # Allow trusted networks to access the router
-            iifname "${downstream}" counter accept
+            iifname "${bridge}" counter accept
 
             # Allow returning traffic from WAN and drop everthing else
             iifname "${upstream}" ct state { established, related } counter accept
@@ -87,10 +100,10 @@ in
             ip protocol { tcp, udp } flow offload @f
 
             # Allow trusted network WAN access
-            iifname "${downstream}" oifname "${upstream}" counter accept
+            iifname "${bridge}" oifname "${upstream}" counter accept
 
             # Allow established WAN to return
-            iifname "${upstream}" oifname "${downstream}" ct state { established, related } accept
+            iifname "${upstream}" oifname "${bridge}" ct state { established, related } accept
           }
         }
 
@@ -111,7 +124,7 @@ in
     nat = {
       enable = true;
       externalInterface = upstream;
-      internalInterfaces = [ downstream ];
+      internalInterfaces = [ bridge ];
       internalIPs = [ "${thisIP}/24" ];
       internalIPv6s = [ "${thisIPv6}/64" ];
     };
@@ -129,13 +142,12 @@ in
 
       cache-size = 1000;
 
-      interface = downstream;
+      interface = bridge;
       dhcp-host = "${predictableMac},${thisIP}";
       dhcp-option = "option:router,192.168.0.1";
       dhcp-range = [
         "192.168.114.25,192.168.114.254,24h"
-        "tag:${upstream},ra-names,ra-stateless"
-        "::1,constructor:${downstream},ra-names,ra-stateless"
+        "::1,constructor:${bridge},ra-names,ra-stateless"
       ];
 
       #IPV6
