@@ -13,7 +13,7 @@
       setSocketVariable = true;
     };
   }
-  // lib.mkIf (config.kagura.rootFileSystem == "btrfs") {
+  // lib.optionalAttrs (config.kagura.rootFileSystem == "btrfs") {
     storageDriver = "btrfs"; # else use overlayfs
   };
 }
