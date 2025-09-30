@@ -12,6 +12,7 @@ in
 {
   imports = ([
     ./configuration.nix
+    ./host-specific
   ])
   ++ (enableNixOSModule [
   ])

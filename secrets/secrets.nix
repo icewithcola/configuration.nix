@@ -18,4 +18,10 @@ in
     owner = "kagura";
     group = "whell";
   };
+  "cloudflare-token" = {
+    publicKeys = users;
+    mode = "644";
+    owner = "nginx";
+    group = "acme";
+  }
 }
