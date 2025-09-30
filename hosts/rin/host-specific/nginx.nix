@@ -31,7 +31,7 @@ in
   security.acme.certs.baseName = {
     domain = baseName;
     dnsProvider = "cloudflare";
-    credentialsFile = config.age.secrets."cloudflare-token".path;
+    environmentFile = config.age.secrets."cloudflare-token.age".path;
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
