@@ -1,13 +1,10 @@
 {
-  lib,
   config,
-  pkgs,
-
   ...
 }:
-let 
+let
   baseName = "lolicon.cyou";
-in 
+in
 {
   services.nginx = {
     enable = true;
@@ -25,13 +22,14 @@ in
     };
   };
 
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "me@lolicon.cyou";
-
-  security.acme.certs.baseName = {
-    domain = baseName;
-    dnsProvider = "cloudflare";
-    environmentFile = config.age.secrets."cloudflare-token.age".path;
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "me@lolicon.cyou";
+    certs."${baseName}" = {
+      domain = baseName;
+      dnsProvider = "cloudflare";
+      environmentFile = config.age.secrets."cloudflare-token".path;
+    };
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
