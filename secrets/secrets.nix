@@ -18,10 +18,16 @@ in
     owner = "kagura";
     group = "whell";
   };
-  "cloudflare-token.age" = {
+  "loli-cer.age" = {
     publicKeys = users;
     mode = "644";
     owner = "nginx";
-    group = "acme";
+    group = "nginx";
+  };
+  "loli-priv.age" = {
+    publicKeys = users;
+    mode = "644";
+    owner = "nginx";
+    group = "nginx";
   };
 }

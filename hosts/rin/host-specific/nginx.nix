@@ -12,25 +12,15 @@ in
     virtualHosts = {
       "rin.home.${baseName}" = {
         onlySSL = true;
-        useACMEHost = baseName;
         locations = {
           "/" = {
             proxyPass = "http://127.0.0.1:2283";
+            proxyWebsockets = true;
+            sslCertificate = config.age.secrets.loli-cer.path;
+            sslCertificateKey = config.age.secrets.loli-priv.path;
           };
         };
       };
     };
   };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "me@lolicon.cyou";
-    certs."${baseName}" = {
-      domain = baseName;
-      dnsProvider = "cloudflare";
-      environmentFile = config.age.secrets."cloudflare-token".path;
-    };
-  };
-
-  users.users.nginx.extraGroups = [ "acme" ];
 }
