@@ -22,12 +22,10 @@ in
     publicKeys = users;
     mode = "644";
     owner = "nginx";
-    group = "nginx";
   };
   "loli-priv.age" = {
     publicKeys = users;
     mode = "644";
     owner = "nginx";
-    group = "nginx";
   };
 }
