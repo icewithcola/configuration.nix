@@ -18,4 +18,14 @@ in
     owner = "kagura";
     group = "whell";
   };
+  "loli-cer.age" = {
+    publicKeys = users;
+    mode = "644";
+    owner = "nginx";
+  };
+  "loli-priv.age" = {
+    publicKeys = users;
+    mode = "644";
+    owner = "nginx";
+  };
 }
