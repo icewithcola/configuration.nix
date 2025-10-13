@@ -39,12 +39,6 @@
         port = 22;
         user = "root";
       };
-      "nas.nekohouse" = {
-        host = "nas.nekohouse";
-        hostname = "192.168.10.149";
-        port = 22;
-        user = "root";
-      };
 
       # Nekohouse IPv6 servers
       "home.kagura.lolicon.cyou" = {
