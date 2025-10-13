@@ -127,8 +127,6 @@
       clang_18
       gnumake
 
-      python3Full
-
       kagura-pkgs.google-chrome-138
     ])
     ++ (with pkgs-stable; [
