@@ -5,7 +5,7 @@
   ...
 }:
 let
-  basePkgs = with pkgs; [
+  basePkgs = with pkgs; [ # Base = Every machine should have this
     eza
     yazi
     hyfetch
@@ -13,15 +13,16 @@ let
     gnupg
     zellij
   ];
-  guiPkgs = with pkgs; [
+  guiPkgs = with pkgs; [ # GUI = Base Entertainment
     vlc
+    moonlight-qt
     tsukimi
     jadx
   ];
-  tuiPkgs = with pkgs; [
+  tuiPkgs = with pkgs; [ # TUI = For servers, etc
     # TODO
   ];
-  devPkgs = with pkgs; [
+  devPkgs = with pkgs; [ # Dev = Developer tools
     bun
     typst
     gdb
