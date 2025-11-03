@@ -1,4 +1,10 @@
-git_init_main(){
+git_init_null() {
+  git config user.email "me@kagurach.uk"
+  git config user.name "kagura"  
+  export GPG_TTY=$(tty)
+}
+
+git_init_kagura114(){
   git config user.email "me@lolicon.cyou"
   git config user.name "kagura114"  
   git config user.signingkey CB63871A8B336B32
