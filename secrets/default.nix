@@ -1,4 +1,4 @@
-{ lib, age, ... }:
+{ lib, age, config, ... }:
 with lib;
 let
   files = filter (x: hasSuffix ".age" x) (builtins.attrNames (builtins.readDir ./.));
@@ -19,12 +19,12 @@ in
         ) files
       ))
       {
-        "loli-cer" = {
+        "loli-cer" = lib.mkIf config.services.nginx.enable  {
           mode = "770";
           owner = "nginx";
           group = "nginx";
         };
-        "loli-priv" = {
+        "loli-priv" = lib.mkIf config.services.nginx.enable {
           mode = "770";
           owner = "nginx";
           group = "nginx";
