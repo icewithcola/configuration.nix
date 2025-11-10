@@ -139,16 +139,6 @@
           command = swaylock;
         }
       ];
-      timeouts = [
-        {
-          timeout = 200;
-          command = swaylock;
-        }
-        {
-          timeout = 300;
-          command = suspend;
-        }
-      ];
     };
 
   services.clipse = {
