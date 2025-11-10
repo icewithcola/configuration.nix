@@ -36,7 +36,6 @@
         };
       };
     };
-    firewall.enable = false;
   };
 
   time.timeZone = "Asia/Shanghai";

@@ -32,4 +32,8 @@ in
       };
     };
   };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 21443 ];
+  };
 }
