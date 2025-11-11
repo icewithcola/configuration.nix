@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   getDir =

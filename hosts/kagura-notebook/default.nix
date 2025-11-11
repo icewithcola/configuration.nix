@@ -33,5 +33,6 @@ in
 
   kagura = {
     rootFileSystem = "btrfs";
+    useFullFonts = true;
   };
 }
