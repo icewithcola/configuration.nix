@@ -53,7 +53,7 @@ in
           RECORD_ID=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .RECORD_ID)
           API_KEY=$(cat ${cfg.secretFile} | ${lib.getExe pkgs.jq} -r .API_KEY)
 
-          myip=$(${lib.getExe' pkgs.iproute2 "ip"} -6 -j addr show dev ${cfg.interface} scope global primary -tentative up | ${lib.getExe pkgs.jq} -r '(.[0] // empty).addr_info | sort_by(.prefixlen) | map(.local // empty)[0] // empty')
+          myip=$(${lib.getExe' pkgs.iproute2 "ip"} -6 -j addr show dev ${cfg.interface} scope global primary -tentative up | ${lib.getExe pkgs.jq} -r '(.[0] // empty).addr_info | sort_by(.prefixlen) | sort_by(.local) | map(.local // empty)[0] // empty')
           ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/''${ZONE}/dns_records/''${RECORD_ID} \
             -X PUT \
             -H "Authorization: Bearer ''${API_KEY}" \
