@@ -23,13 +23,13 @@ in
           mode = "770";
           owner = "nginx";
           group = "nginx";
-          file = ./.loli-cer.age;
+          file = ./loli-cer.age;
         };
         "loli-priv" = lib.mkIf config.services.nginx.enable {
           mode = "770";
           owner = "nginx";
           group = "nginx";
-          file = ./.loli-priv.age;
+          file = ./loli-priv.age;
         };
       };
 
