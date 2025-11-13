@@ -27,6 +27,11 @@ let
     typst
     gdb
     android-tools
+    
+    # Formatter, global
+    nixfmt-rfc-style
+    nil
+    shfmt
   ];
 in
 {
