@@ -12,6 +12,7 @@ in
   "frp-token.age".publicKeys = users;
   "github-token.age".publicKeys = users;
   "ddns-token.age".publicKeys = users;
+  "tailscale-kagura-notebook.age".publicKeys = users;
   "wireguard-dn42.age" = {
     publicKeys = users;
     mode = "644";
