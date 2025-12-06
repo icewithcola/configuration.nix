@@ -24,7 +24,6 @@
 
       INPUT_METHOD = "fcitx";
       QT_IM_MODULE = "fcitx";
-      GTK_IM_MODULE = "fcitx";
       XIM_SERVERS = "fcitx";
     };
 
