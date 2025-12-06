@@ -90,13 +90,14 @@
       clang_18
       gnumake
 
+      android-studio
+
       kagura-pkgs.google-chrome-138
     ])
     ++ (with pkgs-stable; [
       # 这下面放些不想更新的
       telegram-desktop
       jetbrains-toolbox
-      android-studio
     ]);
 
   nixpkgs.config.allowUnfree = true;
