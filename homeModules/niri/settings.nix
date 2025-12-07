@@ -129,16 +129,10 @@
     in
     {
       enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = swaylock;
-        }
-        {
-          event = "lock";
-          command = swaylock;
-        }
-      ];
+      events = {
+        before-sleep = swaylock;
+        lock = swaylock;
+      };
     };
 
   services.clipse = {
