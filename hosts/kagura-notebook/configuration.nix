@@ -91,6 +91,7 @@
       gnumake
 
       android-studio
+      jtdx
 
       kagura-pkgs.google-chrome-138
     ])
