@@ -70,7 +70,6 @@
 
       # Dev tools
       rustup
-      clang-tools
       pkg-config
       openssl
       zlib
@@ -81,15 +80,18 @@
       texlive.combined.scheme-full
 
       # Develop packages
-      jdk
+      jdk25_headless
+      jdk17_headless
+
       perl
       libgcc
       gcc14
-      llvm_18
-      lldb_18
-      clang_18
       gnumake
 
+      llvmPackages_20.clang-tools
+      llvmPackages_20.clangUseLLVM
+
+      # IDE like items
       android-studio
       jtdx
 
@@ -98,7 +100,6 @@
     ++ (with pkgs-stable; [
       # 这下面放些不想更新的
       telegram-desktop
-      jetbrains-toolbox
     ]);
 
   nixpkgs.config.allowUnfree = true;
