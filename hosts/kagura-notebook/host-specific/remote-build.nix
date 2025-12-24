@@ -6,7 +6,8 @@
   nix = {
     buildMachines = [
       {
-        hostName = "kagura@rin.home.lolicon.cyou";
+        sshUser = "kagura";
+        hostName = "rin.home.lolicon.cyou";
         system = "x86_64-linux";
         protocol = "ssh-ng";
         maxJobs = 3;

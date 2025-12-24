@@ -35,5 +35,6 @@ in
 
   age.identityPaths = [
     "/home/kagura/.ssh/id_ed25519"
+    "/etc/ssh/id_ed25519"
   ];
 }
