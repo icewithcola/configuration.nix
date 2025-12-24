@@ -30,7 +30,7 @@
       "Mod+Shift+S".action.screenshot = [];
       "Mod+Shift+E".action = quit;
       "Mod+Shift+C".action = close-window;
-      "Mod+Shift+F".action = expand-column-to-available-width;
+      "Mod+Shift+F".action = maximize-window-to-edges;
       "Mod+Shift+L".action = sh suspend;
       "Mod+Shift+V".action = sh "kitty --class='clipse' ${lib.getExe pkgs.clipse}";
       "Mod+Shift+Minus".action = set-window-height "-10%";

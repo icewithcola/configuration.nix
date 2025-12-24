@@ -40,6 +40,7 @@ let
     {
       matches = [
         { app-id = "chromium-browser"; }
+        { app-id = "jetbrains-studio"; }
       ];
       open-maximized = true;
     }
