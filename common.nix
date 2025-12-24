@@ -20,10 +20,13 @@
   ];
 
   nix = {
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      trusted-users = [ "kagura" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
 
     extraOptions = ''
       !include ${config.age.secrets.github-token.path}
