@@ -16,10 +16,9 @@
     kernelPackages = pkgs.linuxPackages;
     kernelParams = [ "nomodeset" ];
     loader = {
-      systemd-boot.enable = true;
-      efi = {
-        efiSysMountPoint = "/boot";
-        canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        device = "/dev/sda";
       };
     };
   };
