@@ -18,22 +18,29 @@
     loader = {
       grub = {
         enable = true;
-        device = "/dev/sda";
+        device = "/dev/vda";
       };
     };
   };
 
   networking = {
     hostName = "emilia";
-    networkmanager = {
-      enable = true;
-      settings = {
-        connectivity = {
-          enabled = true;
-          uri = "http://www.qualcomm.cn/generate_204";
-          response = "";
-        };
-      };
+    useDHCP = false;
+    interfaces.ens18 = {
+      ipv4.addresses = [{
+        address = "94.249.150.12";
+        prefixLength = 24;
+      }];
+      ipv6.addresses = [{
+        address = "2a12:bec4:1651:104::ca7";
+        prefixLength = 48;
+      }];
+    };
+
+    defaultGateway = "94.249.150.1";
+    defaultGateway6 = {
+      address = "2a12:bec4:1651::1";
+      interface = "ens18";
     };
     firewall.enable = false;
   };
