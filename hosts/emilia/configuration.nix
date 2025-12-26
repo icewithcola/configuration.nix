@@ -27,14 +27,18 @@
     hostName = "emilia";
     useDHCP = false;
     interfaces.ens18 = {
-      ipv4.addresses = [{
-        address = "94.249.150.12";
-        prefixLength = 24;
-      }];
-      ipv6.addresses = [{
-        address = "2a12:bec4:1651:104::ca7";
-        prefixLength = 48;
-      }];
+      ipv4.addresses = [
+        {
+          address = "94.249.150.12";
+          prefixLength = 24;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "2a12:bec4:1651:104::ca7";
+          prefixLength = 48;
+        }
+      ];
     };
 
     defaultGateway = "94.249.150.1";
@@ -42,6 +46,11 @@
       address = "2a12:bec4:1651::1";
       interface = "ens18";
     };
+    nameservers = [
+      "1.1.1.1"
+      "2606:4700:4700::1111"
+      "8.8.8.8"
+    ];
     firewall.enable = false;
   };
 
