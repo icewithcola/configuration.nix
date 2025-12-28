@@ -22,18 +22,20 @@ let
         ips = [
           "${peer.wireguard.EndPoint.MyIP}"
         ];
-        
-        peers = [{
-          name = "${name}";
-          publicKey = peer.wireguard.PublicKey;
-          endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
-          allowedIPs = [
-            "fd00::/8"
-            "fe80::/10"
-            "${peer.wireguard.EndPoint.MyIP}"
-            "${peer.wireguard.EndPoint.PeerIP}"
-          ];
-        }];
+
+        peers = [
+          {
+            name = "${name}";
+            publicKey = peer.wireguard.PublicKey;
+            endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
+            allowedIPs = [
+              "fd00::/8"
+              "fe80::/10"
+              "${peer.wireguard.EndPoint.MyIP}"
+              "${peer.wireguard.EndPoint.PeerIP}"
+            ];
+          }
+        ];
       };
     };
   roaUrl = "https://dn42.burble.com/roa/dn42_roa_bird2_6.conf";
@@ -57,25 +59,25 @@ in
       };
 
     networking.networkmanager.ensureProfiles.profiles."dn42-dummy" =
-    let
-      subnet = lib.last (lib.splitString "/" cfg.subnet);
-    in
-    {
-      connection = {
-        autoconnect = "true";
-        id = "dn42-dummy";
-        interface-name = "dn42-dummy";
-        type = "dummy";
+      let
+        subnet = lib.last (lib.splitString "/" cfg.subnet);
+      in
+      {
+        connection = {
+          autoconnect = "true";
+          id = "dn42-dummy";
+          interface-name = "dn42-dummy";
+          type = "dummy";
+        };
+        ipv4 = {
+          method = "disabled";
+        };
+        ipv6 = {
+          addr-gen-mode = "default";
+          address1 = "${cfg.routerIp}/${subnet}";
+          method = "manual";
+        };
       };
-      ipv4 = {
-        method = "disabled";
-      };
-      ipv6 = {
-        addr-gen-mode = "default";
-        address1 = "${cfg.routerIp}/${subnet}";
-        method = "manual";
-      };
-    };
 
     services.bird =
       let

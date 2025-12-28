@@ -27,7 +27,7 @@
       "Mod+Down".action = focus-workspace-down;
       "Mod+Up".action = focus-workspace-up;
 
-      "Mod+Shift+S".action.screenshot = [];
+      "Mod+Shift+S".action.screenshot = [ ];
       "Mod+Shift+E".action = quit;
       "Mod+Shift+C".action = close-window;
       "Mod+Shift+F".action = maximize-window-to-edges;

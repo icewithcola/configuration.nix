@@ -5,7 +5,8 @@
   ...
 }:
 let
-  basePkgs = with pkgs; [ # Base = Every machine should have this
+  basePkgs = with pkgs; [
+    # Base = Every machine should have this
     eza
     yazi
     hyfetch
@@ -13,21 +14,24 @@ let
     gnupg
     zellij
   ];
-  guiPkgs = with pkgs; [ # GUI = Base Entertainment
+  guiPkgs = with pkgs; [
+    # GUI = Base Entertainment
     vlc
     moonlight-qt
     tsukimi
     jadx
   ];
-  tuiPkgs = with pkgs; [ # TUI = For servers, etc
+  tuiPkgs = with pkgs; [
+    # TUI = For servers, etc
     # TODO
   ];
-  devPkgs = with pkgs; [ # Dev = Developer tools
+  devPkgs = with pkgs; [
+    # Dev = Developer tools
     bun
     typst
     gdb
     android-tools
-    
+
     # Formatter, global
     nixfmt-rfc-style
     nil
