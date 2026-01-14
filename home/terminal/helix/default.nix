@@ -6,7 +6,7 @@
     extraPackages = with pkgs; [
       jdt-language-server
       kotlin-language-server
-      nixfmt-rfc-style
+      nixfmt
       nil
     ];
   };

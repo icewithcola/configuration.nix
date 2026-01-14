@@ -33,7 +33,7 @@ let
     android-tools
 
     # Formatter, global
-    nixfmt-rfc-style
+    nixfmt
     nil
     shfmt
   ];
