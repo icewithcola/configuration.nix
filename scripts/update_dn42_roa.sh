@@ -23,7 +23,7 @@ if ! git diff --quiet "$FILE_TO_UPDATE"; then
   git config --global user.email 'github-actions[bot]@users.noreply.github.com'
   git add "$FILE_TO_UPDATE"
   git commit -m "auto update: dn42 roa"
-  git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+  git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO_SLUG}.git"
 else
   echo "No changes to commit."
 fi

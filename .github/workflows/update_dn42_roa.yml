@@ -16,4 +16,4 @@ jobs:
         run: ./scripts/update_dn42_roa.sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          REPO_SLUG: ${{ github.repository }}
