@@ -23,6 +23,7 @@ in
     "sshd"
     "ddns"
     "docker"
+    "dn42"
   ]);
 
   kagura = {
