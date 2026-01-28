@@ -4,5 +4,6 @@ _: {
     ./sshd.nix
     ./tailscale.nix
     ./qbittorrent.nix
+    ./dn42.nix
   ];
 }
