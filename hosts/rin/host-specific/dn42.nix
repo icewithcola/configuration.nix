@@ -17,8 +17,8 @@
           EndPoint = {
             HostName = "hgt0ae5n23e.sn.mynetname.net";
             Port = "22323";
-            MyIP = "fdd2:4372:796f:ffff::2323:1/127";
-            PeerIP = "fdd2:4372:796f:ffff::2323:0/127";
+            MyIP = "fdd2:4372:796f:fff0::2323:1/127";
+            PeerIP = "fdd2:4372:796f:fff0::2323:0/127";
           };
         };
       };
