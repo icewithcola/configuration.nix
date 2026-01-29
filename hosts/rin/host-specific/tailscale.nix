@@ -4,7 +4,7 @@
     enable = true;
     useRoutingFeatures = "both";
     extraUpFlags = [
-      "--advertise-routes=192.168.114.0/24,192.168.23.0/24,fe80::/8"
+      "--advertise-routes=192.168.114.0/24,192.168.23.0/24,fd00::/8"
       "--advertise-exit-node"
     ];
 
