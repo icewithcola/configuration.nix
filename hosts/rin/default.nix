@@ -31,9 +31,18 @@ in
   };
 
   kagura.ddns = {
-    enable = true;
-    host = "rin";
-    secretFile = config.age.secrets.ddns-token.path;
-    interface = "enp7s0f0";
+    cu = {
+      host = "rin";
+      secretFile = config.age.secrets.ddns-token.path;
+      interface = "enp7s0f0";
+      recordId = "c458e5e1fcbea062d8713af43c75de71";
+    };
+
+    cm = {
+      host = "rin-cm";
+      secretFile = config.age.secrets.ddns-token.path;
+      interface = "enp8f0";
+      recordId = "11872dce6d4765f4fa2a9f2a5b7d14a6";
+    };
   };
 }
