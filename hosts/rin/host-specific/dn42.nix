@@ -15,7 +15,7 @@
         wireguard = {
           PublicKey = "IGgMsGR/mzAMYj6VNivzDyk+x4iJf5HcXMACmX846XU=";
           EndPoint = {
-            HostName = "hgt0ae5n23e.sn.mynetname.net";
+            HostName = "cryolitia.loli.it.eu.org";
             Port = "22323";
             MyIP = "fdd2:4372:796f:fff0::2323:1/127";
             PeerIP = "fdd2:4372:796f:fff0::2323:0/127";
