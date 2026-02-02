@@ -17,7 +17,6 @@ in
   ++ (enableNixOSModule [
   ])
   ++ (enablePrograms [
-    "incus"
   ])
   ++ (enableServices [
     "sshd"

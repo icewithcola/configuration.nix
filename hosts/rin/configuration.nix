@@ -35,6 +35,27 @@
           response = "";
         };
       };
+      ensureProfiles.profiles = {
+        # 定义桥接设备本身
+        "br-cm" = {
+          connection = {
+            id = "br-cm";
+            type = "bridge";
+            interface-name = "br-cm";
+          };
+          ipv4.method = "auto";
+        };
+
+        "br-cm-slave" = {
+          connection = {
+            id = "br-cm-slave";
+            type = "ethernet";
+            interface-name = "enp8s0";
+            master = "br-cm";
+            slave-type = "bridge";
+          };
+        };
+      };
     };
     firewall.enable = false;
   };

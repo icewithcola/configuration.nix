@@ -5,5 +5,6 @@ _: {
     ./tailscale.nix
     ./qbittorrent.nix
     ./dn42.nix
+    ./incus.nix
   ];
 }
