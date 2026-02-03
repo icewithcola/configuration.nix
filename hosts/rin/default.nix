@@ -36,12 +36,5 @@ in
       interface = "enp7s0f0";
       recordId = "c458e5e1fcbea062d8713af43c75de71";
     };
-
-    cm = {
-      host = "rin-cm";
-      secretFile = config.age.secrets.ddns-token.path;
-      interface = "enp8s0";
-      recordId = "11872dce6d4765f4fa2a9f2a5b7d14a6";
-    };
   };
 }
