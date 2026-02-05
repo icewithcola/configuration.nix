@@ -20,8 +20,8 @@
 
       BitTorrent = {
         Session = {
-          Interface = "enp8s0";
-          InterfaceName = "enp8s0";
+          Interface = "br-cm";
+          InterfaceName = "br-cm";
           ShareLimitAction = "Stop";
         };
       };
