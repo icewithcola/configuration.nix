@@ -27,6 +27,7 @@ in
 
   kagura = {
     rootFileSystem = "ext4";
+    sshd.enable = true;
   };
 
   kagura.ddns = {

@@ -19,10 +19,10 @@ in
   ++ (enablePrograms [
   ])
   ++ (enableServices [
-    "sshd"
   ]);
 
   kagura = {
     rootFileSystem = "ext4";
+    sshd.enable = true;
   };
 }
