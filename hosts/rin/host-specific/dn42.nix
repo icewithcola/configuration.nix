@@ -25,4 +25,15 @@
     };
   };
 
+  systemd.services."dn42-static" = {
+    enable = true;
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+      ExecStart = "${pkgs.iproute2}/bin/ip -6 addr add fdcb:dded:cbcc::1/64 dev enx2c534a1227e8";
+    };
+  };
 }
