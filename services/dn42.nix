@@ -22,7 +22,7 @@ let
         ips = [
           "${peer.wireguard.EndPoint.MyIP}"
         ];
-
+        mtu = 1380;
         peers = [
           {
             name = "${name}";
@@ -159,6 +159,11 @@ in
           template bgp dnpeers {
               local as OWNAS;
               path metric 1;
+              
+              connect retry time 30;
+              connect delay time 5;
+              error wait time 60, 300;
+              hold time 240;
 
               ipv4 {
                 import none;
