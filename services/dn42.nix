@@ -134,6 +134,10 @@ in
             ];
           }
 
+          function is_valid_ipv4(prefix net) -> bool {
+            return net ~ [ 172.20.0.0/14{21,32} ];
+          }
+
           protocol kernel {
               scan time 20;
 
@@ -166,8 +170,17 @@ in
               hold time 240;
 
               ipv4 {
-                import none;
-                export none;
+                extended next hop on; 
+                import filter {
+                    if is_valid_ipv4(net) then accept; # 你需要定义一个 is_valid_ipv4 函数
+                    reject;
+                };
+                export filter {
+                    if source ~ [RTS_STATIC, RTS_BGP] then accept;
+                    reject;
+                }; 
+
+                import limit 1000 action block;
               };
 
               ipv6 {   
