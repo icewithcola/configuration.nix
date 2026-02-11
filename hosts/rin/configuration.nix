@@ -22,6 +22,7 @@
         canTouchEfiVariables = true;
       };
     };
+    tmp.useTmpfs = true;
   };
 
   networking = {
