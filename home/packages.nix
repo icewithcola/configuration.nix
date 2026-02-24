@@ -22,8 +22,9 @@ let
     jadx
   ];
   tuiPkgs = with pkgs; [
-    # TUI = For servers, etc
-    # TODO
+    gping # Alternative to ping
+    doggo # Alternative to dig
+    rustscan # Alternative to nmap
   ];
   devPkgs = with pkgs; [
     # Dev = Developer tools

@@ -31,5 +31,4 @@
     homeDirectory = "/home/kagura";
     stateVersion = "24.11";
   };
-
 }

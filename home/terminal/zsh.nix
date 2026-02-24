@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -16,16 +17,21 @@ in
     enableCompletion = true;
     syntaxHighlighting.enable = true;
 
-    shellAliases = {
-      ls = "eza";
-      ll = "eza --icons -l";
-      la = "eza --icons -al";
+    shellAliases = lib.mkMerge [
+      {
+        ls = "eza";
+        ll = "eza --icons -l";
+        la = "eza --icons -al";
 
-      vi = "hx";
-      vim = "hx";
+        vi = "hx";
+        vim = "hx";
 
-      home-edit = "hx ~/.config/home-manager";
-    };
+        home-edit = "hx ~/.config/home-manager";
+      }
+      (lib.mkIf (config.kagura.home.type == "headless") {
+        dig = "doggo";
+      })
+    ];
 
     history = {
       size = 10000;
