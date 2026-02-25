@@ -2,6 +2,7 @@ let
   kagura-notebook = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtsBUrTKcEIW2UZ2//QeU+PJj3/dxaVCncTg1j7gvAP";
   kagura-PC = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPt9ckkZVYhl21qSJlGoi7i9EyAD+VwL0Fq4rdRO8k6k";
   kagura-nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYFmnBe6VIe2UjpG6UqnsCZ45VBK4eRfMIvm+A/aNd4";
+  kagura-emilia = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMuUTWQroOFkqcEyeqP+JD0WV3ZOdm/2xcWDRZnqd478";
   users = [
     kagura-notebook
     kagura-PC
@@ -12,7 +13,8 @@ in
   "github-token.age".publicKeys = users;
   "ddns-token.age".publicKeys = users;
   "tailscale-kagura-notebook.age".publicKeys = users;
-  "tailscale.age".publicKeys = users;
+  "tailscale-rin.age".publicKeys = users;
+  "tailscale-emilia.age".publicKeys = [ kagura-emilia ];
   "wireguard-dn42.age" = {
     publicKeys = users;
     mode = "644";

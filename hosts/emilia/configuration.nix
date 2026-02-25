@@ -38,6 +38,10 @@
           address = "2a12:bec4:1651:104::ca7";
           prefixLength = 48;
         }
+        {
+          address = "2a12:bec4:1651:104::555";
+          prefixLength = 48;
+        }
       ];
     };
 
