@@ -19,6 +19,13 @@ in
         description = "WireGuard public key for this peer";
       };
 
+      mtu = mkOption {
+        type = types.int;
+        example = 1420;
+        description = "WireGuard MTU";
+        default = 1380;
+      };
+
       EndPoint = {
         HostName = mkOption {
           type = types.str;

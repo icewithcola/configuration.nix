@@ -22,7 +22,7 @@ let
         ips = [
           "${peer.wireguard.EndPoint.MyIP}"
         ];
-        mtu = 1380;
+        mtu = peer.wireguard.mtu;
         peers = [
           {
             name = "${name}";

@@ -22,6 +22,20 @@
           };
         };
       };
+
+      "ach-sulfate" = {
+        asn = 4242423310;
+        wireguard = {
+          PublicKey = "U6hJSU1yhVF2i3HV7PLzauMDaznNEA9uc98zggZTPTE=";
+          mtu = 1420;
+          EndPoint = {
+            HostName = "47.117.69.0";
+            Port = "22323";
+            MyIP = "fe80::2323:3311/127";
+            PeerIP = "fe80::2323:3310/127";
+          };
+        };
+      };
     };
   };
 
