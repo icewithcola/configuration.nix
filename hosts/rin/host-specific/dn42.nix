@@ -23,7 +23,7 @@
         };
       };
 
-      "ach-sulfate" = {
+      "ach_sulfate" = {
         asn = 4242423310;
         wireguard = {
           PublicKey = "U6hJSU1yhVF2i3HV7PLzauMDaznNEA9uc98zggZTPTE=";
