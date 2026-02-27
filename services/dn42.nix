@@ -42,6 +42,14 @@ let
 in
 {
   config = lib.mkIf (cfg.enable && cfg.peers != { }) {
+    assertions = lib.mapAttrsToList (name: _: {
+      assertion = !(lib.strings.hasInfix "-" name);
+      message = "DN42 peer name '${name}' contains '-', which is a bird reserved symbol";
+    }) cfg.peers ++ lib.mapAttrsToList (name: _: {
+      assertion = builtins.stringLength (getIfName name) <= 15;
+      message = "DN42 peer interface name '${getIfName name}' is longer than 15 characters, which exceeds Linux kernel's restriction";
+    }) cfg.peers;
+
     boot.kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
       "net.ipv6.conf.default.forwarding" = 1;
