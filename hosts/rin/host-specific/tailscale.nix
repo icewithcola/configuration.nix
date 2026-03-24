@@ -6,8 +6,12 @@
     extraUpFlags = [
       "--advertise-routes=192.168.114.0/24,192.168.23.0/24,fd00::/8"
       "--advertise-exit-node"
+      "--advertise-tags=tag:relays-cn"
+      "--reset"
     ];
-
+    extraSetFlags = [
+      "--relay-server-port=46580"
+    ];
     authKeyFile = config.age.secrets.tailscale-rin.path;
   };
 
