@@ -6,6 +6,8 @@ let
   baseName = "home.lolicon.cyou";
 in
 {
+  users.users.nginx.extraGroups = [ "qbittorrent" ];
+
   services.nginx = {
     enable = true;
     defaultSSLListenPort = 21443;
@@ -37,6 +39,32 @@ in
 
               client_max_body_size 2G;
             '';
+          };
+        };
+      };
+
+      "store.${baseName}" = {
+        onlySSL = true;
+        sslCertificate = config.age.secrets.loli-cer.path;
+        sslCertificateKey = config.age.secrets.loli-priv.path;
+        serverAliases = [
+          "rin.${baseName}"
+          "rin-cm.${baseName}"
+        ];
+        locations = {
+          "/" = {
+            alias = "/var/lib/qBittorrent/qBittorrent/downloads/";
+            extraConfig = ''
+              autoindex on;
+              charset utf-8;
+
+              expires -1;
+              add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+
+              sendfile on;
+              tcp_nopush on;
+              aio on;
+              directio 512;
           };
         };
       };
