@@ -18,40 +18,40 @@
         user = "root";
       };
 
-      # Remote controls
-      "remote.nas" = {
-        host = "remote.nas";
-        hostname = "ssh.git.kagurach.uk";
-        port = 30072;
+      # Servers
+      "alice-jp" = {
+        host = "alice-jp";
+        hostname = "alice-jp.srv.kagurach.uk";
+        port = 22;
         user = "root";
+      };
+      "emilia" = {
+        host = "emilia";
+        hostname = "emilia.srv.kagurach.uk";
+        port = 22;
+        user = "kagura";
       };
 
-      # Nekohouse Local servers
-      "j1900.nekohouse" = {
-        host = "j1900.nekohouse";
-        hostname = "192.168.114.1";
-        port = 22;
-        user = "root";
-      };
-      "router.nekohouse" = {
-        host = "router.nekohouse";
-        hostname = "192.168.10.1";
-        port = 22;
-        user = "root";
-      };
-
-      # Nekohouse IPv6 servers
-      "home.kagura.lolicon.cyou" = {
-        host = "home.kagura.lolicon.cyou";
-        hostname = "home.kagura.lolicon.cyou";
-        port = 22;
-        user = "root";
-      };
+      # Local servers
       "rin.home.lolicon.cyou" = {
         host = "rin.home.lolicon.cyou";
         hostname = "rin.home.lolicon.cyou";
         port = 22;
         user = "kagura";
+      };
+      "stella.home.lolicon.cyou" = {
+        host = "stella.home.lolicon.cyou";
+        hostname = "stella.home.lolicon.cyou";
+        port = 22;
+        user = "root";
+      };
+
+      # Remote Controller
+      "j1900.lan" = {
+        host = "j1900.lan";
+        hostname = "192.168.114.1";
+        port = 22;
+        user = "root";
       };
     };
   };
