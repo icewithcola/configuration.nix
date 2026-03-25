@@ -44,16 +44,23 @@ in
             client_max_body_size 2G;
           '';
         };
+
+        locations."/test-speed".extraConfig = ''
+          default_type application/octet-stream;
+          add_header Content-Disposition 'attachment; filename="test-1m.bin"';
+
+          # 禁用所有缓存
+          expires -1;
+          add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+
+          return 200 "${builtins.concatStringsSep "" (builtins.genList (x: "12345678") 131072)}";
+        '';
       };
 
       "store.${baseName}" = {
         onlySSL = true;
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
-        serverAliases = [
-          "rin.${baseName}"
-          "rin-cm.${baseName}"
-        ];
         locations."/" = {
           alias = "/var/lib/qBittorrent/qBittorrent/downloads/";
           extraConfig = ''
