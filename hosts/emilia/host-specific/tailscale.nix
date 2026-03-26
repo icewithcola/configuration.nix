@@ -5,8 +5,11 @@
     useRoutingFeatures = "both";
     extraUpFlags = [
       "--advertise-exit-node"
+      "--advertise-tags=tag:relays-global"
     ];
-
+    extraSetFlags = [
+      "--relay-server-port=32457"
+    ];
     authKeyFile = config.age.secrets.tailscale-emilia.path;
   };
 
