@@ -19,7 +19,12 @@ in
     dev = mkOption {
       type = types.bool;
       default = true;
-      description = "Usage of this computer, if true, enable some development packages";
+      description = ''
+        Usage of this computer, if true, enable some development packages
+        These are impacted:
+        - Packages for systems
+        - LSP for helix
+        '';
     };
   };
 }
