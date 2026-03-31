@@ -15,6 +15,7 @@
 
       targets = [
         {
+          fabric = "iscsi";
           wwn = "iqn.2026-03.tailscale:storage-server";
           tpgs = [
             {
