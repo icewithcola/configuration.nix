@@ -39,6 +39,7 @@
                   mapped_luns = [
                     {
                       index = 0;
+                      tpg_lun = 0;
                       write_protect = false;
                     }
                   ];
