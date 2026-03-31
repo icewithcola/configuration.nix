@@ -18,7 +18,6 @@ in
     "niri"
   ])
   ++ (enablePrograms [
-    "clash-verge-rev"
     "fcitx5"
     "nix-ld"
     "steam"
