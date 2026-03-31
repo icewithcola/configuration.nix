@@ -1,53 +1,56 @@
-services.target = {
-  enable = true;
-  config = {
-    storage_objects = [
-      {
-        name = "ks_vdisk";
-        plugin = "fileio";
-        dev = "/mnt/data/iscsi.img"; 
-        size = 53687091200;
-        wwn = "78571077-7378-424c-9f1f-aab0ef37b04f";
-      }
-    ];
+{ config, ... }:
+{
+  services.target = {
+    enable = true;
+    config = {
+      storage_objects = [
+        {
+          name = "ks_vdisk";
+          plugin = "fileio";
+          dev = "/mnt/data/iscsi.img";
+          size = 53687091200;
+          wwn = "78571077-7378-424c-9f1f-aab0ef37b04f";
+        }
+      ];
 
-    targets = [
-      {
-        wwn = "iqn.2026-03.tailscale:storage-server";
-        tpgs = [
-          {
-            tag = 1;
-            enable = true;
-            luns = [
-              {
-                index = 0;
-                storage_object = "/backstores/fileio/ks_vdisk";
-              }
-            ];
-            portals = [
-              {
-                ip_address = "100.79.31.14"; 
-                port = 3260;
-              }
-            ];
-            node_acls = [
-              {
-                node_wwn = "iqn.1993-08.org.debian:01:56993966bc8d"; 
-                mapped_luns = [
-                  {
-                    index = 0;
-                    write_protect = false;
-                  }
-                ];
-              }
-            ];
-            parameter_dict = {
-              AuthMethod = "None";
-              GenerateNodeACLex = "0";
-            };
-          }
-        ];
-      }
-    ];
+      targets = [
+        {
+          wwn = "iqn.2026-03.tailscale:storage-server";
+          tpgs = [
+            {
+              tag = 1;
+              enable = true;
+              luns = [
+                {
+                  index = 0;
+                  storage_object = "/backstores/fileio/ks_vdisk";
+                }
+              ];
+              portals = [
+                {
+                  ip_address = "100.79.31.14";
+                  port = 3260;
+                }
+              ];
+              node_acls = [
+                {
+                  node_wwn = "iqn.1993-08.org.debian:01:56993966bc8d";
+                  mapped_luns = [
+                    {
+                      index = 0;
+                      write_protect = false;
+                    }
+                  ];
+                }
+              ];
+              parameter_dict = {
+                AuthMethod = "None";
+                GenerateNodeACLex = "0";
+              };
+            }
+          ];
+        }
+      ];
+    };
   };
-};
+}
