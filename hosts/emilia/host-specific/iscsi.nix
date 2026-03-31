@@ -21,6 +21,13 @@
             {
               tag = 1;
               enable = true;
+              attributes = {
+                authentication = 0; # 必须设为 0，否则它会无视 AuthMethod=None
+                generate_node_acls = 0; # 既然手动写了 ACL，就关掉自动生成
+                demo_mode_write_protect = 0; # 确保不是只读模式
+                cache_dynamic_acls = 1; # 提升性能
+              };
+
               luns = [
                 {
                   index = 0;
@@ -43,6 +50,9 @@
                       write_protect = false;
                     }
                   ];
+                  attributes = {
+                    authentication = 0;
+                  };
                 }
               ];
               parameter_dict = {
