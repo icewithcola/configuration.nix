@@ -16,7 +16,7 @@
       targets = [
         {
           fabric = "iscsi";
-          wwn = "iqn.2026-03.tailscale:storage-server";
+          wwn = "iqn.2026-03.emilia.dace-teeth.ts.net:storage-server";
           tpgs = [
             {
               tag = 1;
