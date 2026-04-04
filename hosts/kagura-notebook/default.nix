@@ -21,7 +21,6 @@ in
     "fcitx5"
     "nix-ld"
     "steam"
-    "wine"
     "incus"
   ])
   ++ (enableServices [
