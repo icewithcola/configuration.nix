@@ -11,7 +11,7 @@ in
   ]);
 
   kagura.home = {
-    type = "headless";
+    type = "minimal";
     dev = false;
   };
 }

@@ -11,9 +11,16 @@ in
       type = types.enum [
         "headless"
         "gui"
+        "minimal"
       ];
       default = [ "gui" ];
-      description = "List of home targets to install. Values = ['headless', 'gui']";
+      description = ''
+        List of home targets to install. Values = ['headless', 'gui', 'minimal']
+        - gui: full GUI packages, for PC & laptop
+        - headless: headless packages, for server, but with a lot of useful tools
+        - minimal: minimal packages, for server, without tools
+        ''
+      ;
     };
 
     dev = mkOption {
