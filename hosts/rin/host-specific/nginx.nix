@@ -43,6 +43,8 @@ in
             proxy_set_header X-Forwarded-Proto $scheme;
 
             client_max_body_size 2G;
+
+            error_page 497 https://$host:$server_port$request_uri
           '';
         };
       };
