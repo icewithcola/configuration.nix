@@ -44,7 +44,7 @@ in
 
             client_max_body_size 2G;
 
-            error_page 497 https://$host:$server_port$request_uri
+            error_page 497 https://$host:$server_port$request_uri;
           '';
         };
       };
