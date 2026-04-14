@@ -13,6 +13,8 @@ let
     btop
     gnupg
     zellij
+    jq
+    iperf
   ];
   guiPkgs = with pkgs; [
     # GUI = Base Entertainment
