@@ -3,11 +3,16 @@
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
-    fcitx5.waylandFrontend = true;
-    fcitx5.addons = with pkgs; [
-      fcitx5-gtk # alternatively, kdePackages.fcitx5-qt
-      qt6Packages.fcitx5-chinese-addons # table input method support
-      fcitx5-nord # a color theme
-    ];
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-gtk
+        kdePackages.fcitx5-chinese-addons
+        fcitx5-nord
+      ];
+      quickPhrase = {
+        ciallo = "Ciallo～(∠・ω< )⌒☆";
+      };
+    };
   };
 }
