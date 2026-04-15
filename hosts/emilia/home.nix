@@ -11,7 +11,6 @@ in
   ]);
 
   kagura.home = {
-    type = "minimal";
-    dev = false;
+    pkgSets.network = true;
   };
 }

@@ -10,7 +10,7 @@
     extraConfig = builtins.readFile ./config.toml;
     extraPackages =
       [ ]
-      ++ (lib.optionals config.kagura.home.dev (
+      ++ (lib.optionals config.kagura.home.pkgSets.dev (
         with pkgs;
         [
           jdt-language-server

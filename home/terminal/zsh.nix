@@ -28,7 +28,7 @@ in
 
         home-edit = "hx ~/.config/home-manager";
       }
-      (lib.mkIf (config.kagura.home.type == "headless") {
+      (lib.mkIf (config.kagura.home.pkgSets.network) { # Network package set used, use doggo
         dig = "doggo";
       })
     ];

@@ -13,7 +13,10 @@ in
   ]);
 
   kagura.home = {
-    type = "gui";
-    dev = true;
+    pkgSets = {
+      gui = true;
+      dev = true;
+      network = true;
+    };
   };
 }

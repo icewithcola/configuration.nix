@@ -5,7 +5,7 @@
   ...
 }:
 let
-  basePkgs = with pkgs; [
+  base = with pkgs; [
     # Base = Every machine should have this
     eza
     yazi
@@ -14,22 +14,23 @@ let
     gnupg
     zellij
     jq
-    iperf
   ];
-  guiPkgs = with pkgs; [
-    # GUI = Base Entertainment
+
+  gui = with pkgs; [
     vlc
     moonlight-qt
     tsukimi
     jadx
   ];
-  tuiPkgs = with pkgs; [
+
+  network = with pkgs; [
     gping # Alternative to ping
-    doggo # Alternative to dig
+    doggo   # Alternative to dig
     rustscan # Alternative to nmap
+    iperf
   ];
-  devPkgs = with pkgs; [
-    # Dev = Developer tools
+
+  dev = with pkgs; [
     bun
     typst
     gdb
@@ -43,8 +44,8 @@ let
 in
 {
   home.packages =
-    basePkgs
-    ++ lib.optionals (config.kagura.home.type == "gui") guiPkgs
-    ++ lib.optionals (config.kagura.home.type == "headless") tuiPkgs
-    ++ lib.optionals config.kagura.home.dev devPkgs;
+    base
+    ++ lib.optionals config.kagura.home.pkgSets.gui gui
+    ++ lib.optionals config.kagura.home.pkgSets.network network
+    ++ lib.optionals config.kagura.home.pkgSets.dev dev;
 }

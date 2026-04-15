@@ -11,7 +11,8 @@ in
   ]);
 
   kagura.home = {
-    type = "headless";
-    dev = false;
+    pkgSets = {
+      network = true;
+    };
   };
 }

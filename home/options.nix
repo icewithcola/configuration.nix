@@ -6,21 +6,21 @@ let
   inherit (lib) mkOption types;
 in
 {
-  options.kagura.home = {
-    type = mkOption {
-      type = types.enum [
-        "headless"
-        "gui"
-        "minimal"
-      ];
-      default = [ "gui" ];
+  options.kagura.home.pkgSets = {
+    gui = mkOption {
+      type = types.bool;
+      default = false;
       description = ''
-        List of home targets to install. Values = ['headless', 'gui', 'minimal']
-        - gui: full GUI packages, for PC & laptop
-        - headless: headless packages, for server, but with a lot of useful tools
-        - minimal: minimal packages, for server, without tools
-        ''
-      ;
+        Generic GUI packages for home-manager, like media and ide tools.
+      '';
+    };
+
+    network = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Network tools for home-manager
+      '';
     };
 
     dev = mkOption {
@@ -31,7 +31,7 @@ in
         These are impacted:
         - Packages for systems
         - LSP for helix
-        '';
+      '';
     };
   };
 }
