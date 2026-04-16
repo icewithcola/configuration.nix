@@ -1,10 +1,4 @@
-{
-  pkgs,
-  services,
-  security,
-  ...
-}:
-{
+_: {
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = false;

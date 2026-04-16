@@ -1,6 +1,14 @@
 { lib, ... }:
-with lib;
 let
+  inherit (lib)
+    collect
+    concatStringsSep
+    filter
+    hasSuffix
+    isString
+    mapAttrs
+    mapAttrsRecursive
+    ;
   getDir =
     dir:
     mapAttrs (file: type: if type == "directory" then getDir "${dir}/${file}" else type) (

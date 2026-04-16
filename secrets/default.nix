@@ -4,8 +4,8 @@
   config,
   ...
 }:
-with lib;
 let
+  inherit (lib) filter hasSuffix listToAttrs removeSuffix;
   files = filter (x: hasSuffix ".age" x) (builtins.attrNames (builtins.readDir ./.));
 in
 {
