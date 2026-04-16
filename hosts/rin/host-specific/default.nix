@@ -5,5 +5,6 @@ _: {
     ./qbittorrent.nix
     ./dn42.nix
     ./incus.nix
+    ./p106.nix
   ];
 }

@@ -76,12 +76,6 @@
     shell = pkgs.zsh;
   };
 
-  environment.systemPackages =
-    (with pkgs; [
-    ])
-    ++ (with pkgs-stable; [
-    ]);
-
   nixpkgs.config.allowUnfree = true;
 
   # Desktop Environment

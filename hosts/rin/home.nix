@@ -5,9 +5,6 @@ in
 {
   imports = ([
     ../../home
-  ])
-  ++ (enableHomeModule [
-
   ]);
 
   kagura.home = {
