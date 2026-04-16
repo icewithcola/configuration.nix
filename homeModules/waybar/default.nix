@@ -18,7 +18,8 @@ in
         margin-top = 2;
         margin-bottom = 0;
         reload_style_on_change = true;
-        spacing = 0;
+        spacing = 4;
+
         modules-left = [
           "image"
           "wlr/taskbar"
@@ -38,13 +39,42 @@ in
           "clock"
         ];
 
-        # Module configuration: Left
+        # ── Left ──────────────────────────────────────────────
+
         "image" = {
           path = ../../home/assets/nix-snowflake-transgender.png;
           on-click = "niri msg action toggle-overview";
           size = 22;
           tooltip = false;
         };
+
+        "wlr/taskbar" = {
+          all-outputs = false;
+          format = "{icon}";
+          icon-theme = "Papirus-Dark";
+          icon-size = 18;
+          tooltip = true;
+          tooltip-format = "{title}";
+          active-first = true;
+          on-click = "activate";
+        };
+
+        "mpris" = {
+          format = "  {artist} – {title}";
+          format-paused = "  {artist} – {title}";
+          format-stopped = "";
+          player-icons = {
+            default = "▶";
+            mpv = "🎵";
+          };
+          status-icons = {
+            paused = "";
+          };
+          max-length = 40;
+          tooltip = true;
+          tooltip-format = "{player}: {status}";
+        };
+
         "niri/workspaces" = {
           all-outputs = false;
           on-click = "activate";
@@ -64,16 +94,9 @@ in
             "9" = "9";
           };
         };
-        "wlr/taskbar" = {
-          all-outputs = false;
-          format = "{icon}";
-          icon-theme = "Papirus-Dark";
-          icon-size = 16;
-          tooltip = true;
-          tooltip-format = "{title}";
-          active-first = true;
-          on-click = "activate";
-        };
+
+        # ── Center ────────────────────────────────────────────
+
         "niri/window" = {
           max-length = 50;
           format = "{app_id}";
@@ -85,46 +108,69 @@ in
           };
         };
 
-        # Module configuration: Center
-        clock = {
-          format = "<b>{:%a %m-%d %H:%M}</b>";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          format-alt = "{:%H:%M %Y-%m-%d}";
-        };
+        # ── Right ─────────────────────────────────────────────
 
-        # Module configuration: Right
-        network = {
-          format-wifi = "wifi: {essid}";
-          format-ethernet = "eth: ";
-          tooltip-format = "{essid} ({signalStrength}%)";
-          format-disconnected = "emm: ";
-          format-alt = "{ifname}: {ipaddr}/{cidr}";
-        };
         memory = {
           inherit interval;
-          format = "MEM: {percentage}%";
+          format = " {percentage}%";
+          tooltip-format = "{used:0.1f}G / {total:0.1f}G";
         };
+
         cpu = {
           inherit interval;
-          format = "CPU: {usage}%";
+          format = " {usage}%";
+          tooltip-format = "{avg_frequency} GHz";
         };
+
         battery = {
           states = {
+            full = 98;
             warning = 30;
-            critical = 20;
+            critical = 15;
           };
-          format = "{capacity}%";
-          format-charging = "{capacity}%+";
-          format-plugged = "{capacity}%~";
-          tooltip-format = "{time}";
+          format = "{icon} {capacity}%";
+          format-charging = " {capacity}%";
+          format-plugged = " {capacity}%";
+          format-full = " {capacity}%";
+          format-icons = [ "" "" "" "" "" ];
           tooltip = true;
+          tooltip-format = "{time}  ({power:.1f}W)";
         };
+
         pulseaudio = {
-          "format" = "vol: {volume}%";
+          format = "{icon} {volume}%";
+          format-muted = "󰝟 mute";
+          format-icons = {
+            default = [ "" "" "" ];
+          };
+          on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          scroll-step = 5;
+          tooltip = true;
+          tooltip-format = "{desc}";
         };
+
+        network = {
+          format-wifi = " {essid} {signalStrength}%";
+          format-ethernet = "󰈀 {ifname}";
+          format-disconnected = "󰖪 offline";
+          format-alt = " {ipaddr}/{cidr}";
+          tooltip-format = "{essid} ({signalStrength}%) via {gwaddr}";
+          on-click-right = "nm-connection-editor";
+        };
+
         tray = {
           icon-size = 18;
-          spacing = 10;
+          spacing = 8;
+        };
+
+        clock = {
+          format = "<b>{:%a %m-%d %H:%M}</b>";
+          format-alt = "{:%Y-%m-%d %H:%M:%S}";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "month";
+            on-scroll = 1;
+          };
         };
       };
     };

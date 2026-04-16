@@ -27,111 +27,17 @@
 @define-color crust #11111b;
 
 * {
-  font-family: "Noto Sans CJK SC";
-  font-size: 16px;
+  font-family: "Noto Sans CJK SC", "Symbols Nerd Font Mono";
+  font-size: 14px;
   min-height: 0;
   border: none;
   border-radius: 0;
 }
 
-window.eDP-1 #custom-toggl-icon,
-window.eDP-1 #custom-toggl {
-  font-size: 0px;
-  padding: 0;
-  border: 0;
-  margin: 0;
-  background-color: transparent;
-}
-
+/* ── Waybar window ─────────────────────────────────────────── */
 #waybar {
-  /* background: rgba(17, 17, 17, 0.5); */
   background: transparent;
   color: @text;
-  border-radius: 0px 5px 5px 18px;
-}
-
-#image {
-  background: @crust;
-  border-radius: 0px 18px 0px 18px;
-  margin-right: 5px;
-  padding: 0rem 0.7rem;
-  border: 2px solid @text;
-}
-
-#workspaces {
-  background: @crust;
-  border: 2px solid @mauve;
-  border-radius: 5px 5px 5px 5px;
-  font-weight: bold;
-  font-style: normal;
-  opacity: 1;
-  color: @text;
-}
-
-#workspaces button {
-  border-radius: 3px 3px 3px 3px;
-  padding: 0px 6px;
-  margin: 3px 2px;
-  color: @blue;
-  transition: all 0.3s ease-in-out;
-  opacity: 0.8;
-}
-
-#workspaces button.active {
-  color: @crust;
-  background: @blue;
-  padding: 0px 6px;
-  margin: 3px 2px;
-  border-radius: 3px 3px 3px 3px;
-  min-width: 30px;
-  transition: all 0.3s ease-in-out;
-  opacity: 1;
-}
-
-#workspaces button:hover {
-  color: @crust;
-  background: @mauve;
-  border-radius: 3px 3px 3px 3px;
-  opacity: 0.7;
-}
-
-#workspaces button.empty {
-  color: @overlay2;
-  opacity: 0.4;
-}
-
-#workspaces button.visible {
-  color: @blue;
-  transition: all 0.3s ease-in-out;
-}
-
-#workspaces button.focused {
-  color: @crust;
-  background: @mauve;
-  transition: all 0.3s ease-in-out;
-}
-
-.modules-left > widget:first-child > #workspaces {
-  margin-left: 0;
-}
-
-.modules-right > widget:last-child > #workspaces {
-  margin-right: 0;
-}
-
-#window {
-  background: @crust;
-  font-family: "Noto Sans CJK SC";
-  border-radius: 5px 5px 5px 5px;
-  padding: 0rem 0.7rem;
-  border: 2px solid @pink;
-}
-
-#taskbar {
-  background: @crust;
-  border-radius: 5px 5px 5px 5px;
-  padding: 0rem 2rem;
-  border: 2px solid @blue;
 }
 
 window#waybar.fullscreen,
@@ -139,76 +45,193 @@ window#waybar.swallowing {
   color: @red;
 }
 
-#network,
+/* ── Left ──────────────────────────────────────────────────── */
+
+/* Nix snowflake launcher */
+#image {
+  background: @crust;
+  border-radius: 18px 6px 18px 6px;
+  margin-right: 6px;
+  padding: 0 10px;
+  border: 2px solid @mauve;
+}
+
+
+/* Taskbar */
+#taskbar {
+  background: @crust;
+  border-radius: 6px;
+  padding: 0 13px;
+  border: 2px solid @blue;
+  margin-right: 6px;
+}
+
+/* MPRIS player */
+#mpris {
+  background: @crust;
+  color: @green;
+  border-radius: 6px;
+  padding: 0 11px;
+  border: 2px solid @green;
+  margin-right: 6px;
+  font-style: italic;
+}
+
+#mpris.paused {
+  color: @overlay1;
+  border-color: @overlay1;
+}
+
+#mpris.stopped {
+  color: @surface2;
+  border-color: @surface2;
+}
+
+/* Workspaces */
+#workspaces {
+  background: @crust;
+  border: 2px solid @mauve;
+  border-radius: 6px;
+  font-weight: bold;
+  color: @text;
+}
+
+#workspaces button {
+  border-radius: 4px;
+  padding: 0 6px;
+  margin: 3px 2px;
+  color: @blue;
+  opacity: 0.8;
+}
+
+#workspaces button.active {
+  color: @crust;
+  background: @blue;
+  border-radius: 4px;
+  min-width: 28px;
+  opacity: 1;
+}
+
+#workspaces button.focused {
+  color: @crust;
+  background: @mauve;
+}
+
+#workspaces button:hover {
+  color: @crust;
+  background: @mauve;
+  border-radius: 4px;
+  opacity: 0.85;
+}
+
+#workspaces button.empty {
+  color: @overlay2;
+  opacity: 0.35;
+}
+
+#workspaces button.visible {
+  color: @blue;
+}
+
+/* ── Center ────────────────────────────────────────────────── */
+
+#window {
+  background: @crust;
+  border-radius: 6px;
+  padding: 0 11px;
+  border: 2px solid @pink;
+  color: @pink;
+}
+
+/* ── Right — pill group ────────────────────────────────────── */
+/*  memory → cpu → battery → pulseaudio → network → tray → clock
+    memory is left-cap, tray is right-cap before clock.          */
+
+#memory,
 #cpu,
+#battery,
 #pulseaudio,
+#network,
 #tray {
   background: @crust;
-  padding: 0 5px;
+  padding: 0 8px;
   border-top: 2px solid @text;
   border-bottom: 2px solid @text;
 }
 
+/* Left cap */
 #memory {
-  background: @crust;
-  padding: 0 5px;
-  border-top: 2px solid @text;
-  border-bottom: 2px solid @text;
   border-left: 2px solid @text;
+  border-radius: 6px 0 0 6px;
+  color: @blue;
 }
 
-#battery {
-  background: @crust;
-  padding: 0 5px;
-}
-
-#network {
-  color: @yellow;
-}
-
+/* Separator: give cpu a faint divider */
 #cpu {
+  border-left: 1px solid @surface1;
   color: @pink;
-}
-
-#memory {
-  color: @pink;
-}
-
-#pulseaudio {
-  color: @pink;
-}
-#clock {
-  background: @crust;
-  color: @pink;
-  border-radius: 5px 5px 5px 5px;
-  border: 2px solid @pink;
-  padding: 0rem 0.7rem;
 }
 
 #battery {
-  color: @pink;
+  border-left: 1px solid @surface1;
+  color: @yellow;
 }
 
 #battery.charging {
-  color: @pink;
+  color: @green;
+}
+
+#battery.full {
+  color: @teal;
 }
 
 #battery.warning:not(.charging) {
+  color: @peach;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+  animation: blink 1s linear infinite;
+}
+
+#pulseaudio {
+  border-left: 1px solid @surface1;
   color: @mauve;
 }
 
-#battery {
-  background: @crust;
-  color: @yellow;
-  border-top: 2px solid @text;
-  border-bottom: 2px solid @text;
+#pulseaudio.muted {
+  color: @overlay1;
 }
 
+#network {
+  border-left: 1px solid @surface1;
+  color: @yellow;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+/* Right cap (before clock) */
 #tray {
-  background: @crust;
-  padding: 0rem 0.7rem;
-  border-radius: 0 5px 5px 0;
-  border-top: 2px solid @text;
-  border-bottom: 2px solid @text;
+  border-left: 1px solid @surface1;
   border-right: 2px solid @text;
+  border-radius: 0 6px 6px 0;
+  padding: 0 10px;
+}
+
+/* Clock – standalone pill */
+#clock {
+  background: @crust;
+  color: @pink;
+  border-radius: 6px;
+  border: 2px solid @pink;
+  padding: 0 11px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+/* ── Blink animation for critical battery ──────────────────── */
+@keyframes blink {
+  to { opacity: 0.4; }
 }
