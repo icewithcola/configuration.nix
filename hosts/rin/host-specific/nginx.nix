@@ -21,6 +21,10 @@ in
     virtualHosts = {
       "_" = {
         default = true;
+        onlySSL = true;
+        sslCertificate = config.age.secrets.loli-cer.path;
+        sslCertificateKey = config.age.secrets.loli-priv.path;
+
         locations."/".return = 444;
       };
 
@@ -31,7 +35,6 @@ in
         serverAliases = [
           "rin.${baseName}"
           "rin-cm.${baseName}"
-          "immich-server-from-overseas2.lolicon.cyou"
         ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:2283/";
