@@ -56,10 +56,6 @@ in
         onlySSL = true;
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
-        serverAliases = [
-          "rin.${baseName}"
-          "rin-cm.${baseName}"
-        ];
         locations."/" = {
           alias = "/var/lib/qBittorrent/qBittorrent/downloads/";
           extraConfig = ''

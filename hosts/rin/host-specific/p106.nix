@@ -16,5 +16,7 @@
     };
   };
   services.xserver.videoDrivers = [ "nvidia" ];
-  environment.systemPackages = [ pkgs.nvitop ];
+  environment.systemPackages = [
+    pkgs.nvitop
+  ];
 }
