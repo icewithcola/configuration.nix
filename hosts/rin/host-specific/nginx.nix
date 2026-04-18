@@ -21,14 +21,13 @@ in
     virtualHosts = {
       "_" = {
         default = true;
-        onlySSL = true;
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
 
         locations."/".return = 444;
       };
 
-      "rin.${baseName}" = {
+      "immich" = {
         onlySSL = true;
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
@@ -52,8 +51,12 @@ in
         };
       };
 
-      "store.${baseName}" = {
+      "store" = {
         onlySSL = true;
+        serverAliases = [
+          "store.${baseName}"
+          "store-cm.${baseName}"
+        ];
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
         locations."/" = {
