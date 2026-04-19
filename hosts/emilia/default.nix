@@ -23,6 +23,7 @@ in
 
   kagura = {
     rootFileSystem = "ext4";
+    hostname = "emilia";
     sshd = {
       enable = true;
       keys = [

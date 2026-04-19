@@ -26,6 +26,7 @@ in
 
   kagura = {
     rootFileSystem = "ext4";
+    hostname = "rin";
     sshd = {
       enable = true;
       keys = [
@@ -46,6 +47,22 @@ in
         interface = "enp7s0f0";
         recordId = "c458e5e1fcbea062d8713af43c75de71";
       };
+    };
+
+    tailscale = {
+      enable = true;
+      tailnetName = "dace-teeth";
+      asExitNode = true;
+      advertiseRoutes = [
+        "192.168.114.0/24"
+        "192.168.23.0/24"
+        "fd00::/8"
+      ];
+      advertiseTags = [
+        "relays-cn"
+      ];
+      relayServerPort = 44758;
+      authKeyFile = config.age.secrets.tailscale-rin.path;
     };
   };
 }

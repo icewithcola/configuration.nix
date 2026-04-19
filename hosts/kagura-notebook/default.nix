@@ -32,6 +32,7 @@ in
 
   kagura = {
     rootFileSystem = "btrfs";
+    hostname = "kagura-notebook";
     useFullFonts = true;
   };
 }

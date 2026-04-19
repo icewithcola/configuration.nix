@@ -14,6 +14,11 @@ in
       example = "kagura";
     };
 
+    hostname = mkOption {
+      type = types.str;
+      description = "The hostname of this device";
+    };
+
     rootFileSystem = mkOption {
       type = types.enum [
         "ext4"
