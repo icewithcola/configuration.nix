@@ -36,5 +36,16 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUTn8X8Zuwf8W9QsPIzKxzpXV1/BIVOuHB9WnnBkCec ks"
       ];
     };
+
+    tailscale = {
+      enable = true;
+      tailnetName = "dace-teeth";
+      asExitNode = true;
+      advertiseTags = [
+        "relays-global"
+      ];
+      relayServerPort = 32457;
+      authKeyFile = config.age.secrets.tailscale-emilia.path;
+    };
   };
 }

@@ -34,5 +34,11 @@ in
     rootFileSystem = "btrfs";
     hostname = "kagura-notebook";
     useFullFonts = true;
+
+    tailscale = {
+      enable = true;
+      tailnetName = "dace-teeth";
+      authKeyFile = config.age.secrets.tailscale-kagura-notebook.path;
+    };
   };
 }
