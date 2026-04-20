@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   ...
 }:
@@ -9,14 +8,13 @@ let
     mkOption
     types
     mkIf
-    mkMerge
     concatStringsSep
     optional
     optionals
     ;
-  cfg = config.kagura.tailscale;
-  useServerFeatures = (cfg.asExitNode) || (cfg.advertiseRoutes != [ ]);
 
+  cfg = config.kagura.tailscale;
+  useServerFeatures = cfg.asExitNode || cfg.advertiseRoutes != [ ];
 in
 {
   options.kagura.tailscale = {
@@ -69,9 +67,7 @@ in
 
     authKeyFile = mkOption {
       type = types.nullOr types.path;
-      description = ''
-        Auth key file of this machine
-      '';
+      description = "Auth key file of this machine";
     };
   };
 
@@ -81,31 +77,27 @@ in
       useRoutingFeatures = if useServerFeatures then "both" else "client";
       authKeyFile = cfg.authKeyFile;
 
-      extraUpFlags = [ "--reset" ] 
+      extraUpFlags =
+        [ "--reset" ]
         ++ optionals cfg.asExitNode [ "--advertise-exit-node" ]
         ++ optionals (cfg.advertiseRoutes != [ ]) [ "--advertise-routes=${concatStringsSep "," cfg.advertiseRoutes}" ]
         ++ optionals (cfg.advertiseTags != null) [ "--advertise-tags=${concatStringsSep "," (map (s: "tag:${s}") cfg.advertiseTags)}" ];
-        
-      extraSetFlags = optional (
-        cfg.relayServerPort != null
-      ) "--relay-server-port=${toString cfg.relayServerPort}";
+
+      extraSetFlags = optional (cfg.relayServerPort != null) "--relay-server-port=${toString cfg.relayServerPort}";
     };
 
     networking = mkIf useServerFeatures {
       nftables.enable = true;
       firewall = {
         trustedInterfaces = [ "tailscale0" ];
-        allowedUDPPorts = [
-          config.services.tailscale.port
-        ]
-        ++ optional (cfg.relayServerPort != null) cfg.relayServerPort;
+        allowedUDPPorts =
+          [ config.services.tailscale.port ]
+          ++ optional (cfg.relayServerPort != null) cfg.relayServerPort;
       };
     };
 
     systemd = mkIf useServerFeatures {
-      services.tailscaled.serviceConfig.Environment = [
-        "TS_DEBUG_FIREWALL_MODE=nftables"
-      ];
+      services.tailscaled.serviceConfig.Environment = [ "TS_DEBUG_FIREWALL_MODE=nftables" ];
       network.wait-online.enable = false;
     };
 

@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ lib, ... }:
 {
   home.file = {
     ".gnupg/dirmngr.conf".text =

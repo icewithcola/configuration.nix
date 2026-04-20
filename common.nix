@@ -1,9 +1,6 @@
 {
-  lib,
   pkgs,
-  host,
   config,
-  system,
   ...
 }:
 {
@@ -32,7 +29,6 @@
       !include ${config.age.secrets.github-token.path}
     '';
 
-    # Nix GC Configuration
     gc = {
       automatic = true;
       dates = "weekly";

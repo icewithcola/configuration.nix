@@ -1,58 +1,62 @@
-{ pkgs, lib, config, ...}:
+{ pkgs, lib, config, ... }:
 let
   inherit (lib) mkOption types;
   cfg = config.kagura.ddns;
 in
 {
   options.kagura.ddns = mkOption {
-    default = {};
+    default = { };
     description = "DDNS configurations";
-    type = types.attrsOf (types.submodule ({ name, ... }: {
-      options = {
-        enable = mkOption {
-          type = types.bool;
-          default = true;
-          description = "Enable this ddns instance";
-        };
+    type = types.attrsOf (
+      types.submodule ({ ... }: {
+        options = {
+          enable = mkOption {
+            type = types.bool;
+            default = true;
+            description = "Enable this ddns instance";
+          };
 
-        host = mkOption {
-          type = types.str;
-          default = config.networking.hostName;
-          description = "The hostname of the machine";
-        };
+          host = mkOption {
+            type = types.str;
+            default = config.networking.hostName;
+            description = "The hostname of the machine";
+          };
 
-        suffix = mkOption {
-          type = types.str;
-          default = ".home.lolicon.cyou";
-          description = "The suffix of the hostname";
-        };
+          suffix = mkOption {
+            type = types.str;
+            default = ".home.lolicon.cyou";
+            description = "The suffix of the hostname";
+          };
 
-        recordId = mkOption {
-          type = types.str;
-          default = "";
-          description = "The record ID from Cloudflare";
-        };
+          recordId = mkOption {
+            type = types.str;
+            default = "";
+            description = "The record ID from Cloudflare";
+          };
 
-        secretFile = mkOption {
-          type = types.path;
-          description = "The path to the secret file, contains ZONE, RECORD_ID, API_KEY";
-        };
+          secretFile = mkOption {
+            type = types.path;
+            description = "The path to the secret file, contains ZONE, RECORD_ID, API_KEY";
+          };
 
-        interface = mkOption {
-          type = types.str;
-          default = "eth0";
-          description = "The interface to use";
+          interface = mkOption {
+            type = types.str;
+            default = "eth0";
+            description = "The interface to use";
+          };
         };
-      };
-    }));
+      })
+    );
   };
 
   config.systemd =
     let
-      enabledInstances = lib.filterAttrs (n: v: v.enable) cfg;
+      enabledInstances = lib.filterAttrs (_: v: v.enable) cfg;
     in
     {
-      services = lib.mapAttrs' (name: instance: let
+      services = lib.mapAttrs' (
+        name: instance:
+        let
           domain = instance.host + instance.suffix;
         in
         lib.nameValuePair "kagura-ddns-${name}" {
@@ -83,7 +87,9 @@ in
         }
       ) enabledInstances;
 
-      timers = lib.mapAttrs' (name: instance: lib.nameValuePair "kagura-ddns-${name}" {
+      timers = lib.mapAttrs' (
+        name: _:
+        lib.nameValuePair "kagura-ddns-${name}" {
           wantedBy = [ "timers.target" ];
           timerConfig = {
             OnBootSec = "5min";

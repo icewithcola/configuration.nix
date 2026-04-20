@@ -1,25 +1,16 @@
 {
-  config,
-  lib,
   pkgs,
-  pkgs-stable,
   ...
 }:
-
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
     kernelParams = [ "nomodeset" ];
-    loader = {
-      grub = {
-        enable = true;
-        device = "/dev/vda";
-      };
+    loader.grub = {
+      enable = true;
+      device = "/dev/vda";
     };
   };
 
@@ -73,22 +64,10 @@
     shell = pkgs.zsh;
   };
 
-  environment.systemPackages =
-    (with pkgs; [
-    ])
-    ++ (with pkgs-stable; [
-    ]);
-
   nixpkgs.config.allowUnfree = true;
 
-  # Desktop Environment
-  services = {
-    xserver.enable = false;
-  };
-
-  programs = {
-    zsh.enable = true;
-  };
+  services.xserver.enable = false;
+  programs.zsh.enable = true;
 
   zramSwap.enable = false;
 

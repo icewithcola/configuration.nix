@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
+{ ... }:
 {
   virtualisation.incus = {
     enable = true;
@@ -30,9 +24,7 @@
       ];
       storage_pools = [
         {
-          config = {
-            source = "/var/lib/incus/storage-pools/default";
-          };
+          config.source = "/var/lib/incus/storage-pools/default";
           driver = "dir";
           name = "default";
         }

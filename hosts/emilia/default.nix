@@ -1,25 +1,12 @@
 {
-  lib,
-  inputs,
   config,
   ...
 }:
-let
-  enableNixOSModule = (x: lib.map (s: ../../nixosModules/${s}) x);
-  enablePrograms = (x: lib.map (s: ../../programs/${s}.nix) x);
-  enableServices = (x: lib.map (s: ../../services/${s}.nix) x);
-in
 {
-  imports = ([
+  imports = [
     ./configuration.nix
     ./host-specific
-  ])
-  ++ (enableNixOSModule [
-  ])
-  ++ (enablePrograms [
-  ])
-  ++ (enableServices [
-  ]);
+  ];
 
   kagura = {
     rootFileSystem = "ext4";
@@ -41,9 +28,7 @@ in
       enable = true;
       tailnetName = "dace-teeth";
       asExitNode = true;
-      advertiseTags = [
-        "relays-global"
-      ];
+      advertiseTags = [ "relays-global" ];
       relayServerPort = 32457;
       authKeyFile = config.age.secrets.tailscale-emilia.path;
     };

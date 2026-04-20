@@ -8,7 +8,8 @@
 let
   cfg = config.kagura.dn42;
   getIfName = name: "dn42-${name}";
-  getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn)); # 4242420833 -> 20833
+  getPort = asn: lib.strings.toInt (lib.removePrefix "42424" (builtins.toString asn));
+
   generateWireguardConfig =
     name: peer:
     let
@@ -19,36 +20,35 @@ let
         type = "wireguard";
         privateKeyFile = cfg.wireguard.PrivateKey;
         listenPort = getPort peer.asn;
-        ips = [
-          "${peer.wireguard.EndPoint.MyIP}"
-        ];
+        ips = [ peer.wireguard.EndPoint.MyIP ];
         mtu = peer.wireguard.mtu;
         peers = [
           {
-            name = "${name}";
+            name = name;
             publicKey = peer.wireguard.PublicKey;
             endpoint = "${peer.wireguard.EndPoint.HostName}:${peer.wireguard.EndPoint.Port}";
             allowedIPs = [
               "fd00::/8"
               "fe80::/10"
-              "${peer.wireguard.EndPoint.MyIP}"
-              "${peer.wireguard.EndPoint.PeerIP}"
+              peer.wireguard.EndPoint.MyIP
+              peer.wireguard.EndPoint.PeerIP
             ];
           }
         ];
       };
     };
-  roaUrl = "https://dn42.burble.com/roa/dn42_roa_bird2_6.conf";
 in
 {
   config = lib.mkIf (cfg.enable && cfg.peers != { }) {
-    assertions = lib.mapAttrsToList (name: _: {
-      assertion = !(lib.strings.hasInfix "-" name);
-      message = "DN42 peer name '${name}' contains '-', which is a bird reserved symbol";
-    }) cfg.peers ++ lib.mapAttrsToList (name: _: {
-      assertion = builtins.stringLength (getIfName name) <= 15;
-      message = "DN42 peer interface name '${getIfName name}' is longer than 15 characters, which exceeds Linux kernel's restriction";
-    }) cfg.peers;
+    assertions =
+      lib.mapAttrsToList (name: _: {
+        assertion = !(lib.strings.hasInfix "-" name);
+        message = "DN42 peer name '${name}' contains '-', which is a bird reserved symbol";
+      }) cfg.peers
+      ++ lib.mapAttrsToList (name: _: {
+        assertion = builtins.stringLength (getIfName name) <= 15;
+        message = "DN42 peer interface name '${getIfName name}' is longer than 15 characters, which exceeds Linux kernel's restriction";
+      }) cfg.peers;
 
     boot.kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
@@ -57,6 +57,7 @@ in
       "net.ipv4.conf.default.rp_filter" = 0;
       "net.ipv4.conf.all.rp_filter" = 0;
     };
+
     networking.wireguard =
       let
         peersConfigList = lib.attrsets.mapAttrsToList generateWireguardConfig cfg.peers;
@@ -77,9 +78,7 @@ in
           interface-name = "dn42-dummy";
           type = "dummy";
         };
-        ipv4 = {
-          method = "disabled";
-        };
+        ipv4.method = "disabled";
         ipv6 = {
           addr-gen-mode = "default";
           address1 = "${cfg.routerIp}/${subnet}";
@@ -121,10 +120,6 @@ in
               scan time 10;
           }
 
-          /*
-            *  Utility functions
-            */
-
           function is_self_net() -> bool {
             return net ~ OWNNETSET;
           }
@@ -138,7 +133,7 @@ in
 
           function is_valid_network() -> bool {
             return net ~ [
-              fd00::/8{44,64} # ULA address space as per RFC 4193
+              fd00::/8{44,64}
             ];
           }
 
@@ -171,38 +166,37 @@ in
           template bgp dnpeers {
               local as OWNAS;
               path metric 1;
-              
+
               connect retry time 30;
               connect delay time 5;
               error wait time 60, 300;
               hold time 240;
 
               ipv4 {
-                extended next hop on; 
+                extended next hop on;
                 import filter {
-                    if is_valid_ipv4(net) then accept; # 你需要定义一个 is_valid_ipv4 函数
+                    if is_valid_ipv4(net) then accept;
                     reject;
                 };
                 export filter {
                     if source ~ [RTS_STATIC, RTS_BGP] then accept;
                     reject;
-                }; 
+                };
 
                 import limit 1000 action block;
               };
 
-              ipv6 {   
+              ipv6 {
                   import filter {
                     if is_valid_network() && !is_self_net() then {
                       if (roa_check(dn42_roa, net, bgp_path.last) != ROA_VALID) then {
-                        # Reject when unknown or invalid according to ROA
                         print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
                         reject;
                       } else accept;
                     } else reject;
                   };
                   export filter { if is_valid_network() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
-                  import limit 9000 action block; 
+                  import limit 9000 action block;
               };
           }
 
@@ -219,18 +213,14 @@ in
 
     systemd.tmpfiles.settings = {
       "10-birdlogs" = {
-        "/var/log/bird" = {
-          d = {
-            user = "bird";
-            group = "bird";
-            mode = "0755";
-          };
+        "/var/log/bird".d = {
+          user = "bird";
+          group = "bird";
+          mode = "0755";
         };
       };
     };
 
-    environment.systemPackages = [
-      pkgs.wireguard-tools
-    ];
+    environment.systemPackages = [ pkgs.wireguard-tools ];
   };
 }

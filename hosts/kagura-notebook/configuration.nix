@@ -1,19 +1,12 @@
 {
-  config,
-  lib,
   pkgs,
   pkgs-stable,
   ...
 }:
-
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    # Latest kernel
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot.enable = true;
@@ -25,12 +18,10 @@
     hostName = "kagura-notebook";
     networkmanager = {
       enable = true;
-      settings = {
-        connectivity = {
-          enabled = true;
-          uri = "http://www.qualcomm.cn/generate_204";
-          response = "";
-        };
+      settings.connectivity = {
+        enabled = true;
+        uri = "http://www.qualcomm.cn/generate_204";
+        response = "";
       };
     };
     firewall.enable = false;
@@ -38,7 +29,6 @@
 
   time.timeZone = "Asia/Shanghai";
 
-  # Btrfs scrub
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";
@@ -60,51 +50,34 @@
 
   environment.systemPackages =
     (with pkgs; [
-      pinentry-all # Used by gnupg
-
-      # Desktop environment
+      pinentry-all
       libreoffice-qt6-fresh
       remmina
       kitty
       vscode
-
-      # Dev tools
       rustup
       pkg-config
       openssl
       zlib
       cargo-binutils
       yarn
-
-      # LateX
       texlive.combined.scheme-full
-
-      # Develop packages
       jdk25_headless
       jdk17_headless
-
       perl
       libgcc
       gcc14
       gnumake
-
       llvmPackages_20.clang-tools
       llvmPackages_20.clangUseLLVM
-
-      # IDE like items
       android-studio
       jtdx
-
       kagura-pkgs.google-chrome-138
     ])
-    ++ (with pkgs-stable; [
-      # 这下面放些不想更新的
-      telegram-desktop
-    ]);
+    ++ (with pkgs-stable; [ telegram-desktop ]);
 
   nixpkgs.config.allowUnfree = true;
 
-  # Desktop Environment
   services = {
     xserver.enable = true;
     displayManager.sddm = {

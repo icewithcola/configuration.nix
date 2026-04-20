@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}:
+{ pkgs, ... }:
 {
   config.services.qbittorrent = {
     enable = true;
@@ -18,12 +14,10 @@
         };
       };
 
-      BitTorrent = {
-        Session = {
-          Interface = "br-cm";
-          InterfaceName = "br-cm";
-          ShareLimitAction = "Stop";
-        };
+      BitTorrent.Session = {
+        Interface = "br-cm";
+        InterfaceName = "br-cm";
+        ShareLimitAction = "Stop";
       };
     };
   };

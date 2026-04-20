@@ -1,28 +1,15 @@
 {
-  lib,
-  inputs,
   config,
   ...
 }:
-let
-  enableNixOSModule = (x: lib.map (s: ../../nixosModules/${s}) x);
-  enablePrograms = (x: lib.map (s: ../../programs/${s}.nix) x);
-  enableServices = (x: lib.map (s: ../../services/${s}.nix) x);
-in
 {
-  imports = ([
+  imports = [
     ./configuration.nix
     ./host-specific
-  ])
-  ++ (enableNixOSModule [
-  ])
-  ++ (enablePrograms [
-  ])
-  ++ (enableServices [
-    "ddns"
-    "docker"
-    "dn42"
-  ]);
+    ../../services/ddns.nix
+    ../../services/docker.nix
+    ../../services/dn42.nix
+  ];
 
   kagura = {
     rootFileSystem = "ext4";
@@ -58,9 +45,7 @@ in
         "192.168.23.0/24"
         "fd00::/8"
       ];
-      advertiseTags = [
-        "relays-cn"
-      ];
+      advertiseTags = [ "relays-cn" ];
       relayServerPort = 44758;
       authKeyFile = config.age.secrets.tailscale-rin.path;
     };

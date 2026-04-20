@@ -1,34 +1,21 @@
 {
-  lib,
-  inputs,
   config,
   ...
 }:
-let
-  enableNixOSModule = (x: lib.map (s: ../../nixosModules/${s}) x);
-  enablePrograms = (x: lib.map (s: ../../programs/${s}.nix) x);
-  enableServices = (x: lib.map (s: ../../services/${s}.nix) x);
-in
 {
-  imports = ([
+  imports = [
     ./configuration.nix
     ./host-specific
-  ])
-  ++ (enableNixOSModule [
-    "niri"
-  ])
-  ++ (enablePrograms [
-    "fcitx5"
-    "nix-ld"
-    "steam"
-    "incus"
-  ])
-  ++ (enableServices [
-    "bluetooth"
-    "sound"
-    "docker"
-    "virtManager"
-  ]);
+    ../../nixosModules/niri
+    ../../programs/fcitx5.nix
+    ../../programs/nix-ld.nix
+    ../../programs/steam.nix
+    ../../programs/incus.nix
+    ../../services/bluetooth.nix
+    ../../services/sound.nix
+    ../../services/docker.nix
+    ../../services/virtManager.nix
+  ];
 
   kagura = {
     rootFileSystem = "btrfs";

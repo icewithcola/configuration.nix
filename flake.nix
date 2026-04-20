@@ -22,11 +22,9 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       nixpkgs-stable,
       home-manager-nixos,
-      niri,
       agenix,
       ...
     }@inputs:
@@ -35,7 +33,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       lib = pkgs.lib;
 
-      allHosts = builtins.attrNames (lib.filterAttrs (n: v: v == "directory") (builtins.readDir ./hosts));
+      allHosts = builtins.attrNames (lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
     in
     {
       nixosConfigurations = lib.genAttrs allHosts (
@@ -54,7 +52,7 @@
           modules = ([
             ({
               nixpkgs.overlays = [
-                (final: prev: {
+                (_: prev: {
                   kagura-pkgs = inputs.kagura-pkgs.packages.${prev.system};
                 })
               ];

@@ -1,10 +1,4 @@
-{
-  lib,
-  pkgs,
-  host,
-  config,
-  ...
-}:
+{ pkgs, ... }:
 {
   imports = [
     ./options.nix
@@ -19,9 +13,7 @@
   home = {
     sessionVariables = {
       EDITOR = "hx";
-
       PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
-
       INPUT_METHOD = "fcitx";
       QT_IM_MODULE = "fcitx";
       XIM_SERVERS = "fcitx";

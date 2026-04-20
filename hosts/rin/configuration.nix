@@ -1,16 +1,9 @@
 {
-  config,
-  lib,
   pkgs,
-  pkgs-stable,
   ...
 }:
-
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
@@ -29,15 +22,12 @@
     hostName = "rin";
     networkmanager = {
       enable = true;
-      settings = {
-        connectivity = {
-          enabled = true;
-          uri = "http://www.qualcomm.cn/generate_204";
-          response = "";
-        };
+      settings.connectivity = {
+        enabled = true;
+        uri = "http://www.qualcomm.cn/generate_204";
+        response = "";
       };
       ensureProfiles.profiles = {
-        # 定义桥接设备本身
         "br-cm" = {
           connection = {
             id = "br-cm";
@@ -78,14 +68,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Desktop Environment
-  services = {
-    xserver.enable = false;
-  };
-
-  programs = {
-    zsh.enable = true;
-  };
+  services.xserver.enable = false;
+  programs.zsh.enable = true;
 
   zramSwap.enable = false;
 

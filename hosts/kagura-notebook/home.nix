@@ -1,22 +1,14 @@
-{ lib, ... }:
-let
-  enableHomeModule = (x: lib.map (s: ../../homeModules/${s}) x);
-in
-{
-  imports = ([
+_: {
+  imports = [
     ../../home
-  ])
-  ++ (enableHomeModule [
-    "niri"
-    "waybar"
-    "fuzzel"
-  ]);
+    ../../homeModules/niri
+    ../../homeModules/waybar
+    ../../homeModules/fuzzel
+  ];
 
-  kagura.home = {
-    pkgSets = {
-      gui = true;
-      dev = true;
-      network = true;
-    };
+  kagura.home.pkgSets = {
+    gui = true;
+    dev = true;
+    network = true;
   };
 }
