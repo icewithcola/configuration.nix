@@ -70,6 +70,8 @@
   programs.zsh.enable = true;
 
   zramSwap.enable = false;
+  
+  documentation.enable = false;
 
   system.stateVersion = "24.05";
 }
