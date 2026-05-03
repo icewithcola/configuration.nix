@@ -2,6 +2,7 @@
 {
   virtualisation.incus = {
     enable = true;
+    bucketSupport = false;
     preseed = {
       networks = [ ];
       profiles = [
