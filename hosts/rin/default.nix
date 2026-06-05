@@ -49,5 +49,10 @@
       relayServerPort = 44758;
       authKeyFile = config.age.secrets.tailscale-rin.path;
     };
+
+    virt = {
+      enable = true;
+      virtManager = false;
+    };
   };
 }

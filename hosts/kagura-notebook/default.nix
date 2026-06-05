@@ -14,7 +14,6 @@
     ../../services/bluetooth.nix
     ../../services/sound.nix
     ../../services/docker.nix
-    ../../services/virtManager.nix
   ];
 
   kagura = {
@@ -26,6 +25,11 @@
       enable = true;
       tailnetName = "dace-teeth";
       authKeyFile = config.age.secrets.tailscale-kagura-notebook.path;
+    };
+
+    virt = {
+      enable = true;
+      virtManager = true;
     };
   };
 }
