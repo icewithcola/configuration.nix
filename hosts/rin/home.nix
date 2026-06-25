@@ -1,5 +1,8 @@
 _: {
   imports = [ ../../home ];
 
-  kagura.home.pkgSets.network = true;
+  kagura.home.pkgSets = {
+    network = true;
+    dev = true;
+  };
 }

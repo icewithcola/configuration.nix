@@ -31,10 +31,12 @@ let
   ];
 
   dev = with pkgs; [
-    bun
     typst
     gdb
     android-tools
+    ripgrep
+
+    antigravity-cli
 
     # Formatter, global
     nixfmt
