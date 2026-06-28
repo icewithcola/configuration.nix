@@ -75,6 +75,38 @@ in
           '';
         };
       };
+
+      "kasmVNC" = {
+        onlySSL = true;
+        serverAliases = [
+          "vnc-int.${baseName}"
+        ];
+        sslCertificate = config.age.secrets.loli-cer.path;
+        sslCertificateKey = config.age.secrets.loli-priv.path;
+        listen = [
+          {
+            addr = "192.168.114.167";
+            port = 34512;
+            ssl = true;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "https://192.168.23.132:8444/";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_ssl_verify off;
+
+            client_max_body_size 2G;
+
+            error_page 497 https://$host:$server_port$request_uri;
+          '';
+        };
+      };
     };
   };
 }
