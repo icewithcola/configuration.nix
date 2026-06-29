@@ -22,7 +22,7 @@ in
     group = "whell";
   };
   "loli-cer.age" = {
-    publicKeys = users;
+    publicKeys = [ kagura-nas ];
     mode = "644";
     owner = "nginx";
   };
