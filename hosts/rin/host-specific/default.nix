@@ -5,5 +5,6 @@ _: {
     ./dn42.nix
     ./incus.nix
     ./p106.nix
+    ./sync-immich.nix
   ];
 }
