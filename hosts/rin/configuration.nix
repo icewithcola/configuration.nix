@@ -66,6 +66,14 @@
     shell = pkgs.zsh;
   };
 
+  services = {
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "weekly";
+      fileSystems = [ "/mnt/ssd128" ];
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   services.xserver.enable = false;

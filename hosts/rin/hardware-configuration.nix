@@ -39,6 +39,18 @@
     ];
   };
 
+  fileSystems."/mnt/ssd128" = {
+    device = "/dev/disk/by-uuid/642adc6d-0b09-4559-a7b7-5a9071454022";
+    fsType = "btrfs";
+    noCheck = true;
+    options = [
+      "nofail"
+      "subvol=@"
+      "noatime"
+      "compress=zstd:3"
+    ];
+  };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
