@@ -92,8 +92,8 @@ in
         lib.nameValuePair "kagura-ddns-${name}" {
           wantedBy = [ "timers.target" ];
           timerConfig = {
-            OnBootSec = "5min";
-            OnUnitActiveSec = "10min";
+            OnBootSec = "2min";
+            OnUnitActiveSec = "5min";
             Unit = "kagura-ddns-${name}.service";
           };
         }
