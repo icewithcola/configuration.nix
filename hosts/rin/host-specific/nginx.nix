@@ -109,14 +109,17 @@ in
       };
 
       "telegram" = {
+        onlySSL = true;
+        serverAliases = [
+          "tg.${baseName}"
+        ];        
+        sslCertificate = config.age.secrets.loli-cer.path;
+        sslCertificateKey = config.age.secrets.loli-priv.path;
         listen = [
           {
-            addr = "192.168.114.167";
-            port = 37514;
-          }
-          {
             addr = "100.112.3.53";
-            port = 37514;
+            port = 443;
+            ssl = true;
           }
         ];
         locations."/" = {
