@@ -107,6 +107,35 @@ in
           '';
         };
       };
+
+      "telegram" = {
+        listen = [
+          {
+            addr = "192.168.114.167";
+            port = 37514;
+          }
+          {
+            addr = "100.112.3.53";
+            port = 37514;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:37514/";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_ssl_verify off;
+
+            client_max_body_size 2G;
+
+            error_page 497 https://$host:$server_port$request_uri;
+          '';
+        };
+      };
     };
   };
 }
