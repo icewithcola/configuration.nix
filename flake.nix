@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kagura-pkgs = {
-      url = "github:icewithcola/nix-packages";
+      url = "github:icewithcola/nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -29,7 +29,6 @@ in
       dina-font
       proggyfonts
       meslo-lgs-nf
-      kagura-pkgs.HarmonyOS-Sans-fonts
       kagura-pkgs.noto-fonts-cjk-sans-static
     ];
     fontconfig.defaultFonts = {
