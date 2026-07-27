@@ -137,27 +137,29 @@
 
   services.clipse = {
     enable = true;
-    imageDisplay.type = "kitty";
-    keyBindings = {
-      choose = "enter";
-      clearSelected = "S";
-      down = "down";
-      end = "end";
-      filter = "/";
-      home = "home";
-      more = "?";
-      nextPage = "right";
-      prevPage = "left";
-      preview = "t";
-      quit = "q";
-      remove = "x";
-      selectDown = "ctrl+down";
-      selectSingle = "s";
-      selectUp = "ctrl+up";
-      togglePin = "p";
-      togglePinned = "tab";
-      up = "up";
-      yankFilter = "ctrl+s";
+    settings = {
+      imageDisplay.type = "kitty";
+      keyBindings = {
+        choose = "enter";
+        clearSelected = "S";
+        down = "down";
+        end = "end";
+        filter = "/";
+        home = "home";
+        more = "?";
+        nextPage = "right";
+        prevPage = "left";
+        preview = "t";
+        quit = "q";
+        remove = "x";
+        selectDown = "ctrl+down";
+        selectSingle = "s";
+        selectUp = "ctrl+up";
+        togglePin = "p";
+        togglePinned = "tab";
+        up = "up";
+        yankFilter = "ctrl+s";
+      };
     };
   };
 }
