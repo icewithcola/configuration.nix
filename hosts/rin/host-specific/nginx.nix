@@ -15,11 +15,22 @@ in
     after = [ "tailscaled.service" ];
     wants = [ "tailscaled.service" ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.iproute2 ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i tailscale0 -4 --timeout=120";
       RemainAfterExit = true;
     };
+    script = ''
+      for i in $(seq 1 120); do
+        if ip -4 addr show tailscale0 2>/dev/null | grep -q 'inet '; then
+          echo "tailscale0 has an IPv4 address"
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "Timed out waiting for tailscale0 IPv4 address" >&2
+      exit 1
+    '';
   };
 
   systemd.services.nginx = {
