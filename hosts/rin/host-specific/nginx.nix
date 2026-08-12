@@ -27,7 +27,6 @@ in
     wants = [ "tailscale-online.service" ];
     serviceConfig = {
       RestartSec = "5s";
-      Restart = "on-failure";
     };
   };
   users.users.nginx.extraGroups = [ "qbittorrent" ];
