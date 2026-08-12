@@ -37,6 +37,7 @@ let
     ripgrep
 
     antigravity-cli
+    codex
 
     # Formatter, global
     nixfmt

@@ -7,7 +7,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
-    kernelParams = [ "nomodeset" ];
+    kernelParams = [ "nomodeset" "memmap=4M$0x1572400000" ];
     loader = {
       systemd-boot.enable = true;
       efi = {
