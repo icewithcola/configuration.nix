@@ -1,11 +1,35 @@
 {
   config,
+  pkgs,
   ...
 }:
 let
   baseName = "home.lolicon.cyou";
 in
 {
+  # nginx binds to the Tailscale IP (100.112.3.53), so it must wait for
+  # tailscaled to bring up the tailscale0 interface before starting.
+  # tailscaled.service alone is not enough — the interface may not have an IP yet.
+  systemd.services.tailscale-online = {
+    description = "Wait for Tailscale interface to be online";
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i tailscale0 -4 --timeout=120";
+      RemainAfterExit = true;
+    };
+  };
+
+  systemd.services.nginx = {
+    after = [ "tailscale-online.service" ];
+    wants = [ "tailscale-online.service" ];
+    serviceConfig = {
+      RestartSec = "5s";
+      Restart = "on-failure";
+    };
+  };
   users.users.nginx.extraGroups = [ "qbittorrent" ];
 
   services.nginx = {
