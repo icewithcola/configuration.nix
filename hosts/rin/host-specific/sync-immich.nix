@@ -10,7 +10,7 @@
 
       script = ''
         set -eu
-        SRC="/opt/immich-app/library"
+        SRC="/opt/immich-app/library/"
         DST="/mnt/ssd128/immich/library"
 
         ${lib.getExe pkgs.rsync} -aHXc --inplace --delete "$SRC" "$DST"
