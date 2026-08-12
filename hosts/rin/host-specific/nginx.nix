@@ -25,9 +25,6 @@ in
   systemd.services.nginx = {
     after = [ "tailscale-online.service" ];
     wants = [ "tailscale-online.service" ];
-    serviceConfig = {
-      RestartSec = "5s";
-    };
   };
   users.users.nginx.extraGroups = [ "qbittorrent" ];
 
