@@ -81,5 +81,31 @@
 
   zramSwap.enable = false;
 
+  # Keep the existing responsive governor so container/VM workloads can still
+  # boost normally.  The machine's C3 and C6 states are present in intel_idle
+  # but currently disabled, which prevents the Xeon from reaching low-power
+  # idle states between requests.
+  powerManagement.cpuFreqGovernor = "schedutil";
+
+  systemd.services.enable-deep-cpu-idle = {
+    description = "Enable supported deep CPU idle states";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "multi-user.target" ];
+
+    serviceConfig.Type = "oneshot";
+
+    script = ''
+      for state in /sys/devices/system/cpu/cpu*/cpuidle/state*; do
+        [ -r "$state/name" ] || continue
+
+        case "$( ${pkgs.coreutils}/bin/cat "$state/name" )" in
+          C3|C6)
+            echo 0 > "$state/disable"
+            ;;
+        esac
+      done
+    '';
+  };
+
   system.stateVersion = "24.05";
 }
