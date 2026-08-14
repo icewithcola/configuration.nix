@@ -6,19 +6,19 @@
   imports = [
     ./configuration.nix
     ./host-specific
-    ../../nixosModules/niri
-    ../../programs/fcitx5.nix
-    ../../programs/nix-ld.nix
-    ../../programs/steam.nix
-    ../../programs/incus.nix
-    ../../services/bluetooth.nix
-    ../../services/sound.nix
-    ../../services/docker.nix
   ];
 
   kagura = {
+    bluetooth.enable = true;
+    docker.enable = true;
+    fcitx5.enable = true;
+    incus.enable = true;
+    niri.enable = true;
+    nixLd.enable = true;
     rootFileSystem = "btrfs";
     hostname = "kagura-notebook";
+    sound.enable = true;
+    steam.enable = true;
     useFullFonts = true;
 
     tailscale = {

@@ -1,7 +1,11 @@
-{ ... }:
+{ lib, config, ... }:
 {
-  programs.steam = {
-    enable = true;
-    protontricks.enable = true;
+  options.kagura.steam.enable = lib.mkEnableOption "Steam support";
+
+  config = lib.mkIf config.kagura.steam.enable {
+    programs.steam = {
+      enable = true;
+      protontricks.enable = true;
+    };
   };
 }

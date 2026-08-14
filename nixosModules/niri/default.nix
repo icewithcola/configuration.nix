@@ -2,7 +2,9 @@
 # 呜呜给我抄太好了
 {
   inputs,
+  lib,
   pkgs,
+  config,
   ...
 }:
 {
@@ -10,12 +12,16 @@
     inputs.niri.nixosModules.niri
   ];
 
-  security.pam.services.swaylock = { };
+  options.kagura.niri.enable = lib.mkEnableOption "Niri compositor support";
 
-  programs = {
-    niri = {
-      enable = true;
-      package = pkgs.niri;
+  config = lib.mkIf config.kagura.niri.enable {
+    security.pam.services.swaylock = { };
+
+    programs = {
+      niri = {
+        enable = true;
+        package = pkgs.niri;
+      };
     };
   };
 }

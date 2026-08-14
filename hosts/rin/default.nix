@@ -6,9 +6,6 @@
   imports = [
     ./configuration.nix
     ./host-specific
-    ../../services/ddns.nix
-    ../../services/docker.nix
-    ../../services/dn42.nix
   ];
 
   kagura = {
@@ -35,6 +32,8 @@
         recordId = "c458e5e1fcbea062d8713af43c75de71";
       };
     };
+
+    docker.enable = true;
 
     tailscale = {
       enable = true;

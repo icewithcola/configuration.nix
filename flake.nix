@@ -63,6 +63,8 @@
             ./common.nix
             ./secrets
             ./nixosOptions
+            ./nixosModules
+            ./programs
             ./services
 
             ./hosts/${host}

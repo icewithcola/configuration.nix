@@ -1,9 +1,13 @@
-{ ... }:
+{ lib, config, ... }:
 {
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
+  options.kagura.sunshine.enable = lib.mkEnableOption "Sunshine game streaming";
+
+  config = lib.mkIf config.kagura.sunshine.enable {
+    services.sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
   };
 }
