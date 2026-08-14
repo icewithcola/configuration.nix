@@ -9,6 +9,8 @@ _: {
   kagura.home.pkgSets = {
     gui = true;
     dev = true;
+    devJvm = true;
+    devAndroid = true;
     network = true;
   };
 }

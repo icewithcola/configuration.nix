@@ -25,12 +25,25 @@ in
 
     dev = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = ''
-        Usage of this computer, if true, enable some development packages
-        These are impacted:
-        - Packages for systems
-        - LSP for helix
+        Enable the core development tools used for Nix and general remote work.
+      '';
+    };
+
+    devJvm = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Enable Java and Kotlin language servers for Helix.
+      '';
+    };
+
+    devAndroid = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Enable Android command-line development tools.
       '';
     };
   };

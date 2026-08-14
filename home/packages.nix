@@ -25,7 +25,7 @@ let
 
   network = with pkgs; [
     gping # Alternative to ping
-    doggo   # Alternative to dig
+    doggo # Alternative to dig
     rustscan # Alternative to nmap
     iperf
   ];
@@ -33,7 +33,6 @@ let
   dev = with pkgs; [
     typst
     gdb
-    android-tools
     ripgrep
 
     antigravity-cli
@@ -44,11 +43,21 @@ let
     nil
     shfmt
   ];
+
+  devAndroid = with pkgs; [
+    android-tools
+  ];
 in
 {
   home.packages =
     base
     ++ lib.optionals config.kagura.home.pkgSets.gui gui
     ++ lib.optionals config.kagura.home.pkgSets.network network
-    ++ lib.optionals config.kagura.home.pkgSets.dev dev;
+    ++ lib.optionals config.kagura.home.pkgSets.dev dev
+    ++ lib.optionals config.kagura.home.pkgSets.devAndroid devAndroid;
+
+  programs.direnv = lib.mkIf config.kagura.home.pkgSets.dev {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }

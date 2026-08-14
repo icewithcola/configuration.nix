@@ -58,6 +58,24 @@ in
         locations."/".return = 444;
       };
 
+      # `forceSSL` redirects to the default HTTPS port, which would send
+      # clients to 443.  Keep these redirects explicit for the non-standard
+      # listeners instead.
+      "http-to-https-21443" = {
+        serverAliases = [
+          "rin.${baseName}"
+          "rin-cm.${baseName}"
+          "store.${baseName}"
+          "store-cm.${baseName}"
+        ];
+        locations."/".return = "301 https://$host:21443$request_uri";
+      };
+
+      "http-to-https-34512" = {
+        serverAliases = [ "vnc-int.${baseName}" ];
+        locations."/".return = "301 https://$host:34512$request_uri";
+      };
+
       "immich" = {
         onlySSL = true;
         sslCertificate = config.age.secrets.loli-cer.path;
@@ -91,18 +109,15 @@ in
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
         locations."/" = {
-          alias = "/var/lib/qBittorrent/qBittorrent/downloads/";
+          proxyPass = "http://127.0.0.1:18080/";
           extraConfig = ''
-            autoindex on;
-            charset utf-8;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
 
-            expires -1;
-            add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
-
-            sendfile on;
-            tcp_nopush on;
-            aio on;
-            directio 512;
+            proxy_http_version 1.1;
+            proxy_read_timeout 3600s;
           '';
         };
       };
@@ -143,7 +158,7 @@ in
         onlySSL = true;
         serverAliases = [
           "tg.${baseName}"
-        ];        
+        ];
         sslCertificate = config.age.secrets.loli-cer.path;
         sslCertificateKey = config.age.secrets.loli-priv.path;
         listen = [

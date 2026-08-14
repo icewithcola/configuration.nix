@@ -7,9 +7,15 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
-    kernelParams = [ "nomodeset" "memmap=4M$0x1572400000" ];
+    kernelParams = [
+      "nomodeset"
+      "memmap=4M$0x1572400000"
+    ];
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 7;
+      };
       efi = {
         efiSysMountPoint = "/boot";
         canTouchEfiVariables = true;
