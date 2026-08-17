@@ -93,6 +93,30 @@
   programs = {
     zsh.enable = true;
     niri.enable = true;
+
+    npm = {
+      enable = true;
+      npmrc = ''
+        prefix = ''${HOME}/.npm
+
+        # Do not run dependency lifecycle hooks implicitly.
+        ignore-scripts = true
+
+        # Quarantine newly published package versions for one week.
+        min-release-age = 7
+
+        # Only the root project may opt into non-registry dependencies.
+        allow-directory = root
+        allow-file = root
+        allow-git = root
+        allow-remote = root
+
+        # Keep dependency resolution reproducible and transport authenticated.
+        package-lock = true
+        save-exact = true
+        strict-ssl = true
+      '';
+    };
   };
 
   zramSwap.enable = true;
