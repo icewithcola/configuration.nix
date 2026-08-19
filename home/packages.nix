@@ -31,6 +31,10 @@ let
   ];
 
   dev = with pkgs; [
+    perl
+    ruby # codex loves this
+    python3 # LLM's best frirend
+
     typst
     gdb
     ripgrep

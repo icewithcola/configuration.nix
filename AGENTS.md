@@ -61,6 +61,9 @@ replaces the former `GEMINI.md`.
 - Home Assistant's internal/default URL is `https://ha.home.lolicon.cyou`.
   nginx listens on `192.168.114.167:443` and proxies to the loopback-only
   backend at `127.0.0.1:18123`; Tailscale clients use the advertised LAN route.
+- Home Assistant 2026.8 ignores HTTP YAML after its one-time migration. The
+  host module therefore manages `.storage/http` before service startup; keep
+  listener and trusted-proxy changes in that generated storage record.
 - Home Assistant includes Xiaomi's official `xiaomi_home` custom integration.
   Version 0.4.7 still hardcodes an OAuth callback to `homeassistant.local`,
   which is intentionally not exposed by the nginx configuration.
