@@ -122,6 +122,33 @@ in
         };
       };
 
+      "home-assistant" = {
+        onlySSL = true;
+        serverName = "ha.${baseName}";
+        sslCertificate = config.age.secrets.loli-cer.path;
+        sslCertificateKey = config.age.secrets.loli-priv.path;
+        listen = [
+          {
+            addr = "192.168.114.167";
+            port = 443;
+            ssl = true;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:18123/";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_buffering off;
+            proxy_read_timeout 3600s;
+          '';
+        };
+      };
+
       "kasmVNC" = {
         onlySSL = true;
         serverAliases = [

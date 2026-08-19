@@ -1,10 +1,10 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-08-14** at base commit
-`43488187a85ffc5adb4d684a18463fcc26a4312b` (`rin: enable deep CPU idle
-states`). Refresh this section when the declared host topology, inputs, or
-pending work changes.
+Last reviewed: **2026-08-19** for the `rin: add Home Assistant` change, based
+on parent commit `73599fb972af7033ae17b974d337e7b8d62a4971` (`chore: mark
+generated files in gitattributes`). Refresh this section when the declared host
+topology, inputs, or pending work changes.
 
 ## Current repository state
 
@@ -15,9 +15,9 @@ Manager in `home/`.
 
 | Input | Declared channel | Locked revision | Lock timestamp |
 | --- | --- | --- | --- |
-| `nixpkgs` | `nixos-unstable` | `2fcb964de67fcf60b43471c55d5d99e61a9ccb5a` | 2026-08-10 |
+| `nixpkgs` | `nixos-unstable` | `e5bdc4a41d4c072fe1e3787eaa0320a384741d44` | 2026-08-16 |
 | `nixpkgs-stable` | `nixos-25.11` | `b6018f87da91d19d0ab4cf979885689b469cdd41` | 2026-06-30 |
-| `home-manager-nixos` | `master`, follows `nixpkgs` | `f8badd57bac448d07fb93a7884a207ecb0927e95` | 2026-08-12 |
+| `home-manager-nixos` | `master`, follows `nixpkgs` | `aac4965ddb7ea2ff0f3cadd9502c7042b7aa07ba` | 2026-08-17 |
 | `niri` | `sodiboo/niri-flake`, follows `nixpkgs` | `9ee3e13b60643448228353097880521658b2fe0e` | 2026-08-04 |
 | `kagura-pkgs` | `icewithcola/nur-packages`, follows `nixpkgs` | `89c945a556915c18fa75d722d2c32f6bc75a5ae2` | 2026-07-16 |
 | `agenix` | `ryantm/agenix` | `b027ee29d959fda4b60b57566d64c98a202e0feb` | 2026-02-04 |
@@ -29,11 +29,8 @@ imported only for intentional compatibility pins; today it supplies
 reason the pin exists.
 
 `nix flake check --no-build` passed for all three hosts at this snapshot. The
-working tree deliberately has a pending change in
-`hosts/rin/host-specific/nginx.nix`: the `store` virtual host has been changed
-from direct qBittorrent-download serving to a proxy for `127.0.0.1:18080`.
-Preserve and review that separate change unless the task concerns it. This
-document replaces the former `GEMINI.md`.
+working tree was clean before adding Xiaomi Home support. This document
+replaces the former `GEMINI.md`.
 
 ## Declared host topology
 
@@ -58,9 +55,18 @@ document replaces the former `GEMINI.md`.
   settings remotely without a confirmed recovery path. The global firewall is
   disabled; Tailscale enables nftables and trusts `tailscale0` when routing.
 - Runs SSH, Docker (rootless support enabled), libvirt, Incus bridged to
-  `br-cm`, qBittorrent Enhanced nox, nginx, Tailscale, DDNS, DN42/BIRD2, the
-  NVIDIA container toolkit, and daily Immich rsync backup from
+  `br-cm`, qBittorrent Enhanced nox, nginx, Home Assistant, Tailscale, DDNS,
+  DN42/BIRD2, the NVIDIA container toolkit, and daily Immich rsync backup from
   `/opt/immich-app/library/` to `/mnt/ssd128/immich/library`.
+- Home Assistant's internal/default URL is `https://ha.home.lolicon.cyou`.
+  nginx listens on `192.168.114.167:443` and proxies to the loopback-only
+  backend at `127.0.0.1:18123`; Tailscale clients use the advertised LAN route.
+- Home Assistant includes Xiaomi's official `xiaomi_home` custom integration.
+  Version 0.4.7 still hardcodes an OAuth callback to `homeassistant.local`,
+  which is intentionally not exposed by the nginx configuration.
+- The Nix-managed `Kagura's home` YAML dashboard is colocated with the host
+  module in `hosts/rin/host-specific/home-assistant/`. The `机柜` section is
+  monitoring-only and must never expose a power-off or other writable entity.
 - Is a Tailscale exit node and advertises `192.168.114.0/24` and `fd00::/8`.
   nginx includes Tailscale-only HTTPS listener(s), waits for `tailscale0`, and
   uses agenix TLS material. DN42 uses WireGuard peers and BIRD route filters.

@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./home-assistant
     ./nginx.nix
     ./qbittorrent.nix
     ./dn42.nix
