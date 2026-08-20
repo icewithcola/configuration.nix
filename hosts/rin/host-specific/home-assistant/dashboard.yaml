@@ -1,35 +1,81 @@
 # Installed as a YAML-mode Lovelace dashboard by the adjacent NixOS module.
+# Keep the main views focused on daily controls and useful telemetry. Device
+# configuration remains available from the entity's More info dialog.
 title: "Kagura's home"
 views:
   - title: 首页
     path: home
-    icon: mdi:home
+    icon: mdi:home-heart
+    show_icon_and_title: true
     type: sections
     max_columns: 3
+    header:
+      layout: responsive
+      badges_position: top
+      card:
+        type: markdown
+        content: |
+          ## ✨ Kagura's home
+          设备控制、能耗与空气质量，一眼掌握。
+    badges:
+      - entity: sensor.zhimi_cn_977277023_rma3_temperature_p_3_7
+        name: 温度
+        icon: mdi:thermometer
+        show_state: true
+      - entity: sensor.zhimi_cn_977277023_rma3_relative_humidity_p_3_1
+        name: 湿度
+        icon: mdi:water-percent
+        show_state: true
+      - entity: sensor.zhimi_cn_977277023_rma3_pm2_5_density_p_3_4
+        name: PM2.5
+        icon: mdi:blur
+        show_state: true
+      - entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
+        name: 机柜功率
+        icon: mdi:flash
+        show_state: true
     sections:
       - type: grid
         background:
-          color: "#DFF3FF"
-          opacity: 45
+          color: "#EAF4FF"
+          opacity: 60
         cards:
           - type: heading
-            heading: ✨ 常用控制
-            icon: mdi:home-heart
+            heading: 常用控制
+            icon: mdi:gesture-tap-button
+            badges:
+              - type: entity
+                entity: switch.dlx_cn_2025609472_deim02_on_p_2_1
+                name: 空调插座
+                show_state: true
+              - type: entity
+                entity: switch.zhimi_cn_977277023_rma3_on_p_2_1
+                name: 空气净化器
+                show_state: true
           - type: tile
             entity: switch.dlx_cn_2025609472_deim02_on_p_2_1
             name: 空调插座
             icon: mdi:power-socket-cn
             color: light-blue
+            vertical: true
+            tap_action:
+              action: toggle
           - type: tile
             entity: switch.zhimi_cn_977277023_rma3_on_p_2_1
             name: 空气净化器
             icon: mdi:air-purifier
             color: cyan
+            vertical: true
+            tap_action:
+              action: toggle
           - type: tile
             entity: light.dlx_cn_2025609472_deim02_s_10_indicator_light
-            name: 空调插座指示灯
+            name: 插座指示灯
             icon: mdi:led-on
             color: light-blue
+            vertical: true
+            tap_action:
+              action: toggle
           - type: conditional
             conditions:
               - condition: state
@@ -43,28 +89,21 @@ views:
 
       - type: grid
         background:
-          color: "#E8F5FF"
-          opacity: 45
+          color: "#FFF4D9"
+          opacity: 55
         cards:
           - type: heading
-            heading: ⚡ 实时功率
-            icon: mdi:lightning-bolt
+            heading: 能耗概览
+            icon: mdi:lightning-bolt-circle
             badges:
               - type: entity
-                entity: sensor.dlx_cn_2026022406_deim01_power_consumption_p_3_1
-                name: 机柜累计
+                entity: sensor.dlx_cn_2025609472_deim02_electric_power_p_3_2
+                name: 空调插座
                 show_state: true
               - type: entity
-                entity: sensor.dlx_cn_2025609472_deim02_power_consumption_p_3_1
-                name: 空调累计
+                entity: sensor.dlx_cn_2025609472_deim01_electric_power_p_3_2
+                name: 机柜
                 show_state: true
-          - type: sensor
-            entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
-            name: 机柜功率
-            icon: mdi:server
-            graph: line
-            hours_to_show: 24
-            detail: 2
           - type: sensor
             entity: sensor.dlx_cn_2025609472_deim02_electric_power_p_3_2
             name: 空调插座功率
@@ -72,139 +111,171 @@ views:
             graph: line
             hours_to_show: 24
             detail: 2
+          - type: sensor
+            entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
+            name: 机柜功率
+            icon: mdi:server
+            graph: line
+            hours_to_show: 24
+            detail: 2
+          - type: tile
+            entity: sensor.air_conditioner_socket_monthly_energy
+            name: 空调本月用电
+            icon: mdi:calendar-month
+            color: amber
+          - type: tile
+            entity: sensor.rack_monthly_energy
+            name: 机柜本月用电
+            icon: mdi:calendar-month
+            color: orange
 
       - type: grid
         background:
-          color: "#E4F8FF"
-          opacity: 45
+          color: "#E8F7F2"
+          opacity: 60
         cards:
           - type: heading
-            heading: 🌿 卧室空气
-            icon: mdi:air-filter
+            heading: 卧室空气
+            icon: mdi:leaf-circle
+            badges:
+              - type: entity
+                entity: sensor.zhimi_cn_977277023_rma3_air_quality_p_3_8
+                name: 空气质量
+                show_state: true
+              - type: entity
+                entity: sensor.zhimi_cn_977277023_rma3_filter_life_level_p_4_1
+                name: 滤芯
+                show_state: true
           - type: tile
             entity: sensor.zhimi_cn_977277023_rma3_pm2_5_density_p_3_4
             name: PM2.5
             icon: mdi:blur
             color: light-blue
+            vertical: true
+          - type: tile
+            entity: sensor.zhimi_cn_977277023_rma3_air_quality_p_3_8
+            name: 空气质量
+            icon: mdi:weather-hazy
+            color: teal
+            vertical: true
           - type: tile
             entity: sensor.zhimi_cn_977277023_rma3_temperature_p_3_7
             name: 温度
             icon: mdi:thermometer
-            color: light-blue
+            color: orange
+            vertical: true
           - type: tile
             entity: sensor.zhimi_cn_977277023_rma3_relative_humidity_p_3_1
             name: 湿度
             icon: mdi:water-percent
             color: cyan
+            vertical: true
           - type: tile
             entity: sensor.zhimi_cn_977277023_rma3_filter_life_level_p_4_1
             name: 滤芯寿命
             icon: mdi:air-filter
-            color: light-blue
+            color: green
+            vertical: true
+
+      - type: grid
+        background:
+          color: "#F2EEFF"
+          opacity: 55
+        cards:
           - type: heading
-            heading: 🛡️ 设备状态
-            heading_style: subtitle
+            heading: 设备健康
             icon: mdi:shield-check
+            heading_style: subtitle
           - type: tile
             entity: sensor.dlx_cn_2026022406_deim01_fault_p_2_3
-            name: 机柜故障状态
+            name: 机柜状态
+            icon: mdi:server-security
           - type: tile
             entity: sensor.dlx_cn_2025609472_deim02_fault_p_2_3
-            name: 空调插座故障状态
+            name: 空调插座状态
+            icon: mdi:power-plug-battery-outline
 
   - title: 卧室
     path: bedroom
-    icon: mdi:bed
+    icon: mdi:bed-outline
+    show_icon_and_title: true
     type: sections
     max_columns: 3
+    header:
+      layout: responsive
+      badges_position: top
+      card:
+        type: markdown
+        content: |
+          ## 🛏️ 卧室
+          安静、清爽、低打扰。
+    badges:
+      - entity: sensor.zhimi_cn_977277023_rma3_temperature_p_3_7
+        name: 温度
+        icon: mdi:thermometer
+        show_state: true
+      - entity: sensor.zhimi_cn_977277023_rma3_relative_humidity_p_3_1
+        name: 湿度
+        icon: mdi:water-percent
+        show_state: true
+      - entity: sensor.dlx_cn_2025609472_deim02_electric_power_p_3_2
+        name: 插座功率
+        icon: mdi:flash
+        show_state: true
     sections:
       - type: grid
         background:
-          color: "#DFF3FF"
-          opacity: 45
+          color: "#EAF4FF"
+          opacity: 60
         cards:
           - type: heading
-            heading: ❄️ 空调插座
+            heading: 空调插座
             icon: mdi:power-socket-cn
             badges:
               - type: entity
                 entity: sensor.dlx_cn_2025609472_deim02_electric_power_p_3_2
-                name: 功率
+                name: 当前
                 show_state: true
               - type: entity
-                entity: sensor.dlx_cn_2025609472_deim02_power_consumption_p_3_1
-                name: 累计
+                entity: sensor.air_conditioner_socket_monthly_energy
+                name: 本月
                 show_state: true
           - type: tile
             entity: switch.dlx_cn_2025609472_deim02_on_p_2_1
             name: 电源
             icon: mdi:power
             color: light-blue
+            vertical: true
+            tap_action:
+              action: toggle
           - type: tile
             entity: light.dlx_cn_2025609472_deim02_s_10_indicator_light
             name: 指示灯
             icon: mdi:led-on
             color: light-blue
+            vertical: true
+            tap_action:
+              action: toggle
+          - type: tile
+            entity: sensor.air_conditioner_socket_monthly_energy
+            name: 本月用电
+            icon: mdi:calendar-month
+            color: amber
           - type: sensor
             entity: sensor.dlx_cn_2025609472_deim02_electric_power_p_3_2
-            name: 24 小时功率
-            graph: line
-            hours_to_show: 24
-            detail: 2
-          - type: entities
-            title: 设置
-            show_header_toggle: false
-            entities:
-              - entity: select.dlx_cn_2025609472_deim02_default_power_on_state_p_2_2
-                name: 默认上电状态
-              - entity: switch.dlx_cn_2025609472_deim02_physical_controls_locked_p_7_1
-                name: 物理控制锁
-              - entity: switch.dlx_cn_2025609472_deim02_on_p_9_1
-                name: 过度用电提醒
-              - entity: number.dlx_cn_2025609472_deim02_over_ele_day_p_9_2
-                name: 每日用电提醒阈值
-              - entity: number.dlx_cn_2025609472_deim02_over_ele_month_p_9_3
-                name: 每月用电提醒阈值
-
-      - type: grid
-        background:
-          color: "#E8F5FF"
-          opacity: 45
-        cards:
-          - type: heading
-            heading: 🖥️ 机柜监控
-            icon: mdi:server-network
-            badges:
-              - type: entity
-                entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
-                name: 功率
-                show_state: true
-              - type: entity
-                entity: sensor.dlx_cn_2026022406_deim01_power_consumption_p_3_1
-                name: 累计
-                show_state: true
-          - type: tile
-            entity: sensor.dlx_cn_2026022406_deim01_fault_p_2_3
-            name: 故障状态
-            icon: mdi:shield-alert
-          - type: tile
-            entity: sensor.dlx_cn_2026022406_deim01_power_consumption_p_3_1
-            name: 累计用电
-            icon: mdi:counter
-          - type: sensor
-            entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
-            name: 24 小时功率
+            name: 过去 24 小时
+            icon: mdi:chart-line
             graph: line
             hours_to_show: 24
             detail: 2
 
       - type: grid
         background:
-          color: "#E4F8FF"
-          opacity: 45
+          color: "#E8F7F2"
+          opacity: 60
         cards:
           - type: heading
-            heading: ☁️ 空气净化器
+            heading: 空气净化器
             icon: mdi:air-purifier
             badges:
               - type: entity
@@ -220,48 +291,87 @@ views:
             name: 电源
             icon: mdi:power
             color: cyan
+            vertical: true
+            tap_action:
+              action: toggle
           - type: tile
             entity: sensor.zhimi_cn_977277023_rma3_air_quality_p_3_8
             name: 空气质量
             icon: mdi:weather-hazy
+            color: teal
+            vertical: true
+          - type: tile
+            entity: sensor.zhimi_cn_977277023_rma3_pm2_5_density_p_3_4
+            name: PM2.5
+            icon: mdi:blur
             color: light-blue
+            vertical: true
+          - type: tile
+            entity: sensor.zhimi_cn_977277023_rma3_temperature_p_3_7
+            name: 温度
+            icon: mdi:thermometer
+            color: orange
+            vertical: true
+          - type: tile
+            entity: sensor.zhimi_cn_977277023_rma3_relative_humidity_p_3_1
+            name: 湿度
+            icon: mdi:water-percent
+            color: cyan
+            vertical: true
+          - type: tile
+            entity: sensor.zhimi_cn_977277023_rma3_filter_life_level_p_4_1
+            name: 滤芯寿命
+            icon: mdi:air-filter
+            color: green
+            vertical: true
           - type: sensor
             entity: sensor.zhimi_cn_977277023_rma3_pm2_5_density_p_3_4
-            name: PM2.5（24 小时）
+            name: PM2.5 趋势
+            icon: mdi:chart-line
             graph: line
             hours_to_show: 24
             detail: 2
-          - type: entities
-            title: 环境
-            show_header_toggle: false
-            entities:
-              - entity: sensor.zhimi_cn_977277023_rma3_temperature_p_3_7
-                name: 温度
-              - entity: sensor.zhimi_cn_977277023_rma3_relative_humidity_p_3_1
-                name: 湿度
-              - entity: sensor.zhimi_cn_977277023_rma3_pm2_5_density_p_3_4
-                name: PM2.5
-          - type: entities
-            title: 设置
-            show_header_toggle: false
-            entities:
-              - entity: select.zhimi_cn_977277023_rma3_mode_p_2_4
-                name: 模式
-              - entity: select.zhimi_cn_977277023_rma3_fan_level_p_11_1
-                name: 最爱模式风量
-              - entity: select.zhimi_cn_977277023_rma3_brightness_p_7_2
-                name: 显示屏亮度
-              - entity: switch.zhimi_cn_977277023_rma3_alarm_p_6_1
-                name: 提示音
-              - entity: switch.zhimi_cn_977277023_rma3_physical_controls_locked_p_8_1
-                name: 童锁
-          - type: entities
-            title: 滤芯
-            show_header_toggle: false
-            entities:
-              - entity: sensor.zhimi_cn_977277023_rma3_filter_life_level_p_4_1
-                name: 剩余寿命
-              - entity: sensor.zhimi_cn_977277023_rma3_filter_left_time_p_4_4
-                name: 预计剩余天数
-              - entity: sensor.zhimi_cn_977277023_rma3_filter_used_time_p_4_3
-                name: 已使用时间
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: switch.zhimi_cn_977277023_rma3_on_p_2_1
+                state: unavailable
+            card:
+              type: markdown
+              content: >-
+                **空气净化器当前离线。** 请先在小米米家中确认设备联网，
+                再检查 Xiaomi Home 集成。
+
+      - type: grid
+        background:
+          color: "#F2EEFF"
+          opacity: 55
+        cards:
+          - type: heading
+            heading: 机柜监控
+            icon: mdi:server-network
+            badges:
+              - type: entity
+                entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
+                name: 当前功率
+                show_state: true
+              - type: entity
+                entity: sensor.rack_monthly_energy
+                name: 本月
+                show_state: true
+          - type: tile
+            entity: sensor.dlx_cn_2026022406_deim01_fault_p_2_3
+            name: 设备状态
+            icon: mdi:shield-check
+          - type: tile
+            entity: sensor.rack_monthly_energy
+            name: 本月用电
+            icon: mdi:calendar-month
+            color: orange
+          - type: sensor
+            entity: sensor.dlx_cn_2026022406_deim01_electric_power_p_3_2
+            name: 过去 24 小时
+            icon: mdi:chart-line
+            graph: line
+            hours_to_show: 24
+            detail: 2

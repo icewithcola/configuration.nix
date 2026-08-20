@@ -47,6 +47,25 @@ in
       default_config = { };
       homeassistant.internal_url = "https://ha.home.lolicon.cyou";
 
+      # Xiaomi reports lifetime energy counters. Derive calendar-month meters so
+      # the dashboard shows energy used during the current month in kWh.
+      utility_meter = {
+        air_conditioner_socket_monthly_energy = {
+          source = "sensor.dlx_cn_2025609472_deim02_power_consumption_p_3_1";
+          name = "Air conditioner socket monthly energy";
+          unique_id = "air_conditioner_socket_monthly_energy";
+          cycle = "monthly";
+          periodically_resetting = false;
+        };
+        rack_monthly_energy = {
+          source = "sensor.dlx_cn_2026022406_deim01_power_consumption_p_3_1";
+          name = "Rack monthly energy";
+          unique_id = "rack_monthly_energy";
+          cycle = "monthly";
+          periodically_resetting = false;
+        };
+      };
+
       lovelace.dashboards = {
         nixos-lovelace = null;
         "kaguras-home" = {
