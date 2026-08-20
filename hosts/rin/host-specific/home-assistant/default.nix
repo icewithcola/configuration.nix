@@ -41,6 +41,7 @@ in
       "ffmpeg"
       "google_translate"
       "upnp"
+      "utility_meter"
       "zeroconf"
     ];
     config = {
