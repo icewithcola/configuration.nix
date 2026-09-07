@@ -15,6 +15,7 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
     shellAliases = lib.mkMerge [
@@ -28,7 +29,8 @@ in
 
         home-edit = "hx ~/.config/home-manager";
       }
-      (lib.mkIf (config.kagura.home.pkgSets.network) { # Network package set used, use doggo
+      (lib.mkIf (config.kagura.home.pkgSets.network) {
+        # Network package set used, use doggo
         dig = "doggo";
       })
     ];
@@ -36,11 +38,6 @@ in
     history = {
       size = 10000;
       path = "${config.xdg.dataHome}/zsh/history";
-    };
-
-    zplug = {
-      enable = true;
-      plugins = [ { name = "zsh-users/zsh-autosuggestions"; } ];
     };
 
     plugins = [
@@ -53,6 +50,10 @@ in
 
     oh-my-zsh = {
       enable = true;
+      extraConfig = ''
+        # Completion paths are managed by Nix and immutable; skip the redundant audit.
+        ZSH_DISABLE_COMPFIX=true
+      '';
       plugins = [
         "git"
       ];
