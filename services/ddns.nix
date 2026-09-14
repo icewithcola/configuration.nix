@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkOption types;
   cfg = config.kagura.ddns;
@@ -8,44 +13,46 @@ in
     default = { };
     description = "DDNS configurations";
     type = types.attrsOf (
-      types.submodule ({ ... }: {
-        options = {
-          enable = mkOption {
-            type = types.bool;
-            default = true;
-            description = "Enable this ddns instance";
-          };
+      types.submodule (
+        { ... }: {
+          options = {
+            enable = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Enable this ddns instance";
+            };
 
-          host = mkOption {
-            type = types.str;
-            default = config.networking.hostName;
-            description = "The hostname of the machine";
-          };
+            host = mkOption {
+              type = types.str;
+              default = config.networking.hostName;
+              description = "The hostname of the machine";
+            };
 
-          suffix = mkOption {
-            type = types.str;
-            default = ".home.lolicon.cyou";
-            description = "The suffix of the hostname";
-          };
+            suffix = mkOption {
+              type = types.str;
+              default = ".home.lolicon.cyou";
+              description = "The suffix of the hostname";
+            };
 
-          recordId = mkOption {
-            type = types.str;
-            default = "";
-            description = "The record ID from Cloudflare";
-          };
+            recordId = mkOption {
+              type = types.str;
+              default = "";
+              description = "The record ID from Cloudflare";
+            };
 
-          secretFile = mkOption {
-            type = types.path;
-            description = "The path to the secret file, contains ZONE, RECORD_ID, API_KEY";
-          };
+            secretFile = mkOption {
+              type = types.path;
+              description = "The path to the secret file, contains ZONE, RECORD_ID, API_KEY";
+            };
 
-          interface = mkOption {
-            type = types.str;
-            default = "eth0";
-            description = "The interface to use";
+            interface = mkOption {
+              type = types.str;
+              default = "eth0";
+              description = "The interface to use";
+            };
           };
-        };
-      })
+        }
+      )
     );
   };
 
@@ -61,14 +68,33 @@ in
         in
         lib.nameValuePair "kagura-ddns-${name}" {
           script = ''
-            set -eu
+            set -euo pipefail
 
             ZONE=$(cat ${instance.secretFile} | ${lib.getExe pkgs.jq} -r .ZONE)
             RECORD_ID="${instance.recordId}"
             API_KEY=$(cat ${instance.secretFile} | ${lib.getExe pkgs.jq} -r .API_KEY)
 
             myip=$(${lib.getExe' pkgs.iproute2 "ip"} -6 -j addr show dev ${instance.interface} scope global primary -tentative up | ${lib.getExe pkgs.jq} -r '(.[0] // empty).addr_info | sort_by(.prefixlen) | sort_by(.local) | map(.local // empty)[0] // empty')
-            ${lib.getExe pkgs.curl} https://api.cloudflare.com/client/v4/zones/''${ZONE}/dns_records/''${RECORD_ID} \
+            if [ -z "''${myip}" ]; then
+              echo "DDNS: no global IPv6 address found on ${instance.interface}; not updating ${domain}" >&2
+              exit 1
+            fi
+
+            if previous=$(${lib.getExe pkgs.curl} \
+              --fail --silent --show-error --location \
+              --header "Accept: application/dns-json" \
+              --get --data-urlencode "name=${domain}" --data "type=AAAA" \
+              https://snd.kagurach.uk/dns-query \
+              | ${lib.getExe pkgs.jq} -r '[.Answer[]? | select(.type == 28) | .data] | join(", ")'); then
+              previous=''${previous:-<no-AAAA-record>}
+            else
+              previous="<DoH-lookup-failed>"
+              echo "DDNS: unable to resolve the previous AAAA record for ${domain} through snd.kagurach.uk" >&2
+            fi
+
+            echo "DDNS: updating ${domain} AAAA: ''${previous} -> ''${myip}"
+
+            ${lib.getExe pkgs.curl} --fail-with-body --silent --show-error https://api.cloudflare.com/client/v4/zones/''${ZONE}/dns_records/''${RECORD_ID} \
               -X PUT \
               -H "Authorization: Bearer ''${API_KEY}" \
               -H "Content-Type: application/json" \
@@ -79,6 +105,8 @@ in
                 \"content\": \"''${myip}\",
                 \"proxied\": false
               }"
+
+            echo "DDNS: successfully updated ${domain} AAAA to ''${myip}"
           '';
           serviceConfig = {
             Type = "oneshot";
