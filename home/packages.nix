@@ -46,6 +46,9 @@ let
     nixfmt
     nil
     shfmt
+
+    # Nix build tools
+    nix-output-monitor
   ];
 
   devAndroid = with pkgs; [

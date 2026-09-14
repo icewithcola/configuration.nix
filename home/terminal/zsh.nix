@@ -33,6 +33,9 @@ in
         # Network package set used, use doggo
         dig = "doggo";
       })
+      (lib.mkIf (config.kagura.home.pkgSets.dev) {
+        nix-build = "nom-build";
+      })
     ];
 
     history = {
@@ -65,6 +68,43 @@ in
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       source ${github_hook}
       [[ ! -d ~/.cargo/bin ]] || export PATH=`realpath ~`/.cargo/bin:$PATH
+
+      # Wrap nix build and nixos-rebuild with nix-output-monitor if available
+      nix() {
+        if ! command -v nom >/dev/null 2>&1; then
+          command nix "$@"
+          return
+        fi
+
+        local -a pre_args
+        while [[ $# -gt 0 ]]; do
+          case "$1" in
+            build)
+              shift
+              nom build "''${pre_args[@]}" "$@"
+              return
+              ;;
+            -*)
+              pre_args+=("$1")
+              shift
+              ;;
+            *)
+              command nix "''${pre_args[@]}" "$@"
+              return
+              ;;
+          esac
+        done
+        command nix "''${pre_args[@]}"
+      }
+
+      nixos-rebuild() {
+        if command -v nom >/dev/null 2>&1; then
+          setopt localoptions pipefail
+          command nixos-rebuild "$@" |& nom
+        else
+          command nixos-rebuild "$@"
+        fi
+      }
     '';
   };
 
