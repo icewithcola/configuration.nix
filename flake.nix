@@ -53,7 +53,7 @@
             ({
               nixpkgs.overlays = [
                 (_: prev: {
-                  kagura-pkgs = inputs.kagura-pkgs.packages.${prev.system};
+                  kagura-pkgs = inputs.kagura-pkgs.packages.${prev.stdenv.hostPlatform.system};
                 })
               ];
             })

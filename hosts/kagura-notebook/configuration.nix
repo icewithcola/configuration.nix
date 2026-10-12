@@ -54,7 +54,7 @@
   environment.systemPackages =
     (with pkgs; [
       pinentry-all
-      libreoffice-qt6-fresh
+      libreoffice-qt
       remmina
       kitty
       vscode
@@ -64,7 +64,7 @@
       zlib
       cargo-binutils
       yarn
-      texlive.combined.scheme-full
+      texliveFull
       jdk25_headless
       jdk17_headless
       perl
