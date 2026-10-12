@@ -1,0 +1,8 @@
+--- a/lib/jplsubs.f
++++ b/lib/jplsubs.f
+@@ -684,3 +684,5 @@
++      EXTERNAL SPLIT
++
+       INTEGER OLDMAX
+       PARAMETER ( OLDMAX = 400)
+       INTEGER NMAX

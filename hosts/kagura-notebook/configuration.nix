@@ -74,7 +74,10 @@
       llvmPackages_20.clang-tools
       llvmPackages_20.clangUseLLVM
       android-studio
-      jtdx
+      # GFortran 16 adds a SPLIT intrinsic that shadows JTDX's subroutine.
+      (jtdx.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./host-specific/jtdx-external-split.patch ];
+      }))
       kagura-pkgs.google-chrome-138
     ])
     ++ (with pkgs-stable; [ telegram-desktop ]);
