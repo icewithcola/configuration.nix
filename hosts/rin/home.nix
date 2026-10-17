@@ -10,6 +10,11 @@ in
     dev = true;
   };
 
+  # Replace the legacy links into ~/.local/state/proxy-update. Home Manager's
+  # backupFileExtension does not handle existing symlinks.
+  xdg.configFile."systemd/user/proxy-update.service".force = true;
+  xdg.configFile."systemd/user/proxy-update.timer".force = true;
+
   systemd.user.services.proxy-update = {
     Unit.Description = "Check A/B proxies through br-cm and upload the selection";
 
