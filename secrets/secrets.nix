@@ -10,6 +10,8 @@ let
   ];
 in
 {
+  "openwrt-monitor.age".publicKeys = [ kagura-nas ];
+
   "github-token.age".publicKeys = users;
   "ddns-token.age".publicKeys = users;
   "tailscale-kagura-notebook.age".publicKeys = users;

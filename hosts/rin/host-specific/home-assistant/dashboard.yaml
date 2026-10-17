@@ -375,3 +375,47 @@ views:
             graph: line
             hours_to_show: 24
             detail: 2
+
+  - title: 网络
+    path: network
+    icon: mdi:wan
+    show_icon_and_title: true
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: 互联网速率
+            icon: mdi:router-network
+          - type: sensor
+            entity: sensor.openwrt_download
+            name: 下载
+            icon: mdi:download-network
+            graph: line
+            hours_to_show: 1
+            detail: 2
+          - type: sensor
+            entity: sensor.openwrt_upload
+            name: 上传
+            icon: mdi:upload-network
+            graph: line
+            hours_to_show: 1
+            detail: 2
+          - type: tile
+            entity: sensor.openwrt_wan_sample
+            name: WAN 状态
+            icon: mdi:wan
+      - type: grid
+        cards:
+          - type: heading
+            heading: 流量统计
+            icon: mdi:counter
+          - type: markdown
+            content: |
+              | 用量 | 下载 | 上传 |
+              | --- | ---: | ---: |
+              | 今日 | {{ (states('sensor.openwrt_daily_download') | float(0) / 1e9) | round(3) }} GB | {{ (states('sensor.openwrt_daily_upload') | float(0) / 1e9) | round(3) }} GB |
+              | 本月 | {{ (states('sensor.openwrt_monthly_download') | float(0) / 1e9) | round(3) }} GB | {{ (states('sensor.openwrt_monthly_upload') | float(0) / 1e9) | round(3) }} GB |
+
+              每 15 秒更新。用量从启用监控后开始累计。

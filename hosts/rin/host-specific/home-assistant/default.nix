@@ -34,6 +34,8 @@ let
   );
 in
 {
+  imports = [ ./openwrt-traffic.nix ];
+
   services.home-assistant = {
     enable = true;
     customComponents = [ xiaomiHome ];

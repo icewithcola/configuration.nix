@@ -70,6 +70,10 @@ replaces the former `GEMINI.md`.
 - The Nix-managed `Kagura's home` YAML dashboard is colocated with the host
   module in `hosts/rin/host-specific/home-assistant/`. The `机柜` section is
   monitoring-only and must never expose a power-off or other writable entity.
+- The adjacent `openwrt-traffic.nix` module polls the router at `192.168.114.1`
+  over certificate-pinned ubus HTTPS using a read-only RPC account. Its password
+  is agenix-managed for `hass`, encrypted only to rin's existing `kagura-nas`
+  recipient. The dashboard's `网络` view shows WAN rates and daily/monthly usage.
 - Runs the local `clash_config/proxy-checker/run.sh` as `kagura` with a Home
   Manager user timer, hourly and five minutes after the user manager starts.
   Checks use `br-cm`; successful runs upload combined selections to Cloudflare
