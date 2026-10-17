@@ -70,6 +70,11 @@ replaces the former `GEMINI.md`.
 - The Nix-managed `Kagura's home` YAML dashboard is colocated with the host
   module in `hosts/rin/host-specific/home-assistant/`. The `机柜` section is
   monitoring-only and must never expose a power-off or other writable entity.
+- Runs the local `clash_config/proxy-checker/run.sh` as `kagura` with a Home
+  Manager user timer, hourly and five minutes after the user manager starts.
+  Checks use `br-cm`; successful runs upload combined selections to Cloudflare
+  KV using the checkout's runtime `.env`. User lingering keeps it running after
+  logout.
 - Is a Tailscale exit node and advertises `192.168.114.0/24` and `fd00::/8`.
   nginx includes Tailscale-only HTTPS listener(s), waits for `tailscale0`, and
   uses agenix TLS material. DN42 uses WireGuard peers and BIRD route filters.
