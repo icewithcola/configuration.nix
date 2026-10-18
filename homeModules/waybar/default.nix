@@ -25,13 +25,12 @@ in
         margin-top = 2;
         margin-bottom = 0;
         reload_style_on_change = true;
-        spacing = 4;
+        spacing = 6;
 
         modules-left = [
-          "image"
+          "group/navigation"
           "wlr/taskbar"
           "mpris"
-          "niri/workspaces"
         ];
         modules-center = [
           "niri/window"
@@ -50,6 +49,14 @@ in
             "battery"
             "pulseaudio"
             "network"
+          ];
+        };
+
+        "group/navigation" = {
+          orientation = "horizontal";
+          modules = [
+            "image"
+            "niri/workspaces"
           ];
         };
 
@@ -76,19 +83,23 @@ in
         };
 
         "mpris" = {
-          format = "  {artist} – {title}";
-          format-paused = "  {artist} – {title}";
+          format = "${icon "{status_icon}"}  {dynamic}";
+          format-paused = "${icon "{status_icon}"}  {dynamic}";
           format-stopped = "";
-          player-icons = {
-            default = "▶";
-            mpv = "🎵";
-          };
           status-icons = {
-            paused = "";
+            playing = "";
+            paused = "";
+            stopped = "";
           };
-          max-length = 40;
+          dynamic-order = [
+            "artist"
+            "title"
+          ];
+          dynamic-separator = " – ";
+          dynamic-len = 28;
+          max-length = 30;
           tooltip = true;
-          tooltip-format = "{player}: {status}";
+          tooltip-format = "{artist} – {title}\n{player}: {status}";
         };
 
         "niri/workspaces" = {
@@ -97,7 +108,7 @@ in
           current-only = false;
           disable-scroll = false;
           icon-theme = "Papirus-Dark";
-          format = "<span><b>{icon}</b></span>";
+          format = "{icon}";
           format-icons = {
             "1" = "1";
             "2" = "2";
@@ -114,14 +125,9 @@ in
         # ── Center ────────────────────────────────────────────
 
         "niri/window" = {
-          max-length = 50;
-          format = "{app_id}";
+          max-length = 32;
+          format = "${icon ""}  {title}";
           separate-outputs = true;
-          rewrite = {
-            "" = "<span foreground='#f5c2e7'>Niri</span>";
-            " " = "<span foreground='#f5c2e7'>Niri</span>";
-            "(.*)" = "<span foreground='#f5c2e7'>$1</span>";
-          };
         };
 
         # ── Right ─────────────────────────────────────────────

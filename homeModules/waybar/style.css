@@ -27,137 +27,125 @@
 @define-color crust #11111b;
 
 * {
-  font-family: "Noto Sans CJK SC", "Symbols Nerd Font Mono";
-  font-size: 14px;
+  font-family: "Noto Sans", "Symbols Nerd Font Mono", "Noto Sans CJK SC";
+  font-size: 13px;
+  font-weight: 600;
   min-height: 0;
   border: none;
   border-radius: 0;
 }
 
-/* ── Waybar window ─────────────────────────────────────────── */
-#waybar {
+window#waybar {
   background: transparent;
   color: @text;
 }
 
-window#waybar.fullscreen,
-window#waybar.swallowing {
+/* Every panel shares the status area's shape, height, and quiet outline. */
+#navigation,
+#taskbar,
+#mpris,
+#window,
+#status,
+#clock {
+  background: @base;
+  border: 1px solid @surface1;
+  border-radius: 12px;
+  min-height: 32px;
+}
+
+#navigation,
+#status,
+#taskbar {
+  padding: 0 3px;
+}
+
+/* Launcher and workspaces form one continuous navigation panel. */
+#image {
+  border-right: 1px solid @surface0;
+  margin: 4px 0;
+  padding: 0 9px 0 7px;
+}
+
+#workspaces {
+  padding: 0 2px;
+}
+
+#workspaces button,
+#taskbar button {
+  background: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  text-shadow: none;
+  color: @subtext0;
+  margin: 4px 2px;
+  min-height: 24px;
+  min-width: 20px;
+  padding: 0 5px;
+}
+
+#workspaces button.empty {
+  color: @overlay1;
+}
+
+#workspaces button.active,
+#taskbar button.active {
+  background: @surface0;
+  color: @blue;
+}
+
+#workspaces button.focused {
+  background: @surface1;
+  color: @lavender;
+}
+
+#workspaces button:hover,
+#taskbar button:hover {
+  background: @surface1;
+  color: @text;
+}
+
+#workspaces button.urgent {
+  background: alpha(@red, 0.15);
   color: @red;
 }
 
-/* ── Left ──────────────────────────────────────────────────── */
-
-/* Nix snowflake launcher */
-#image {
-  background: @crust;
-  border-radius: 18px 6px 18px 6px;
-  margin-right: 6px;
-  padding: 0 10px;
-  border: 2px solid @mauve;
+/* Empty modules should never leave behind an outlined box. */
+#taskbar.empty,
+#mpris.stopped,
+window#waybar.empty #window {
+  background: transparent;
+  border: none;
+  min-height: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
-
-/* Taskbar */
-#taskbar {
-  background: @crust;
-  border-radius: 6px;
-  padding: 0 13px;
-  border: 2px solid @blue;
-  margin-right: 6px;
+#mpris,
+#window,
+#clock {
+  padding: 0 12px;
 }
 
-/* MPRIS player */
 #mpris {
-  background: @crust;
   color: @green;
-  border-radius: 6px;
-  padding: 0 11px;
-  border: 2px solid @green;
-  margin-right: 6px;
-  font-style: italic;
 }
 
 #mpris.paused {
   color: @overlay1;
-  border-color: @overlay1;
 }
-
-#mpris.stopped {
-  color: @surface2;
-  border-color: @surface2;
-}
-
-/* Workspaces */
-#workspaces {
-  background: @crust;
-  border: 2px solid @mauve;
-  border-radius: 6px;
-  font-weight: bold;
-  color: @text;
-}
-
-#workspaces button {
-  border-radius: 4px;
-  padding: 0 6px;
-  margin: 3px 2px;
-  color: @blue;
-  opacity: 0.8;
-}
-
-#workspaces button.active {
-  color: @crust;
-  background: @blue;
-  border-radius: 4px;
-  min-width: 28px;
-  opacity: 1;
-}
-
-#workspaces button.focused {
-  color: @crust;
-  background: @mauve;
-}
-
-#workspaces button:hover {
-  color: @crust;
-  background: @mauve;
-  border-radius: 4px;
-  opacity: 0.85;
-}
-
-#workspaces button.empty {
-  color: @overlay2;
-  opacity: 0.35;
-}
-
-#workspaces button.visible {
-  color: @blue;
-}
-
-/* ── Center ────────────────────────────────────────────────── */
 
 #window {
-  background: @crust;
-  border-radius: 6px;
-  padding: 0 11px;
-  border: 2px solid @pink;
-  color: @pink;
+  color: @lavender;
 }
 
-/* ── Right — one continuous status panel ──────────────────── */
-#status {
-  background: @base;
-  border: 1px solid @surface1;
-  border-radius: 12px;
-  padding: 0 3px;
+#window label {
+  padding: 0;
 }
 
-#status label,
-#clock {
-  font-family: "Noto Sans", "Symbols Nerd Font Mono", "Noto Sans CJK SC";
-  font-size: 13px;
-  font-weight: 600;
-}
-
+/* Status modules share their container's continuous outer border. */
 #cpu,
 #memory,
 #battery,
@@ -221,11 +209,34 @@ window#waybar.swallowing {
 }
 
 #clock {
-  background: @base;
   color: @pink;
+}
+
+/* Menus and tooltips follow the same panel palette. */
+tooltip,
+menu {
+  background: @base;
+  color: @text;
   border: 1px solid @surface1;
   border-radius: 12px;
-  padding: 0 12px;
+}
+
+tooltip label {
+  padding: 6px 8px;
+}
+
+menu {
+  padding: 6px;
+}
+
+menuitem {
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+menuitem:hover {
+  background: @surface0;
+  color: @lavender;
 }
 
 @keyframes blink {
