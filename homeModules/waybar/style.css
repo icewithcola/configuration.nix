@@ -214,15 +214,22 @@ window#waybar.empty #window {
 
 /* Menus and tooltips follow the same panel palette. */
 tooltip,
+tooltip.background,
 menu {
   background: @base;
+  background-image: none;
   color: @text;
   border: 1px solid @surface1;
   border-radius: 12px;
 }
 
 tooltip label {
+  color: @text;
   padding: 6px 8px;
+}
+
+tooltip box {
+  background: transparent;
 }
 
 menu {

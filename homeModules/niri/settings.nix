@@ -39,6 +39,8 @@
       };
 
       layout = {
+        # Halve the default 16px gap below Waybar without changing other gaps.
+        struts.top = -8;
         default-column-width.proportion = 0.5;
         background-color = "transparent";
         always-center-single-column = true;
