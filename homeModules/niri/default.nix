@@ -21,12 +21,20 @@
     swaybg
     xwayland-satellite
     wl-clip-persist
-    mako
     activate-linux
     nautilus
     nautilus-open-any-terminal
     xdg-user-dirs
   ];
+
+  services.mako = {
+    enable = true;
+    settings = {
+      default-timeout = 60000;
+      # Apply the one-minute timeout even when an app requests persistence.
+      ignore-timeout = true;
+    };
+  };
 
   systemd.user.services =
     let
