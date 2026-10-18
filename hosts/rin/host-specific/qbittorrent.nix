@@ -21,4 +21,12 @@
       };
     };
   };
+
+  config.systemd.services.qbittorrent.serviceConfig = {
+    # Bound memory leaks and restart the whole service after an OOM kill.
+    MemoryMax = "4G";
+    OOMPolicy = "kill";
+    Restart = "on-failure";
+    RestartSec = "5s";
+  };
 }
