@@ -16,7 +16,6 @@ in
       mainBar = {
         layer = "top";
         position = "top";
-        mode = "dock";
         margin-left = 15;
         margin-right = 15;
         margin-top = 2;
@@ -47,6 +46,8 @@ in
 
         "image" = {
           path = ../../home/assets/nix-snowflake-transgender.png;
+          # Waybar 0.15 otherwise refreshes this static image every millisecond.
+          interval = "once";
           on-click = "niri msg action toggle-overview";
           size = 22;
           tooltip = false;
