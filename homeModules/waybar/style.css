@@ -143,46 +143,51 @@ window#waybar.swallowing {
   color: @pink;
 }
 
-/* ── Right — pill group ────────────────────────────────────── */
-/*  memory → cpu → battery → pulseaudio → network → tray → clock
-    memory is left-cap, tray is right-cap before clock.          */
-
-#memory,
-#cpu,
-#battery,
-#pulseaudio,
-#network,
-#tray {
-  background: @crust;
-  padding: 0 8px;
-  border-top: 2px solid @text;
-  border-bottom: 2px solid @text;
+/* ── Right — one continuous status panel ──────────────────── */
+#status {
+  background: @base;
+  border: 1px solid @surface1;
+  border-radius: 12px;
+  padding: 0 3px;
 }
 
-/* Left cap */
-#memory {
-  border-left: 2px solid @text;
-  border-radius: 6px 0 0 6px;
+#status label,
+#clock {
+  font-family: "Noto Sans", "Symbols Nerd Font Mono", "Noto Sans CJK SC";
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#cpu,
+#memory,
+#battery,
+#pulseaudio,
+#network {
+  background: transparent;
+  border-radius: 0;
+  min-height: 24px;
+  margin: 4px 0;
+  padding: 0 10px;
+}
+
+/* Short, quiet dividers; the container owns the continuous outer border. */
+#memory,
+#battery,
+#pulseaudio,
+#network {
+  border-left: 1px solid @surface0;
+}
+
+#cpu {
   color: @blue;
 }
 
-/* Separator: give cpu a faint divider */
-#cpu {
-  border-left: 1px solid @surface1;
-  color: @pink;
+#memory {
+  color: @mauve;
 }
 
 #battery {
-  border-left: 1px solid @surface1;
-  color: @yellow;
-}
-
-#battery.charging {
   color: @green;
-}
-
-#battery.full {
-  color: @teal;
 }
 
 #battery.warning:not(.charging) {
@@ -195,8 +200,7 @@ window#waybar.swallowing {
 }
 
 #pulseaudio {
-  border-left: 1px solid @surface1;
-  color: @mauve;
+  color: @pink;
 }
 
 #pulseaudio.muted {
@@ -204,34 +208,26 @@ window#waybar.swallowing {
 }
 
 #network {
-  border-left: 1px solid @surface1;
-  color: @yellow;
+  color: @sky;
 }
 
 #network.disconnected {
-  color: @red;
+  color: @overlay1;
 }
 
-/* Right cap (before clock) */
+/* An empty tray has no outlined end-cap or background. */
 #tray {
-  border-left: 1px solid @surface1;
-  border-right: 2px solid @text;
-  border-radius: 0 6px 6px 0;
-  padding: 0 10px;
+  padding: 0 4px;
 }
 
-/* Clock – standalone pill */
 #clock {
-  background: @crust;
+  background: @base;
   color: @pink;
-  border-radius: 6px;
-  border: 2px solid @pink;
-  padding: 0 11px;
-  margin-left: 6px;
-  font-weight: bold;
+  border: 1px solid @surface1;
+  border-radius: 12px;
+  padding: 0 12px;
 }
 
-/* ── Blink animation for critical battery ──────────────────── */
 @keyframes blink {
   to { opacity: 0.4; }
 }

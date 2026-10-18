@@ -1,10 +1,14 @@
 # https://github.com/Alexays/Waybar
 # https://tangled.sh/@pluie.me/flake/tree/main/users/leah/presets/niri/waybar
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   interval = 2;
+  icon = glyph: "<span font_family='Symbols Nerd Font Mono' size='large'>${glyph}</span>";
 in
 {
+  home.packages = [ pkgs.nerd-fonts.symbols-only ];
+  fonts.fontconfig.enable = true;
+
   programs.waybar = {
     enable = true;
     systemd = {
@@ -33,14 +37,21 @@ in
           "niri/window"
         ];
         modules-right = [
-          "memory"
-          "cpu"
-          "battery"
-          "pulseaudio"
-          "network"
+          "group/status"
           "tray"
           "clock"
         ];
+
+        "group/status" = {
+          orientation = "horizontal";
+          modules = [
+            "cpu"
+            "memory"
+            "battery"
+            "pulseaudio"
+            "network"
+          ];
+        };
 
         # ── Left ──────────────────────────────────────────────
 
@@ -117,45 +128,46 @@ in
 
         memory = {
           inherit interval;
-          format = " {percentage}%";
+          format = "${icon "󰍛"}  {percentage}%";
           tooltip-format = "{used:0.1f}G / {total:0.1f}G";
         };
 
         cpu = {
           inherit interval;
-          format = " {usage}%";
+          format = "${icon ""}  {usage}%";
           tooltip-format = "{avg_frequency} GHz";
         };
 
         battery = {
           states = {
-            full = 98;
             warning = 30;
             critical = 15;
           };
-          format = "{icon} {capacity}%";
-          format-charging = " {capacity}%";
-          format-plugged = " {capacity}%";
-          format-full = " {capacity}%";
+          format = "${icon "{icon}"}  {capacity}%";
+          format-charging = "${icon "󰂄"}  {capacity}%";
+          format-plugged = "${icon ""}  {capacity}%";
+          format-full = "${icon ""}  {capacity}%";
           format-icons = [
-            ""
-            ""
-            ""
-            ""
-            ""
+            ""
+            ""
+            ""
+            ""
+            ""
           ];
           tooltip = true;
           tooltip-format = "{time}  ({power:.1f}W)";
         };
 
         pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = "󰝟 mute";
+          format = "${icon "{icon}"}  {volume}%";
+          format-muted = "${icon "󰝟"}  mute";
           format-icons = {
+            headphone = "";
+            headset = "";
             default = [
-              ""
-              ""
-              ""
+              ""
+              ""
+              ""
             ];
           };
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -165,11 +177,13 @@ in
         };
 
         network = {
-          format-wifi = " {essid} {signalStrength}%";
-          format-ethernet = "󰈀 {ifname}";
-          format-disconnected = "󰖪 offline";
-          format-alt = " {ipaddr}/{cidr}";
-          tooltip-format = "{essid} ({signalStrength}%) via {gwaddr}";
+          format-wifi = "${icon ""}  {essid}";
+          format-ethernet = "${icon "󰈀"}  {ifname}";
+          format-disconnected = "${icon "󰖪"}  offline";
+          format-alt = "${icon "󰈀"}  {ipaddr}";
+          max-length = 24;
+          tooltip-format-wifi = "{essid} · {signalStrength}%\n{ipaddr}/{cidr} via {gwaddr}";
+          tooltip-format-ethernet = "{ifname}\n{ipaddr}/{cidr} via {gwaddr}";
           on-click-right = "nm-connection-editor";
         };
 
@@ -179,8 +193,8 @@ in
         };
 
         clock = {
-          format = "<b>{:%a %m-%d %H:%M}</b>";
-          format-alt = "{:%Y-%m-%d %H:%M:%S}";
+          format = "${icon ""}  {:%a %m-%d  %H:%M}";
+          format-alt = "${icon ""}  {:%Y-%m-%d %H:%M:%S}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
