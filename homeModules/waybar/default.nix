@@ -1,18 +1,22 @@
 # https://github.com/Alexays/Waybar
 # https://tangled.sh/@pluie.me/flake/tree/main/users/leah/presets/niri/waybar
-{ pkgs, ... }:
+{ lib, ... }:
 let
   interval = 2;
 in
 {
   programs.waybar = {
     enable = true;
+    systemd = {
+      enable = true;
+      targets = [ "graphical-session.target" ];
+    };
     style = ./style.css;
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
-        mod = "dock";
+        mode = "dock";
         margin-left = 15;
         margin-right = 15;
         margin-top = 2;
@@ -132,7 +136,13 @@ in
           format-charging = " {capacity}%";
           format-plugged = " {capacity}%";
           format-full = " {capacity}%";
-          format-icons = [ "" "" "" "" "" ];
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
           tooltip = true;
           tooltip-format = "{time}  ({power:.1f}W)";
         };
@@ -141,7 +151,11 @@ in
           format = "{icon} {volume}%";
           format-muted = "󰝟 mute";
           format-icons = {
-            default = [ "" "" "" ];
+            default = [
+              ""
+              ""
+              ""
+            ];
           };
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
           scroll-step = 5;
@@ -174,5 +188,16 @@ in
         };
       };
     };
+  };
+
+  systemd.user.services.waybar = {
+    # Niri exports its socket before starting graphical-session.target.
+    # Skip Waybar in Plasma, which also uses this target.
+    Unit.ConditionEnvironment = lib.mkForce [
+      "WAYLAND_DISPLAY"
+      "NIRI_SOCKET"
+    ];
+    # Home Manager also adds tray.target; keep startup tied to session readiness.
+    Install.WantedBy = lib.mkForce [ "graphical-session.target" ];
   };
 }
