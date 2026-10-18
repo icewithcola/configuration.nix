@@ -78,7 +78,14 @@
       (jtdx.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ./host-specific/jtdx-external-split.patch ];
       }))
-      kagura-pkgs.google-chrome-138
+      # ks serves this mirror from /var/www/blog/downloads, outside generated blog output.
+      (kagura-pkgs.google-chrome-138.overrideAttrs (old: {
+        src = old.src.overrideAttrs {
+          urls = [
+            "https://kagurach.uk/static/downloads/google-chrome-stable_${old.version}-1_amd64.deb"
+          ];
+        };
+      }))
     ])
     ++ (with pkgs-stable; [ telegram-desktop ]);
 
