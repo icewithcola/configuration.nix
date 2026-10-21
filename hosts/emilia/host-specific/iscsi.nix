@@ -8,7 +8,7 @@
           name = "ks_vdisk";
           plugin = "fileio";
           dev = "/mnt/data/iscsi.img";
-          size = 53687091200;
+          size = 214748364800;
           wwn = "78571077-7378-424c-9f1f-aab0ef37b04f";
         }
       ];

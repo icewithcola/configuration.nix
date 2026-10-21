@@ -1,9 +1,9 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-10-21** for the emilia disk-footprint reduction, based
-on parent commit `604679a` (`bump flakes`). Refresh this section when the declared host
-topology, inputs, or pending work changes.
+Last reviewed: **2026-10-21** for the emilia deployment and integration of its
+200 GiB iSCSI configuration, based on parent commit `bcb6e5c`. Refresh this section
+when the declared host topology, inputs, or pending work changes.
 
 ## Current repository state
 
@@ -91,6 +91,8 @@ replaces the former `GEMINI.md`.
   `ens18`, and no global firewall.
 - Runs SSH, iSCSI configuration, and Tailscale as a tagged global relay/exit
   node on port 32457.
+- The iSCSI fileio backing image at `/mnt/data/iscsi.img` is configured as
+  200 GiB, matching its existing size on the server.
 - Uses the NixOS minimal profile and a host-specific Home Manager package list
   retaining terminal, monitoring, GnuPG, and network tools, without Kitty,
   fonts, Yazi, Hyfetch, or manuals. Other hosts retain the shared package sets.
