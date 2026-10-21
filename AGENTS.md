@@ -1,9 +1,8 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-08-19** for the `rin: add Home Assistant` change, based
-on parent commit `73599fb972af7033ae17b974d337e7b8d62a4971` (`chore: mark
-generated files in gitattributes`). Refresh this section when the declared host
+Last reviewed: **2026-10-21** for the emilia disk-footprint reduction, based
+on parent commit `604679a` (`bump flakes`). Refresh this section when the declared host
 topology, inputs, or pending work changes.
 
 ## Current repository state
@@ -15,12 +14,12 @@ Manager in `home/`.
 
 | Input | Declared channel | Locked revision | Lock timestamp |
 | --- | --- | --- | --- |
-| `nixpkgs` | `nixos-unstable` | `e5bdc4a41d4c072fe1e3787eaa0320a384741d44` | 2026-08-16 |
+| `nixpkgs` | `nixos-unstable` | `02c087f3fe673c9e317f206a627cb6b910336dbe` | 2026-10-20 |
 | `nixpkgs-stable` | `nixos-25.11` | `b6018f87da91d19d0ab4cf979885689b469cdd41` | 2026-06-30 |
-| `home-manager-nixos` | `master`, follows `nixpkgs` | `aac4965ddb7ea2ff0f3cadd9502c7042b7aa07ba` | 2026-08-17 |
+| `home-manager-nixos` | `master`, follows `nixpkgs` | `ec80131710bffcdf3b8498cf41f3a0579833b023` | 2026-10-20 |
 | `niri` | `sodiboo/niri-flake`, follows `nixpkgs` | `9ee3e13b60643448228353097880521658b2fe0e` | 2026-08-04 |
 | `kagura-pkgs` | `icewithcola/nur-packages`, follows `nixpkgs` | `89c945a556915c18fa75d722d2c32f6bc75a5ae2` | 2026-07-16 |
-| `agenix` | `ryantm/agenix` | `b027ee29d959fda4b60b57566d64c98a202e0feb` | 2026-02-04 |
+| `agenix` | `ryantm/agenix` | `5e5b88a0c8e56f291a108c2fe9934054d9745b2e` | 2026-10-20 |
 
 `pkgs` always refers to the rolling `nixos-unstable` input. `pkgs-stable` is
 imported only for intentional compatibility pins; today it supplies
@@ -29,7 +28,7 @@ imported only for intentional compatibility pins; today it supplies
 reason the pin exists.
 
 `nix flake check --no-build` passed for all three hosts at this snapshot. The
-working tree was clean before adding Xiaomi Home support. This document
+working tree was clean before the emilia disk-footprint reduction. This document
 replaces the former `GEMINI.md`.
 
 ## Declared host topology
@@ -91,8 +90,20 @@ replaces the former `GEMINI.md`.
 - Headless VPS using GRUB on `/dev/vda`, ext4 root, static IPv4/IPv6 on
   `ens18`, and no global firewall.
 - Runs SSH, iSCSI configuration, and Tailscale as a tagged global relay/exit
-  node on port 32457. Its Home Manager setup enables only the network package
-  set.
+  node on port 32457.
+- Uses the NixOS minimal profile and a host-specific Home Manager package list
+  retaining terminal, monitoring, GnuPG, and network tools, without Kitty,
+  fonts, Yazi, Hyfetch, or manuals. Other hosts retain the shared package sets.
+- Nixpkgs remains pinned in the system registry by GitHub revision/hash rather
+  than a store path, allowing unused source trees to be collected. Registry
+  lookups may fetch the pinned source on demand.
+- Collects garbage daily with seven-day generation retention, optimises the
+  store daily, and triggers additional collection below 512 MiB free (aiming
+  for 1 GiB). The persistent journal is capped at 100 MiB and stops growing
+  below 512 MiB free; the runtime journal is capped at 32 MiB.
+- Local builds before/after this change measured runtime closures of
+  2.32 GiB / 1.57 GiB (32.6% smaller). This does not measure the live store;
+  old generations and other GC roots retain paths until collected.
 
 ## Where to make changes
 

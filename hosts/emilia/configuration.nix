@@ -1,9 +1,15 @@
 {
+  inputs,
+  lib,
+  modulesPath,
   pkgs,
   ...
 }:
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    (modulesPath + "/profiles/minimal.nix")
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
@@ -70,8 +76,33 @@
   programs.zsh.enable = true;
 
   zramSwap.enable = false;
-  
+
   documentation.enable = false;
+  fonts.fontconfig.enable = false;
+
+  nix = {
+    # Keep nixpkgs pinned without rooting its source tree in every generation.
+    registry.nixpkgs.to = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      inherit (inputs.nixpkgs) rev narHash;
+    };
+    # Collect unused paths daily, retaining the existing seven-day rollback window.
+    gc.dates = lib.mkForce "daily";
+    optimise.automatic = true;
+    # Reclaim unused paths during builds before the system disk fills up.
+    settings = {
+      min-free = 512 * 1024 * 1024;
+      max-free = 1024 * 1024 * 1024;
+    };
+  };
+
+  services.journald.settings.Journal = {
+    SystemMaxUse = "100M";
+    SystemKeepFree = "512M";
+    RuntimeMaxUse = "32M";
+  };
 
   system.stateVersion = "24.05";
 }
