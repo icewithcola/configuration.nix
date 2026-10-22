@@ -96,6 +96,8 @@
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
+      # Use a 24-hour clock in the greeter while retaining KWin's layer-shell integration.
+      settings.General.GreeterEnvironment = "QT_WAYLAND_SHELL_INTEGRATION=layer-shell,LC_TIME=en_GB.UTF-8";
     };
     desktopManager.plasma6.enable = true;
   };
