@@ -15,8 +15,8 @@
         user = "root";
       };
 
-      "alice-jp" = {
-        hostname = "alice-jp.srv.kagurach.uk";
+      "hyhk" = {
+        hostname = "hyhk.srv.kagurach.uk";
         port = 22;
         user = "root";
       };
