@@ -19,6 +19,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtsBUrTKcEIW2UZ2//QeU+PJj3/dxaVCncTg1j7gvAP kagura@kagura-notebook"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINM2PaIrCqinwe8nmbfEG/je6BZ6MYGndO0i5gtS89az mobile"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILvzvPkUD3wQUcRJf4C2JK6MWtGbKd001hUh710slauF kagura-tencent"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA3WjrDLtv2lH3B0ltQFz+XSSlwLLk85wrbakWzfDl5F serverbox-ios"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYFmnBe6VIe2UjpG6UqnsCZ45VBK4eRfMIvm+A/aNd4 kagura-home-devs"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUTn8X8Zuwf8W9QsPIzKxzpXV1/BIVOuHB9WnnBkCec ks"
       ];
