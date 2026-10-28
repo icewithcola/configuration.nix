@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   ...
 }:
@@ -73,6 +74,13 @@
   };
 
   services = {
+    # Only xrdp starts graphical sessions; the local X server stays disabled.
+    xserver.desktopManager.xfce.enable = true;
+    xrdp = {
+      enable = true;
+      defaultWindowManager = "${lib.getExe' pkgs.dbus "dbus-run-session"} -- ${lib.getExe' pkgs.xfce4-session "startxfce4"}";
+    };
+
     btrfs.autoScrub = {
       enable = true;
       interval = "weekly";

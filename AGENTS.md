@@ -1,8 +1,8 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-10-21** for the emilia deployment and integration of its
-200 GiB iSCSI configuration, based on parent commit `bcb6e5c`. Refresh this section
+Last reviewed: **2026-10-28** for rin's RDP-only XFCE desktop configuration,
+based on parent commit `d920387`. Refresh this section
 when the declared host topology, inputs, or pending work changes.
 
 ## Current repository state
@@ -47,9 +47,12 @@ replaces the former `GEMINI.md`.
 
 ### `rin`
 
-- Headless Intel server using systemd-boot and the regular kernel. `/` is
-  ext4; `/mnt/ssd128` is Btrfs (`nofail`, `noatime`, `compress=zstd:3`) and is
-  scrubbed weekly. `/tmp` is tmpfs and zram is disabled.
+- Intel server with an RDP-only XFCE desktop using systemd-boot and the
+  regular kernel. `/` is ext4; `/mnt/ssd128` is Btrfs (`nofail`, `noatime`,
+  `compress=zstd:3`) and is scrubbed weekly. `/tmp` is tmpfs and zram is disabled.
+- xrdp listens on TCP 3389 and starts XFCE with a dedicated D-Bus session.
+  The local X server and graphical login remain disabled. RDP uses existing
+  system-account passwords; no credentials are declared here.
 - NetworkManager owns bridge `br-cm` and enslaves `enp8s0`; do not alter those
   settings remotely without a confirmed recovery path. The global firewall is
   disabled; Tailscale enables nftables and trusts `tailscale0` when routing.
