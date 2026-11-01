@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 readonly CERT_DOMAIN='*.home.lolicon.cyou'
 readonly CERT_SOURCE_HOST='root@ks'
-readonly CERT_SOURCE_PATH='/var/lib/acme/home.lolicon.cyou/fullchain.pem'
+readonly CERT_SOURCE_PATH='/root/.acme.sh/*.home.lolicon.cyou_ecc/fullchain.cer'
 
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly REPO_ROOT="$(dirname -- "$SCRIPT_DIR")"
@@ -71,9 +71,10 @@ if ! openssl x509 -in "$FULLCHAIN" -noout -ext subjectAltName |
 fi
 
 echo "Encrypting the new full chain with agenix..."
+cp -- "$AGE_RULES" "$TEMP_DIR/agenix-rules.nix"
 (
 	cd -- "$TEMP_DIR"
-	RULES="$AGE_RULES" run_agenix -e "$AGE_SECRET" <"$FULLCHAIN"
+	AGENIX_RULES="$TEMP_DIR/agenix-rules.nix" run_agenix -e "$AGE_SECRET" <"$FULLCHAIN"
 )
 
 if [[ ! -s "$ENCRYPTED_CERT" ]]; then
