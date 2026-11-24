@@ -1,5 +1,41 @@
-{ ... }:
+{ lib, pkgs, ... }:
 {
+  systemd.services.iscsi-target = {
+    after = [
+      "mnt-data.mount"
+      "tailscaled.service"
+      "tailscaled-autoconnect.service"
+    ];
+    requires = [ "mnt-data.mount" ];
+    wants = [
+      "tailscaled.service"
+      "tailscaled-autoconnect.service"
+    ];
+    unitConfig = {
+      RequiresMountsFor = [ "/mnt/data" ];
+      ConditionPathIsMountPoint = "/mnt/data";
+      ConditionPathExists = "/mnt/data/iscsi.img";
+    };
+
+    # targetctl clear tears down live sessions. Apply target changes manually
+    # only after ks has cleanly unmounted /mnt/ext.
+    restartIfChanged = false;
+
+    # Autoconnect waits for BackendState=Running; also require the exact local
+    # address before targetctl restore binds the Tailscale-only portal.
+    preStart = ''
+      until ${lib.getExe' pkgs.iproute2 "ip"} -4 -o address show dev tailscale0 2>/dev/null \
+        | ${lib.getExe pkgs.gnugrep} -Fq ' inet 100.79.31.14/'; do
+        if (( SECONDS >= 120 )); then
+          echo "Timed out waiting for 100.79.31.14 on tailscale0; refusing to restore iSCSI target" >&2
+          exit 1
+        fi
+        ${lib.getExe' pkgs.coreutils "sleep"} 1
+      done
+    '';
+    serviceConfig.TimeoutStartSec = "150s";
+  };
+
   services.target = {
     enable = true;
     config = {

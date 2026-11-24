@@ -1,8 +1,8 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-10-28** for rin's RDP-only XFCE desktop configuration,
-based on parent commit `d920387`. Refresh this section
+Last reviewed: **2026-11-24** for emilia's iSCSI boot ordering safeguards,
+based on parent commit `375c138`. Refresh this section
 when the declared host topology, inputs, or pending work changes.
 
 ## Current repository state
@@ -96,6 +96,13 @@ replaces the former `GEMINI.md`.
   node on port 32457.
 - The iSCSI fileio backing image at `/mnt/data/iscsi.img` is configured as
   200 GiB, matching its existing size on the server.
+- `/mnt/data` retains `nofail` so a missing data disk does not prevent boot.
+  iSCSI requires that mount and an existing backing image, orders after Tailscale
+  autoconnect, and waits up to 120 seconds for `100.79.31.14` on `tailscale0`.
+  The portal binds only that address. Unit changes do not automatically restart
+  iSCSI; apply target changes manually after cleanly unmounting `/mnt/ext` on `ks`.
+  The initial fstab UUID whitespace correction can restart `mnt-data.mount`
+  during activation, so it also needs a cleanly unmounted initiator.
 - Uses the NixOS minimal profile and a host-specific Home Manager package list
   retaining terminal, monitoring, GnuPG, and network tools, without Kitty,
   fonts, Yazi, Hyfetch, or manuals. Other hosts retain the shared package sets.
