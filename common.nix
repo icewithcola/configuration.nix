@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 {
@@ -25,7 +26,7 @@
       ];
     };
 
-    extraOptions = ''
+    extraOptions = lib.optionalString (config.age.secrets ? github-token) ''
       !include ${config.age.secrets.github-token.path}
     '';
 

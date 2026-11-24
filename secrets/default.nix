@@ -15,10 +15,8 @@ let
   };
 
   hostSecrets = {
-    emilia = [
-      "github-token"
-      "tailscale-emilia"
-    ];
+    # Emilia's identity is not a recipient of the shared secrets.
+    emilia = [ "tailscale-emilia" ];
     kagura-notebook = [
       "github-token"
       "tailscale-kagura-notebook"
@@ -31,7 +29,7 @@ let
     ];
   };
 
-  secretsForHost = hostSecrets.${host} or [ "github-token" ];
+  secretsForHost = hostSecrets.${host} or [ ];
 in
 {
   age.secrets =
@@ -41,7 +39,8 @@ in
         value.file = secretFiles.${name};
       }) secretsForHost
     )
-    // lib.optionalAttrs config.services.nginx.enable {
+    # Only rin can decrypt both TLS files; enabling nginx is not sufficient.
+    // lib.optionalAttrs (host == "rin" && config.services.nginx.enable) {
       "loli-cer" = {
         mode = "770";
         owner = "nginx";

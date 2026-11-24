@@ -1,8 +1,8 @@
 # Repository status and contributor guide
 
 Status is a configuration snapshot, not a statement about the live machines.
-Last reviewed: **2026-11-24** for emilia's iSCSI boot ordering safeguards,
-based on parent commit `375c138`. Refresh this section
+Last reviewed: **2026-11-24** for host-specific secret decryption eligibility.
+Refresh this section
 when the declared host topology, inputs, or pending work changes.
 
 ## Current repository state
@@ -11,6 +11,12 @@ The flake targets `x86_64-linux` and discovers all host directories, currently
 producing `emilia`, `kagura-notebook`, and `rin` configurations. Shared NixOS
 defaults are in `common.nix`; shared user configuration is managed by Home
 Manager in `home/`.
+
+Agenix secrets are explicitly selected per host in `secrets/default.nix`;
+unknown hosts receive none by default. Emilia only receives `tailscale-emilia`,
+since its identity is not a recipient of the shared secrets. Nix includes the
+GitHub token only where that secret is declared, and TLS secrets are restricted
+to rin. Recipient declarations remain in `secrets/secrets.nix`.
 
 | Input | Declared channel | Locked revision | Lock timestamp |
 | --- | --- | --- | --- |
